@@ -22,8 +22,7 @@ export default function LandingScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%",
-    width: "100%",
+    flexGrow: 1,
     backgroundColor: "#c1c1c1",
     alignItems: "center",
     justifyContent: "flex-end",
