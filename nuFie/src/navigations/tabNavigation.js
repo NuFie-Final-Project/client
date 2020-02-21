@@ -5,7 +5,9 @@ import {
   FontAwesome,
   Ionicons
 } from "@expo/vector-icons";
+import MyPost from "../navigations/myPost";
 import Home from "../screens/home";
+import Account from "../screens/profileAccount";
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +38,7 @@ export default function TabNavigation() {
       />
       <Tab.Screen
         name="MyPost"
-        component={Home}
+        component={MyPost}
         options={{
           tabBarIcon: ({ color }) => (
             <Ionicons name="ios-list-box" color={color} size={28} />
@@ -45,7 +47,7 @@ export default function TabNavigation() {
       />
       <Tab.Screen
         name="Account"
-        component={Home}
+        component={Account}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome name="user" color={color} size={28} />
