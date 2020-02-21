@@ -1,28 +1,35 @@
-import React from 'react'
-import store from './src/store/index'
-import {Provider} from 'react-redux'
-import { NavigationContainer } from '@react-navigation/native'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import MyPost from './src/navigations/myPost'
-import Home from './src/screens/home'
-import Account from './src/screens/profileAccount'
-import CreateActivity from './src/screens/CreateActivity';
-import FindFriends from './src/screens/FindFriends'
+import React, { useState } from "react";
+import store from "./src/store/index";
+import { Provider } from "react-redux";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import IntroSlider from "./src/screens/intro";
+import LandingScreen from "./src/screens/landingScreen";
+import LoginScreen from "./src/screens/login";
+import RegisterScreen from "./src/screens/register";
+
+// import MyPost from "./src/screens/myPost";
+// import Home from "./src/screens/home";
 
 export default function App() {
-  const Tab = createBottomTabNavigator()
+  const [showApp, setShowApp] = useState(false);
+  const changeStateShow = () => {
+    setShowApp("true");
+  };
+  const Stack = createStackNavigator();
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen name="Home" component={FindFriends}/>
-          <Tab.Screen name="Search" component={Home}/>
-          <Tab.Screen name="My Post" component={MyPost}/>
-          <Tab.Screen name="Account" component={Account}/>
-        </Tab.Navigator>
-      </NavigationContainer>
+      {!showApp ? (
+        <IntroSlider done={changeStateShow} />
+      ) : (
+        <NavigationContainer>
+          <Stack.Navigator headerMode="none">
+            <Stack.Screen name="Home" component={LandingScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      )}
     </Provider>
-  )
+  );
 }
-
-
