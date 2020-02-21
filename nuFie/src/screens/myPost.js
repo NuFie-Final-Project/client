@@ -25,7 +25,6 @@ export default function MyPost() {
 
 const style = StyleSheet.create({
     container: {
-        paddingTop: 100,
         padding: 20
     },
     addPostIcon:{
@@ -43,5 +42,6 @@ const style = StyleSheet.create({
         position: 'absolute',
         left: '94%',
         top: 620,
+        zIndex: 3
     }
 })

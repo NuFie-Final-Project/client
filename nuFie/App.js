@@ -3,10 +3,11 @@ import store from './src/store/index'
 import {Provider} from 'react-redux'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import MyPost from './src/screens/myPost'
+import MyPost from './src/navigations/myPost'
 import Home from './src/screens/home'
+import Account from './src/screens/profileAccount'
 import CreateActivity from './src/screens/CreateActivity';
-import FindFriends from './src/screens/FindFriends';
+import FindFriends from './src/screens/FindFriends'
 
 export default function App() {
   const Tab = createBottomTabNavigator()
@@ -17,7 +18,7 @@ export default function App() {
           <Tab.Screen name="Home" component={FindFriends}/>
           <Tab.Screen name="Search" component={Home}/>
           <Tab.Screen name="My Post" component={MyPost}/>
-          <Tab.Screen name="Account" component={MyPost}/>
+          <Tab.Screen name="Account" component={Account}/>
         </Tab.Navigator>
       </NavigationContainer>
     </Provider>

@@ -1,0 +1,18 @@
+import React from 'react'
+import { createStackNavigator } from '@react-navigation/stack'
+import MyPost from '../screens/myPost'
+import DetailMyPost from '../screens/detailPost'
+import ChatRoom from '../screens/chattingRoom'
+
+
+export default function StackMyPost() {
+    const Stack = createStackNavigator()
+    return (
+        <Stack.Navigator>
+            <Stack.Screen name="MyPost" component={MyPost} />
+            <Stack.Screen name="DetailMyPost" component={DetailMyPost} />
+            <Stack.Screen name="ChatRoom" component={ChatRoom} />
+        </Stack.Navigator>
+    )
+    
+}
