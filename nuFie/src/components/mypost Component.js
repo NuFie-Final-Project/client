@@ -1,21 +1,31 @@
 import React from 'react'
-import {View, Text, StyleSheet, Image} from 'react-native'
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native'
+import { useNavigation } from '@react-navigation/native';
+
 
 export default function MyPost() {
+    const navigation = useNavigation();
+    const handlePress = () => {
+        navigation.navigate('DetailMyPost')
+    }
     return (
-        <View style={style.container}>
-            <View>
-                <Image
-                    style={style.image}
-                    source={require('../../assets/icon.png')}
-                />
+        <TouchableOpacity
+            onPress={handlePress}
+        >
+            <View style={style.container}>
+                <View>
+                    <Image
+                        style={style.image}
+                        source={require('../../assets/icon.png')}
+                    />
+                </View>
+                <View style={style.information}>
+                    <Text style={style.title}>This is Little of Interest</Text>
+                    <Text style={style.content}>Sunday, 12 march 2020</Text>
+                    <Text style={style.content}>Cinemax 21 Pondok Indah</Text>
+                </View>
             </View>
-            <View style={style.information}>
-                <Text style={style.title}>This is Little of Interest</Text>
-                <Text style={style.content}>Sunday, 12 march 2020</Text>
-                <Text style={style.content}>Cinemax 21 Pondok Indah</Text>
-            </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 
