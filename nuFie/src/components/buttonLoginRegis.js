@@ -7,7 +7,9 @@ export default function ButtonLoginRegis(props) {
       style={[styles.container, { backgroundColor: props.color || "#fff" }]}
       onPress={() => props.handle()}
     >
-      <Text>{props.text || "LOGIN"}</Text>
+      <Text style={{ fontWeight: "700", color: props.textColor || "#000" }}>
+        {props.text || "LOGIN"}
+      </Text>
     </TouchableOpacity>
   );
 }
