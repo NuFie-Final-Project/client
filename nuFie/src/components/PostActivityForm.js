@@ -10,11 +10,12 @@ import {
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import SelectPicker from 'react-native-form-select-picker';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { createActivity } from '../store/actions/Activity';
 
 function postActivityForm({ route, openAlert, uploadImage }) {
+    const dispatch = useDispatch()
     const [ tags, setTags ] = useState([]);
     const [ tagText, setTagText] = useState('');
     const [ isPromo, setIsPromo ] = useState('');
@@ -79,7 +80,8 @@ function postActivityForm({ route, openAlert, uploadImage }) {
             location,
             address
         }
-        createActivity({data: activity, token: user.login,});
+        console.log(activity)
+        dispatch(createActivity({data: activity, token: user.token}))
     }
 
     return (
