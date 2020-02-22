@@ -27,7 +27,12 @@ export default function LandingScreen() {
           </View>
         </View>
         <View style={styles.wrapperButton}>
-          <BtnLogin text="LOGIN" handle={moveToLogin} />
+          <BtnLogin
+            text="LOGIN"
+            handle={moveToLogin}
+            color="#4d80e4"
+            textColor="#fff"
+          />
           <BtnLogin text="REGISTER" handle={moveToRegister} />
         </View>
       </View>
