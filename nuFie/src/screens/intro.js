@@ -68,7 +68,7 @@ export default function IntroSlider(props) {
               const {email, firstName, lastName, password} = userData
                 return axios({
                     method: 'POST',
-                    url: 'http://172.16.15.240:3000/users/signIn',
+                    url: 'http://192.168.43.133:3000/users/signIn',
                     data: {email, firstName, lastName, password, idToken}
                 })
             })
