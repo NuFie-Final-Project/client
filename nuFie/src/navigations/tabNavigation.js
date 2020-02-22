@@ -7,7 +7,7 @@ import {
 } from "@expo/vector-icons";
 import MyPost from "../navigations/myPost";
 import Home from "../screens/home";
-import Account from "../screens/profileAccount";
+import ProfileStackNavigation from './ProfileStackNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -47,7 +47,7 @@ export default function TabNavigation() {
       />
       <Tab.Screen
         name="Account"
-        component={Account}
+        component={ProfileStackNavigation}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome name="user" color={color} size={28} />

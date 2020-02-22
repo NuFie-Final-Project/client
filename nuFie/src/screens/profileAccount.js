@@ -2,7 +2,6 @@ import React from 'react'
 import {View, Text, StyleSheet, Image, ImageBackground, Dimensions} from 'react-native'
 import {Foundation} from '@expo/vector-icons'
 import Btn from '../components/ButtonOnPost'
-
 export default function ProfileUser(params) {
     return (
         <View style={style.container}>
