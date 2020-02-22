@@ -1,17 +1,18 @@
 import React from "react";
 import Constants from "expo-constants";
 import { StyleSheet, View, TouchableHighlight, Text } from "react-native";
-import BtnLogin from "../components/buttonLoginRegis";
-import { useNavigation } from "@react-navigation/native";
+import BtnLogin from "../components/buttonLoginRegis"
+import { useNavigation } from '@react-navigation/native';
+
 
 export default function LandingScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
   const moveToLogin = () => {
-    navigation.navigate("Login");
-  };
+    navigation.navigate('Login')
+  }
   const moveToRegister = () => {
-    navigation.navigate("Register");
-  };
+    navigation.navigate('Register')
+  }
   return (
     <View style={styles.container}>
       <BtnLogin text="LOGIN" handle={moveToLogin} />
