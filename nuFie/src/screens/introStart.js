@@ -1,5 +1,4 @@
 import React from 'react'
-import {useSelector,useDispatch} from 'react-redux'
 import IntroSlider from "./intro"
 import { useNavigation } from '@react-navigation/native'
 

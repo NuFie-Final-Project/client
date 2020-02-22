@@ -1,13 +1,13 @@
 import React from 'react'
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
-import { useNavigation } from '@react-navigation/native';
+
 
 
 export default function ButtonOnPost(prop) {
-    const navigation = useNavigation();
+ 
 
     return(
-        <TouchableOpacity onPress={() => {navigation.navigate('EDIT PROFILE')}}>
+        <TouchableOpacity onPress={() => {prop.handle()}}>
             <View style={style.container}>
                 <Text style={style.text}>{prop.text}</Text>
             </View>
