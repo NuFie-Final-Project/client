@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Text, TextInput, ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, Text, StyleSheet } from 'react-native';
 import PostActivityForm from '../components/PostActivityForm';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import * as ImagePicker from 'expo-image-picker';
 
-
-function createActivity({ route }) {
+function EditActivity({ route }) {
     const [ showAlert, setShowAlert ] = useState(false);
     const [ uploadImage, setUploadImage ] = useState('');
 
@@ -91,9 +90,7 @@ function createActivity({ route }) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    }
+
 })
 
-export default createActivity
+export default EditActivity;
