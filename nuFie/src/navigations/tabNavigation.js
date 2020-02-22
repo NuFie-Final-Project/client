@@ -7,7 +7,8 @@ import {
 } from "@expo/vector-icons";
 import MyPost from "../navigations/myPost";
 import Home from "../screens/home";
-import ProfileStackNavigation from './ProfileStackNavigation';
+import Account from "./ProfileStackNavigation";
+import Search from "../screens/searchScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -29,7 +30,7 @@ export default function TabNavigation() {
       />
       <Tab.Screen
         name="Search"
-        component={Home}
+        component={Search}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome name="search" color={color} size={28} />
@@ -47,7 +48,7 @@ export default function TabNavigation() {
       />
       <Tab.Screen
         name="Account"
-        component={ProfileStackNavigation}
+        component={Account}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome name="user" color={color} size={28} />
