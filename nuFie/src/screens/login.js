@@ -37,7 +37,7 @@ export default function Login() {
   return (
     <KeyboardAvoidingView
       style={{ width: "100%", height: "100%" }}
-      behavior="position"
+      behavior="height"
     >
       <View style={styles.container}>
         <ImageBackground
