@@ -12,6 +12,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import SelectPicker from 'react-native-form-select-picker';
 import { useSelector } from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { createActivity } from '../store/actions/Activity';
 
 function postActivityForm({ route, openAlert, uploadImage }) {
     const [ tags, setTags ] = useState([]);
@@ -19,8 +20,11 @@ function postActivityForm({ route, openAlert, uploadImage }) {
     const [ isPromo, setIsPromo ] = useState('');
     const [ title, setTitle ] = useState('');
     const [ description, setDescription ] = useState('');
+    const [ memberLimit, setMemberLimit ] = useState('');
     const [ date, setDate ] = useState(new Date()); 
     const [ show, setShow ] = useState(false);
+    const [ location, setLocation ] = useState('');
+    const [ address, setAddress ] = useState('');
     
     const user = useSelector(state => state.user);
 
@@ -59,7 +63,23 @@ function postActivityForm({ route, openAlert, uploadImage }) {
     }
 
     const postActivity = () => {
-        
+        let boolPromo;    
+        if(isPromo) {
+            boolPromo = true;
+        } else {
+            boolPromo = false;
+        }
+        const activity = {
+            title,
+            description,
+            image: uploadImage,
+            tags: JSON.stringify(tags),
+            memberLimit,
+            due_date: date,
+            location,
+            address
+        }
+        createActivity({data: activity, token: user.login,});
     }
 
     return (
@@ -163,18 +183,25 @@ function postActivityForm({ route, openAlert, uploadImage }) {
                     <Text style={styles.inputLabel}>Location</Text>
                     <TextInput 
                     style={styles.textInput}
-                    value={title}
-                    onChangeText={(value) => setTitle(value)}></TextInput>
+                    value={location}
+                    onChangeText={(value) => setLocation(value)}></TextInput>
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Address</Text>
                     <TextInput 
                     style={styles.textInput}
-                    value={title}
-                    onChangeText={(value) => setTitle(value)}></TextInput>
+                    value={address}
+                    onChangeText={(value) => setAddress(value)}></TextInput>
                 </View>
                 <View style={styles.inputContainer}>
-                    <TouchableOpacity>
+                    <Text style={styles.inputLabel}>Member Limit</Text>
+                    <TextInput 
+                    style={styles.textInput}
+                    value={memberLimit}
+                    onChangeText={(value) => setMemberLimit(value)}></TextInput>
+                </View>
+                <View style={styles.inputContainer}>
+                    <TouchableOpacity onPress={postActivity}>
                         <View style={styles.button}>
                             <Text style={styles.buttonText}>POST</Text>
                         </View>
