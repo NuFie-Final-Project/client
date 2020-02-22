@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
     View, 
     Text, 
@@ -6,44 +6,31 @@ import {
     StyleSheet, 
     TouchableOpacity, 
     Image,
-    Alert
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import SelectPicker from 'react-native-form-select-picker';
 import * as ImagePicker from 'expo-image-picker';
 
-function postActivityForm(props) {
-    const [ imageUploaded, setImageUploaded ] = useState('');
+function postActivityForm({ route, openAlert, uploadImage }) {
+    const [ imageUploaded, setImageUploaded ] = useState(uploadImage);
     const [ tags, setTags ] = useState([]);
     const [ tagText, setTagText] = useState('');
     const [ isPromo, setIsPromo ] = useState('');
     const [ title, setTitle ] = useState('');
     const [ description, setDescription ] = useState('');
 
-    const uploadImage = async () => {
-        const permissionStatus = await ImagePicker.getCameraRollPermissionsAsync();
-        if(!permissionStatus.granted) {
-            const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
-            if(status === 'granted') {
-                let result = await ImagePicker.launchImageLibraryAsync({
-                    mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                    allowsEditing: true,
-                    aspect: [4, 3],
-                    quality: true
-                }) 
-            }
-        } else {
-            const result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: true,
-                aspect: [4, 3],
-                quality: 1
-            }) 
-            if(!result.cancelled) {
-                setImageUploaded(result.uri);
-            }
-        }
+    const chooseUploadMethod = () => {
+        openAlert({showAlert: true})
     }
+
+    useEffect(() => {
+        if(route.name === 'EDIT POST') {
+            setTags(['ABC', 'DEF']);
+            setIsPromo('YES');
+            setTitle('TEST');
+            setDescription('THIS IS A TEST')
+        }
+    }, [])
 
     const addTags = (action) => {
         if(action.nativeEvent.key === ' ') {
@@ -58,82 +45,86 @@ function postActivityForm(props) {
     }
 
     return (
-        <View style={styles.formContainer}>
-            <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>Title</Text>
-                <TextInput 
-                style={styles.textInput}
-                value={title}
-                onChangeText={(value) => setTitle(value)}></TextInput>
+        <>
+            <View style={styles.formContainer}>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>Title</Text>
+                    <TextInput 
+                    style={styles.textInput}
+                    value={title}
+                    onChangeText={(value) => setTitle(value)}></TextInput>
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>Description</Text>
+                    <TextInput 
+                    style={styles.textDescription}
+                    multiline={true}
+                    textAlignVertical="top"
+                    value={description}
+                    onChangeText={(value) => setDescription(value)}></TextInput>
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>Upload Image</Text>
+                    {
+                        imageUploaded.length === 0
+                        ?   <TouchableOpacity onPress={chooseUploadMethod}>
+                                <View style={styles.uploadImage}>
+                                    <FontAwesome name="camera" size={40} color="#DADADA"/>
+                                    <Text style={{marginTop: 10, color: '#5A5A5A'}}>Upload With Camera or File</Text>
+                                </View>
+                            </TouchableOpacity>
+                        :   <TouchableOpacity onPress={chooseUploadMethod}>
+                                <Image source={{uri: imageUploaded}} style={styles.uploadedImage}/>
+                            </TouchableOpacity>
+                    }
+                    
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>Do you have Promo?</Text>
+                    <SelectPicker
+                        onValueChange={(value) => {
+                            setIsPromo(value)
+                        }}
+                        selected={isPromo}
+                        style={styles.selector}
+                    >
+                        <SelectPicker.Item label="YES" value="YES"></SelectPicker.Item>
+                        <SelectPicker.Item label="NO" value="NO"></SelectPicker.Item>
+                    </SelectPicker>
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>Interest Category</Text>
+                    <TextInput 
+                    style={styles.textInput}
+                    onKeyPress={addTags}
+                    value={tagText}
+                    onChangeText={(value) => setTagText(value)}></TextInput>
+                    {
+                        tags.length === 0 
+                            ?   <View></View>
+                            :   <View style={styles.tagsContainer}>
+                                {
+                                    tags.map((tag, i) => {
+                                        return <View key={i} style={styles.tagContainer}>
+                                                    <Text style={styles.tagText}>{tag}</Text>
+                                                    <TouchableOpacity onPress={() => deleteTag(tag)}>
+                                                        <FontAwesome name="times" size={18} color="white" />
+                                                    </TouchableOpacity>
+                                                </View>
+                                    })                                
+                                }
+                                </View>
+                    }
+                </View>
+                <View style={styles.inputContainer}>
+                    <TouchableOpacity>
+                        <View style={styles.button}>
+                            <Text style={styles.buttonText}>POST</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
             </View>
-            <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>Description</Text>
-                <TextInput 
-                style={styles.textDescription}
-                multiline={true}
-                textAlignVertical="top"
-                value={description}
-                onChangeText={(value) => setDescription(value)}></TextInput>
-            </View>
-            <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>Upload Image</Text>
-                {
-                    imageUploaded.length === 0
-                    ?   <TouchableOpacity onPress={uploadImage}>
-                            <View style={styles.uploadImage}>
-                                <FontAwesome name="camera" size={40} color="#DADADA"/>
-                                <Text style={{marginTop: 10, color: '#5A5A5A'}}>Upload With Camera or File</Text>
-                            </View>
-                        </TouchableOpacity>
-                    :   <Image source={{uri: imageUploaded}} style={styles.uploadedImage}/>
-                }
-                
-            </View>
-            <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>Do you have Promo?</Text>
-                <SelectPicker
-                    onValueChange={(value) => {
-                        setIsPromo(value)
-                    }}
-                    selected={isPromo}
-                    style={styles.selector}
-                >
-                    <SelectPicker.Item label="YES" value="YES"></SelectPicker.Item>
-                    <SelectPicker.Item label="NO" value="NO"></SelectPicker.Item>
-                </SelectPicker>
-            </View>
-            <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>Interest Category</Text>
-                <TextInput 
-                style={styles.textInput}
-                onKeyPress={addTags}
-                value={tagText}
-                onChangeText={(value) => setTagText(value)}></TextInput>
-                {
-                    tags.length === 0 
-                        ?   <View></View>
-                        :   <View style={styles.tagsContainer}>
-                            {
-                                tags.map((tag, i) => {
-                                    return <View key={i} style={styles.tagContainer}>
-                                                <Text style={styles.tagText}>{tag}</Text>
-                                                <TouchableOpacity onPress={() => deleteTag(tag)}>
-                                                    <FontAwesome name="times" size={18} color="white" />
-                                                </TouchableOpacity>
-                                            </View>
-                                })                                
-                            }
-                            </View>
-                }
-            </View>
-            <View style={styles.inputContainer}>
-                <TouchableOpacity>
-                    <View style={styles.button}>
-                        <Text style={styles.buttonText}>POST</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
-        </View>
+        </>
     )
 }
 

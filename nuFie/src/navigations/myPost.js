@@ -4,6 +4,7 @@ import MyPost from '../screens/myPost'
 import DetailMyPost from '../screens/detailPost'
 import ChatRoom from '../screens/chattingRoom'
 import CreateActivity from '../screens/CreateActivity';
+import EditActivity from '../screens/EditActivity';
 
 
 export default function StackMyPost() {
@@ -25,6 +26,9 @@ export default function StackMyPost() {
                 },
                 headerTitleAlign: "center"
             }}/>
+            <Stack.Screen 
+            name="EDIT POST" 
+            component={EditActivity}/>
         </Stack.Navigator>
     )
     

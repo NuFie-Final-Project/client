@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Text, TextInput, ScrollView, StyleSheet } from 'react-native';
 import PostActivityForm from '../components/PostActivityForm';
 
-function createActivity() {
+function createActivity({ route }) {
     return (
         <ScrollView style={styles.container}>
-            <PostActivityForm></PostActivityForm>
+            <PostActivityForm route={route}></PostActivityForm>
         </ScrollView>
     )
 }
