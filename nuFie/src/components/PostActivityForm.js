@@ -6,18 +6,23 @@ import {
     StyleSheet, 
     TouchableOpacity, 
     Image,
+    TouchableWithoutFeedback
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import SelectPicker from 'react-native-form-select-picker';
-import * as ImagePicker from 'expo-image-picker';
+import { useSelector } from 'react-redux';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 function postActivityForm({ route, openAlert, uploadImage }) {
-    const [ imageUploaded, setImageUploaded ] = useState(uploadImage);
     const [ tags, setTags ] = useState([]);
     const [ tagText, setTagText] = useState('');
     const [ isPromo, setIsPromo ] = useState('');
     const [ title, setTitle ] = useState('');
     const [ description, setDescription ] = useState('');
+    const [ date, setDate ] = useState(new Date()); 
+    const [ show, setShow ] = useState(false);
+    
+    const user = useSelector(state => state.user);
 
     const chooseUploadMethod = () => {
         openAlert({showAlert: true})
@@ -44,6 +49,19 @@ function postActivityForm({ route, openAlert, uploadImage }) {
         setTags(newTags);
     }
 
+    const setFormDate = (event, selectedDate) => {
+        if(event.type === 'dismissed' || event.type === 'set') {
+            setShow(false);
+        } 
+        if(selectedDate) {
+            setDate(selectedDate)
+        }
+    }
+
+    const postActivity = () => {
+        
+    }
+
     return (
         <>
             <View style={styles.formContainer}>
@@ -66,7 +84,7 @@ function postActivityForm({ route, openAlert, uploadImage }) {
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Upload Image</Text>
                     {
-                        imageUploaded.length === 0
+                        uploadImage.length === 0
                         ?   <TouchableOpacity onPress={chooseUploadMethod}>
                                 <View style={styles.uploadImage}>
                                     <FontAwesome name="camera" size={40} color="#DADADA"/>
@@ -74,7 +92,7 @@ function postActivityForm({ route, openAlert, uploadImage }) {
                                 </View>
                             </TouchableOpacity>
                         :   <TouchableOpacity onPress={chooseUploadMethod}>
-                                <Image source={{uri: imageUploaded}} style={styles.uploadedImage}/>
+                                <Image source={{uri: uploadImage}} style={styles.uploadedImage}/>
                             </TouchableOpacity>
                     }
                     
@@ -115,6 +133,45 @@ function postActivityForm({ route, openAlert, uploadImage }) {
                                 }
                                 </View>
                     }
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>Due Date</Text>
+                    <TouchableWithoutFeedback onPress={() => setShow(true)}>
+                        <View style={{
+                            marginTop: 6,
+                            borderWidth: 1,
+                            borderRadius: 9,
+                            paddingVertical: 7,
+                            paddingHorizontal: 12,
+                            height: 37,
+                            borderColor: '#C1C1C1'}}>
+                                <Text>{date.toDateString()}</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    { show && (
+                        <DateTimePicker
+                        testID="dateTimePicker"
+                        timeZoneOffsetInMinutes={0}
+                        value={date}
+                        is24Hour={true}
+                        display="default"
+                        onChange={setFormDate}
+                      />
+                    )}
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>Location</Text>
+                    <TextInput 
+                    style={styles.textInput}
+                    value={title}
+                    onChangeText={(value) => setTitle(value)}></TextInput>
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>Address</Text>
+                    <TextInput 
+                    style={styles.textInput}
+                    value={title}
+                    onChangeText={(value) => setTitle(value)}></TextInput>
                 </View>
                 <View style={styles.inputContainer}>
                     <TouchableOpacity>

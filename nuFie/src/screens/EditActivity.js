@@ -59,7 +59,6 @@ function EditActivity({ route }) {
                 quality: 1
             }) 
             if(!result.cancelled) {
-                console.log('test')
                 setUploadImage(result.uri);
             }
         }
