@@ -54,32 +54,39 @@ export default function IntroSlider(props) {
       </View>
     </LinearGradient>
   );
-  const dispatch = useDispatch();
-  const userData = useSelector(state => state.user.userData);
-  const navigation = useNavigation();
+  const dispatch = useDispatch()
+  const userData  = useSelector(state => state.user.userData)
+  const log  = useSelector(state => state.user.login)
+  const navigation = useNavigation()
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-      firebase
-        .auth()
-        .currentUser.getIdToken(true)
-        .then(idToken => {
-          dispatch({ type: "SET_LOGIN", val: idToken });
-          navigation.navigate("MainPage");
-          const { email, firstName, lastName, password } = userData;
-          return axios({
-            method: "POST",
-            url: "http://172.16.15.240:3000/users/signIn",
-            data: { email, firstName, lastName, password, idToken }
-          });
-        })
-        .then(({ data }) => {
-          dispatch({ type: "SET_LOADING", val: false });
-        })
-        .catch(error => {
-          console.log(error, "ini error");
-        });
+        firebase
+            .auth()
+            .currentUser.getIdToken(true)
+            .then((idToken) => {
+              console.log('==================')
+              const {email, firstName, lastName, password} = userData
+                return axios({
+                    method: 'POST',
+                    url: 'http://172.16.15.240:3000/users/signIn',
+                    data: {email, firstName, lastName, password, idToken}
+                })
+            })
+            .then(({data}) => {
+                dispatch({type: 'SET_LOGIN', val: data.userId})
+                dispatch({type: 'SET_TOKEN', val: data.token})
+                dispatch({type: 'SET_LOADING', val: false})
+                navigation.navigate('MainPage')
+            })
+            .catch((error) => {
+                console.log(error, 'ini error');
+            })
     } else {
-      console.log("not logged in");
+        if(log == 'logout'){
+          navigation.navigate('Home')
+
+        }
+        console.log("not logged in");
     }
   });
 
