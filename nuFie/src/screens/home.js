@@ -9,7 +9,9 @@ export default function Home() {
     <View style={styles.container}>
       <View style={styles.navbar}>
         <Text style={styles.titleNavbar}>NuFie</Text>
-        <Ionicons name="ios-notifications" size={28} />
+        <View style={styles.iconWrapper}>
+          <Ionicons name="ios-notifications" size={28} />
+        </View>
       </View>
       <Text style={styles.titleScreen}>Intereset Feeds</Text>
       <ScrollView>
@@ -53,5 +55,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginLeft: 8,
     marginTop: 8
+  },
+  iconWrapper: {
+    position: "absolute",
+    right: 15
   }
 });
