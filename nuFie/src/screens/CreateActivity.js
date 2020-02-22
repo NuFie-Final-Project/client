@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, TextInput, ScrollView, StyleSheet } from 'react-native';
 import PostActivityForm from '../components/PostActivityForm';
-import Constants from 'expo-constants';
 
 function createActivity() {
     return (
@@ -14,7 +13,6 @@ function createActivity() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: Constants.statusBarHeight
     }
 })
 

@@ -6,22 +6,43 @@ import {
     StyleSheet, 
     TouchableOpacity, 
     Image,
-    Picker 
+    Alert
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import dummyPromo from './promo_dummy.jpg';
 import SelectPicker from 'react-native-form-select-picker';
+import * as ImagePicker from 'expo-image-picker';
 
 function postActivityForm(props) {
     const [ imageUploaded, setImageUploaded ] = useState('');
     const [ tags, setTags ] = useState([]);
-    const [ tagText, setTagText] = useState([]);
+    const [ tagText, setTagText] = useState('');
     const [ isPromo, setIsPromo ] = useState('');
     const [ title, setTitle ] = useState('');
     const [ description, setDescription ] = useState('');
 
-    const uploadImage = () => {
-        setImageUploaded(dummyPromo);
+    const uploadImage = async () => {
+        const permissionStatus = await ImagePicker.getCameraRollPermissionsAsync();
+        if(!permissionStatus.granted) {
+            const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+            if(status === 'granted') {
+                let result = await ImagePicker.launchImageLibraryAsync({
+                    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                    allowsEditing: true,
+                    aspect: [4, 3],
+                    quality: true
+                }) 
+            }
+        } else {
+            const result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 1
+            }) 
+            if(!result.cancelled) {
+                setImageUploaded(result.uri);
+            }
+        }
     }
 
     const addTags = (action) => {
@@ -64,7 +85,7 @@ function postActivityForm(props) {
                                 <Text style={{marginTop: 10, color: '#5A5A5A'}}>Upload With Camera or File</Text>
                             </View>
                         </TouchableOpacity>
-                    :   <Image source={imageUploaded} style={styles.uploadedImage}/>
+                    :   <Image source={{uri: imageUploaded}} style={styles.uploadedImage}/>
                 }
                 
             </View>
