@@ -30,7 +30,7 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight,
-    flexGrow: 1
+    height: "100%"
   },
   navbar: {
     height: 50,
@@ -46,8 +46,7 @@ const styles = StyleSheet.create({
     flexGrow: 1
   },
   listWrapper: {
-    alignItems: "center",
-    height: "100%"
+    alignItems: "center"
   },
   titleScreen: {
     fontWeight: "700",
