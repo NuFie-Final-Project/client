@@ -12,9 +12,10 @@ import { FontAwesome } from '@expo/vector-icons';
 import SelectPicker from 'react-native-form-select-picker';
 import { useSelector, useDispatch } from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { createActivity } from '../store/actions/Activity';
+import { createActivity, editActivity } from '../store/actions/Activity';
+import { useNavigation } from '@react-navigation/native';
 
-function postActivityForm({ route, openAlert, uploadImage }) {
+function postActivityForm({ route, openAlert, uploadImage, activity }) {
     const dispatch = useDispatch()
     const [ tags, setTags ] = useState([]);
     const [ tagText, setTagText] = useState('');
@@ -26,8 +27,13 @@ function postActivityForm({ route, openAlert, uploadImage }) {
     const [ show, setShow ] = useState(false);
     const [ location, setLocation ] = useState('');
     const [ address, setAddress ] = useState('');
+    const [ image, setImage ] = useState(uploadImage.uri);
+    const [ marginBottomTags, setMarginBottomTags ] = useState(20);
+    const [ buttonTitle, setButtonTitle ] = useState('');
+    const [newImage, setNewImage] = useState(false);
     
     const user = useSelector(state => state.user);
+    const navigation = useNavigation();
 
     const chooseUploadMethod = () => {
         openAlert({showAlert: true})
@@ -35,27 +41,50 @@ function postActivityForm({ route, openAlert, uploadImage }) {
 
     useEffect(() => {
         if(route.name === 'EDIT POST') {
-            setTags(['ABC', 'DEF']);
-            setIsPromo('YES');
-            setTitle('TEST');
-            setDescription('THIS IS A TEST')
+            console.log(image);
+            setTags(activity.tags);
+            if(activity.isPromo) {
+                setIsPromo('YES');
+            } else {
+                setIsPromo('NO');
+            }
+            setTitle(activity.title);
+            setDescription(activity.description);
+            setDate(new Date(activity.due_date));
+            if(activity.memberLimit === null) {
+                setMemberLimit('0');
+            } else {
+                setMemberLimit(activity.memberLimit.toString());
+            }
+            setLocation(activity.location);
+            setAddress(activity.address);
+            if(!uploadImage.uri) {
+                setImage(activity.image);
+            } else {
+                setNewImage(true);
+                setImage(uploadImage.uri)
+            }
+            setButtonTitle('EDIT');
+        } else if(route.name === 'ADD POST') {
+            setImage(uploadImage.uri);
+            setButtonTitle('POST');
         }
-    }, [])
-
+    }, [uploadImage.uri]);
     
-
-    // console.log(fileType)
-
     const addTags = (action) => {
         if(action.nativeEvent.key === ' ') {
             setTags([...tags, tagText]);
             setTagText('');
+            setMarginBottomTags(10)
         }
     }
 
     const deleteTag = (deletedTag) => {
         const newTags = tags.filter(tag => {return tag !== deletedTag})
         setTags(newTags);
+        if(tags.length === 1) {
+            setMarginBottomTags(20)
+        } 
     }
 
     const setFormDate = (event, selectedDate) => {
@@ -68,32 +97,70 @@ function postActivityForm({ route, openAlert, uploadImage }) {
     }
     let uriParts
     let fileType
-    if(uploadImage) {
-        uriParts = uploadImage.uri.split('.');
+
+    if(image) {
+        uriParts = image.split('.');
         fileType = uriParts[uriParts.length - 1];
-    }
+    } 
+
     const postActivity = () => {
-        let boolPromo;    
-        if(isPromo) {
-            boolPromo = true;
+        if(route.name === 'ADD POST') {
+            let boolPromo;    
+            if(isPromo) {
+                boolPromo = true;
+            } else {
+                boolPromo = false;
+            }
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("description", description);
+            formData.append("image", {
+                uri: image,
+                name: `photo.${fileType}`,
+                type: `image/${fileType}`
+            });
+            formData.append("tags", JSON.stringify(tags));
+            formData.append("memberLimit", memberLimit);
+            formData.append("due_date", date.toISOString());
+            formData.append("location", location);
+            formData.append("address", address);
+            
+            dispatch(createActivity({
+                data: formData, 
+                token: user.token,
+                user_id: user.login}))
         } else {
-            boolPromo = false;
+            let boolPromo;    
+            if(isPromo) {
+                boolPromo = true;
+            } else {
+                boolPromo = false;
+            }
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("description", description);
+            if(newImage) {
+                formData.append("image", {
+                    uri: image,
+                    name: `photo.${fileType}`,
+                    type: `image/${fileType}`
+                });
+            }
+            formData.append("tags", JSON.stringify(tags));
+            formData.append("memberLimit", memberLimit);
+            formData.append("due_date", date.toISOString());
+            formData.append("location", location);
+            formData.append("address", address);
+            
+            dispatch(editActivity({
+                data: formData, 
+                token: user.token, 
+                id: activity._id,
+                user_id: user.login
+            }))
+
+            navigation.navigate('MyPost')
         }
-        const formData = new FormData();
-        formData.append("title", title);
-        formData.append("description", description);
-        formData.append("image", {
-            uri: uploadImage.uri,
-            name: `photo.${fileType}`,
-            type: `image/${fileType}`
-        });
-        formData.append("tags", JSON.stringify(tags));
-        formData.append("memberLimit", memberLimit);
-        formData.append("due_date", date.toISOString());
-        formData.append("location", location);
-        formData.append("address", address);
-        
-        dispatch(createActivity({data: formData, token: user.token}))
     }
 
     return (
@@ -118,7 +185,7 @@ function postActivityForm({ route, openAlert, uploadImage }) {
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Upload Image</Text>
                     {
-                        uploadImage.length === 0
+                        !image 
                         ?   <TouchableOpacity onPress={chooseUploadMethod}>
                                 <View style={styles.uploadImage}>
                                     <FontAwesome name="camera" size={40} color="#DADADA"/>
@@ -126,7 +193,7 @@ function postActivityForm({ route, openAlert, uploadImage }) {
                                 </View>
                             </TouchableOpacity>
                         :   <TouchableOpacity onPress={chooseUploadMethod}>
-                                <Image source={{uri: uploadImage.uri}} style={styles.uploadedImage}/>
+                                <Image source={{uri: image}} style={styles.uploadedImage}/>
                             </TouchableOpacity>
                     }
                     
@@ -144,7 +211,7 @@ function postActivityForm({ route, openAlert, uploadImage }) {
                         <SelectPicker.Item label="NO" value="NO"></SelectPicker.Item>
                     </SelectPicker>
                 </View>
-                <View style={styles.inputContainer}>
+                <View style={{marginBottom: marginBottomTags}}>
                     <Text style={styles.inputLabel}>Interest Category</Text>
                     <TextInput 
                     style={styles.textInput}
@@ -212,12 +279,13 @@ function postActivityForm({ route, openAlert, uploadImage }) {
                     <TextInput 
                     style={styles.textInput}
                     value={memberLimit}
-                    onChangeText={(value) => setMemberLimit(value)}></TextInput>
+                    onChangeText={(value) => setMemberLimit(value)}
+                    keyboardType="phone-pad"></TextInput>
                 </View>
                 <View style={styles.inputContainer}>
                     <TouchableOpacity onPress={postActivity}>
                         <View style={styles.button}>
-                            <Text style={styles.buttonText}>POST</Text>
+                    <Text style={styles.buttonText}>{buttonTitle}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -290,7 +358,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingHorizontal: 10,
         paddingVertical: 7,
-        marginRight: 10
+        marginRight: 10,
+        marginBottom: 10
     },
     tagText: {
         color: 'white',

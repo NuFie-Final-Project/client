@@ -3,10 +3,10 @@ import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 
 
-export default function MyPost() {
+export default function MyPost(props) {
     const navigation = useNavigation();
     const handlePress = () => {
-        navigation.navigate('DetailMyPost')
+        navigation.navigate('DetailMyPost', {activity: props.activity});
     }
     return (
         <TouchableOpacity
@@ -16,13 +16,13 @@ export default function MyPost() {
                 <View>
                     <Image
                         style={style.image}
-                        source={require('../../assets/icon.png')}
+                        source={{uri: props.activity.image}}
                     />
                 </View>
                 <View style={style.information}>
-                    <Text style={style.title}>This is Little of Interest</Text>
-                    <Text style={style.content}>Sunday, 12 march 2020</Text>
-                    <Text style={style.content}>Cinemax 21 Pondok Indah</Text>
+                    <Text style={style.title}>{props.activity.title}</Text>
+                    <Text style={style.content}>{new Date(props.activity.due_date).toDateString()}</Text>
+                    <Text style={style.content}>{props.activity.location}</Text>
                 </View>
             </View>
         </TouchableOpacity>

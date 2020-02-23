@@ -16,10 +16,11 @@ function createActivity({ route }) {
     const postImageWithCamera = async () => {
         setShowAlert(false);
         const permissionStatus = await ImagePicker.getCameraPermissionsAsync();
+        let result;
         if(!permissionStatus.granted) {
             const { status } = await ImagePicker.requestCameraPermissionsAsync();
             if(status === 'granted') {
-                const result = await ImagePicker.launchCameraAsync({
+                result = await ImagePicker.launchCameraAsync({
                     mediaTypes: ImagePicker.MediaTypeOptions.Images,
                     allowsEditing: true,
                     aspect: [4, 3],
@@ -27,7 +28,7 @@ function createActivity({ route }) {
                 }) 
             }
         } else {
-            const result = await ImagePicker.launchCameraAsync({
+            result = await ImagePicker.launchCameraAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
                 aspect: [4, 3],
