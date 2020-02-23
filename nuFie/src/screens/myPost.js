@@ -8,13 +8,14 @@ import { useSelector, useDispatch } from 'react-redux';
 
 export default function MyPost() {
     const navigation = useNavigation();
-    const activities = useSelector(state => state.Activity);
+    const activities = useSelector(state => state.activity);
+    const trigger = useSelector(state => state.other.trigger);
     const user = useSelector(state => state.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getActivities({token: user.token, id: user.login}));
-    }, []);
+        dispatch(getActivities({token: user.token, id: user.login}))
+    }, [trigger]);
 
     return (
         <View style={style.container}>

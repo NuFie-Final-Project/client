@@ -17,9 +17,13 @@ export default function DetailPost({route}) {
     const handleGroupChat = () => {
         navigation.navigate('ChatRoom')
     }
-
+    
     const activity = route.params.activity;
-
+    
+    const handleSearchFriend = () => {
+        navigation.navigate('SearchFriend',{data: activity})
+    }
+    
     return (
         <>
             <View style={style.editButtonContainer}>
@@ -53,7 +57,7 @@ export default function DetailPost({route}) {
                         </View>
                         <View style={style.buttonWrap}>
                             <ButtonP text="Open Group Chat" handle={handleGroupChat}/>
-                            <ButtonP text="Search Friend" />
+                            <ButtonP text="Search Friend" handle={handleSearchFriend}/>
                         </View>
                     </View>
                 </ScrollView>

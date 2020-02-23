@@ -1,6 +1,6 @@
 import React from "react";
 import Constants from "expo-constants";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Category from "../components/InterestCategory";
 import SearchBar from "../components/searchBar";
 

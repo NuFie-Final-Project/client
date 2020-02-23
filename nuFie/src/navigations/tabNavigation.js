@@ -8,7 +8,7 @@ import {
 import MyPost from "../navigations/myPost";
 import Home from "../screens/home";
 import Account from "./ProfileStackNavigation";
-import Search from "../screens/searchScreen";
+import Search from "../navigations/searchNavigation"
 
 const Tab = createBottomTabNavigator();
 

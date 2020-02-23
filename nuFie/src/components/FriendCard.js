@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
     View, 
     Text,
@@ -7,17 +7,25 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import dummyPP from '../../assets/dummy_pp.webp'
+import {useDispatch} from 'react-redux'
+import {InviteFriend} from '../store/actions/Activity'
 
 function FriendCard(props) {
+    const dispatch = useDispatch()
     const [ textButton, setTextButton ] = useState('INVITE');
     const [ isButtonActive, setIsButtonActive ] = useState(false);
-
     const inviteFriend = () => {
-        if(textButton === 'INVITE') {
+        dispatch(InviteFriend({userId: props.data._id, postId: props.detailPost._id}))
+        setTextButton('WAITING RESPONSE');
+        setIsButtonActive(true);
+        
+    }
+    useEffect(() => {
+        if(props.detailPost.pendingInvites.includes(props.data._id)){
             setTextButton('WAITING RESPONSE');
             setIsButtonActive(true);
         }
-    }
+    },[])
 
     return(
         <View style={styles.friendsContainer}>
@@ -26,7 +34,7 @@ function FriendCard(props) {
                 source={dummyPP}
                 style={styles.contactImage}
                 />
-                <Text style={styles.contactText}>Rafael Alviano Dafito</Text>
+                <Text style={styles.contactText}>{props.data.firstName} {props.data.lastName}</Text>
             </View>
             <View style={styles.rightContainer}>
                 <TouchableOpacity onPress={inviteFriend} disabled={isButtonActive}>

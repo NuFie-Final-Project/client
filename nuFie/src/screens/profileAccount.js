@@ -19,6 +19,14 @@ export default function ProfileUser(params) {
     const handleLogout = () => {
         dispatch(Logout())
     }
+
+    const simbol = () => {
+        const gen = biodata.gender
+        if(gen == undefined) {
+            return 'male-symbol'
+        }
+            return  gen.toLowerCase() + '-symbol'
+    }
     useEffect(() => {
         dispatch(ReadSelf())
     },[])
@@ -41,7 +49,7 @@ export default function ProfileUser(params) {
                 </View>
                 <View style={style.nameWrap}>
                     <Text style={style.name}>{biodata.firstName} {biodata.lastName}</Text>
-                    <Foundation name="male-symbol" style={style.icon}/>
+                    <Foundation name={simbol()} style={style.icon}/>
                 </View>
                 <View style={style.aboutMe}>
                     <Text style={[style.title, style.aboutMeText]}>About Me</Text>

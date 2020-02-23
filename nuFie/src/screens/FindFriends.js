@@ -1,18 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
     ScrollView, 
     StyleSheet, 
 } from 'react-native';
 import Constants from 'expo-constants';
-import FriendCard from '../components/FriendCard';
+import FriendCard from '../components/FriendCard'
+import {FindFriend} from '../store/actions/user'
+import {useDispatch, useSelector} from 'react-redux'
+
 
 function FindFriends(props) {
+    const detailPost = props.route.params.data 
+    const dispatch = useDispatch()
+    const userData = useSelector(state => state.user)
+    useEffect(() => {
+        dispatch(FindFriend(userData.token))
+        console.log(userData.suggestFriend, '=======================')
+    },[])
     return (
         <ScrollView style={styles.container}>
-            <FriendCard></FriendCard>
-            <FriendCard></FriendCard>
-            <FriendCard></FriendCard>
-            <FriendCard></FriendCard>
+            {
+                userData.suggestFriend.map(el => <FriendCard key={el._id} detailPost={detailPost} data={el}/>)
+            }
         </ScrollView>
     )
 }

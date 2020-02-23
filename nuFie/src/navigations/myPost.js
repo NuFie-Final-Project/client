@@ -5,6 +5,7 @@ import DetailMyPost from '../screens/detailPost'
 import ChatRoom from '../screens/chattingRoom'
 import CreateActivity from '../screens/CreateActivity';
 import EditActivity from '../screens/EditActivity';
+import SearchFriend from '../screens/FindFriends'
 
 
 export default function StackMyPost() {
@@ -14,6 +15,7 @@ export default function StackMyPost() {
             <Stack.Screen name="MyPost" component={MyPost} />
             <Stack.Screen name="DetailMyPost" component={DetailMyPost} />
             <Stack.Screen name="ChatRoom" component={ChatRoom} />
+            <Stack.Screen name="SearchFriend" component={SearchFriend} />
             <Stack.Screen 
             name="ADD POST" 
             component={CreateActivity} 
