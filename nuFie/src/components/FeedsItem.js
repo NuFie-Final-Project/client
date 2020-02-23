@@ -8,6 +8,7 @@ import {
   ImageBackground,
   TouchableHighlight
 } from "react-native";
+import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
 
 export default function FeedsItem() {
   return (
@@ -35,11 +36,14 @@ export default function FeedsItem() {
       </View>
       <View style={styles.cardText}>
         <Text style={styles.cardTitle}>Need Friends for Watching Concert</Text>
-        <Text style={styles.place}>JIEXPO Kemayoran, Jakarta</Text>
-        <Text style={styles.description}>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi non
-          quis exercitationem culpa nesciunt nihil a .....
-        </Text>
+        <View style={{ flexDirection: "row" }}>
+          <MaterialIcons name="place" color="#777777" />
+          <Text style={styles.place}>JIEXPO Kemayoran, Jakarta</Text>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <FontAwesome name="calendar" color="#777777" />
+          <Text style={styles.date}>Sunday, 29 March 2020</Text>
+        </View>
       </View>
     </View>
     // <View style={styles.card}>
@@ -60,7 +64,7 @@ export default function FeedsItem() {
 
 const styles = StyleSheet.create({
   cardFeed: {
-    height: 345,
+    height: 330,
     width: Dimensions.get("window").width,
     // borderWidth: 1,
     // borderColor: "#c2c2c2",
@@ -92,8 +96,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 3
   },
-  description: {
-    fontSize: 11
+  date: {
+    fontSize: 11,
+    color: "#777777",
+    marginLeft: 4
   },
   card: {
     width: "93%",
@@ -121,7 +127,8 @@ const styles = StyleSheet.create({
   },
   place: {
     fontSize: 10,
-    color: "#777777"
+    color: "#777777",
+    marginLeft: 4
   },
   btnDetail: {
     position: "absolute",
