@@ -33,19 +33,20 @@ function createActivity({ route }) {
                 aspect: [4, 3],
                 quality: 1
             }) 
-            if(!result.cancelled) {
-                setUploadImage(result.uri);
-            }
+        }
+        if(!result.cancelled) {
+            setUploadImage(result);
         }
     }
 
     const postingImageWithGallery = async () => {
         setShowAlert(false);
         const permissionStatus = await ImagePicker.getCameraRollPermissionsAsync();
+        let result;
         if(!permissionStatus.granted) {
             const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
             if(status === 'granted') {
-                const result = await ImagePicker.launchCameraAsync({
+                result = await ImagePicker.launchCameraAsync({
                     mediaTypes: ImagePicker.MediaTypeOptions.Images,
                     allowsEditing: true,
                     aspect: [4, 3],
@@ -53,15 +54,15 @@ function createActivity({ route }) {
                 }) 
             }
         } else {
-            const result = await ImagePicker.launchImageLibraryAsync({
+            result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
                 aspect: [4, 3],
                 quality: 1
             }) 
-            if(!result.cancelled) {
-                setUploadImage(result.uri);
-            }
+        }
+        if(!result.cancelled) {
+            setUploadImage(result);
         }
     }
 

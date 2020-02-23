@@ -42,6 +42,10 @@ function postActivityForm({ route, openAlert, uploadImage }) {
         }
     }, [])
 
+    
+
+    // console.log(fileType)
+
     const addTags = (action) => {
         if(action.nativeEvent.key === ' ') {
             setTags([...tags, tagText]);
@@ -62,7 +66,12 @@ function postActivityForm({ route, openAlert, uploadImage }) {
             setDate(selectedDate)
         }
     }
-
+    let uriParts
+    let fileType
+    if(uploadImage) {
+        uriParts = uploadImage.uri.split('.');
+        fileType = uriParts[uriParts.length - 1];
+    }
     const postActivity = () => {
         let boolPromo;    
         if(isPromo) {
@@ -70,18 +79,21 @@ function postActivityForm({ route, openAlert, uploadImage }) {
         } else {
             boolPromo = false;
         }
-        const activity = {
-            title,
-            description,
-            image: uploadImage,
-            tags: JSON.stringify(tags),
-            memberLimit,
-            due_date: date,
-            location,
-            address
-        }
-        console.log(activity)
-        dispatch(createActivity({data: activity, token: user.token}))
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("description", description);
+        formData.append("image", {
+            uri: uploadImage.uri,
+            name: `photo.${fileType}`,
+            type: `image/${fileType}`
+        });
+        formData.append("tags", JSON.stringify(tags));
+        formData.append("memberLimit", memberLimit);
+        formData.append("due_date", date.toISOString());
+        formData.append("location", location);
+        formData.append("address", address);
+        
+        dispatch(createActivity({data: formData, token: user.token}))
     }
 
     return (
@@ -114,7 +126,7 @@ function postActivityForm({ route, openAlert, uploadImage }) {
                                 </View>
                             </TouchableOpacity>
                         :   <TouchableOpacity onPress={chooseUploadMethod}>
-                                <Image source={{uri: uploadImage}} style={styles.uploadedImage}/>
+                                <Image source={{uri: uploadImage.uri}} style={styles.uploadedImage}/>
                             </TouchableOpacity>
                     }
                     
