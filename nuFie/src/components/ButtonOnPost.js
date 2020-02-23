@@ -4,8 +4,6 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 
 
 export default function ButtonOnPost(prop) {
- 
-
     return(
         <TouchableOpacity onPress={() => {prop.handle()}}>
             <View style={style.container}>

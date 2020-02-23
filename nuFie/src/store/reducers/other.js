@@ -1,5 +1,6 @@
 const store = {
-    show: false
+    show: false,
+    url: 'http://192.168.1.9:3000'
 }
 
 export default function user (state = store, action){

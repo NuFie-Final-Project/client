@@ -15,7 +15,7 @@ export default function MyPost() {
     useEffect(() => {
         dispatch(getActivities({token: user.token, id: user.login}));
     }, []);
-
+    
     return (
         <View style={style.container}>
             <ScrollView>

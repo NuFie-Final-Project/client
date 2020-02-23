@@ -4,7 +4,7 @@ export const createActivity = (activity) => {
     return function(dispatch, state) {
         axios({
             method: 'post',
-            url: 'http://192.168.43.133:3000/activities',
+            url: `${state().other.url}/activities`,
             data: activity.data,
             headers: {
                 token: activity.token,
@@ -68,3 +68,20 @@ export const editActivity = (activity) => {
     }
 }
         
+export const FetchCategory = (props) => {
+    return function (dispatch, state) {
+        dispatch({type: 'SET_LOADING', val: true})
+        axios({
+            url: `${state().other.url}/activities/category/` + props,
+            method: 'GET',
+            headers: {
+                token: state().user.token
+            }
+        })
+        .then(({data}) => {
+            console.log(data)
+            dispatch({type: 'SET_CATEGORY', val: data})
+            dispatch({type: 'SET_LOADING', val: false})
+        })    
+    }
+}

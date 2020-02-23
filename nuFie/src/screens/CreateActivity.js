@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, TextInput, ScrollView, StyleSheet } from 'react-native';
-import PostActivityForm from '../components/PostActivityForm';
-import AwesomeAlert from 'react-native-awesome-alerts';
+import PostActivityForm from '../components/PostActivityForm'
+import AwesomeAlert from 'react-native-awesome-alerts'
 import * as ImagePicker from 'expo-image-picker';
 
 

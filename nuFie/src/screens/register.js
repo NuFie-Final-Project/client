@@ -3,26 +3,17 @@ import { Text, View, StyleSheet } from "react-native";
 import { TextField } from "react-native-material-textfield";
 import Constants from "expo-constants";
 import BtnRegister from "../components/buttonLoginRegis";
-import { useNavigation } from "@react-navigation/native";
 import { RegisterAction } from "../store/actions/user";
 import { useSelector, useDispatch } from "react-redux";
 import Load from "../components/loading";
 
 export default function Register() {
   const dispatch = useDispatch();
-  const loading = useSelector(state => state.user.loading);
-  const user = useSelector(state => state.user.login);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    if (user) {
-      navigation.navigate("MainPage");
-    }
-  }, [user]);
+  const loading = useSelector(state => state.user.loading)
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
 
   const handleFirstName = event => {
     setFirstName(event.nativeEvent.text);
