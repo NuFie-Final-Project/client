@@ -12,9 +12,12 @@ import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { LoginEmailPassword } from "../store/actions/user";
+import {useSelector} from 'react-redux'
 import ButtonLogin from "../components/buttonLoginRegis";
+import Loading from '../components/loading'
 
 export default function Login() {
+  const load = useSelector(state => state.user.loading)
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -60,11 +63,14 @@ export default function Login() {
                 secureTextEntry={true}
               />
             </View>
-            <ButtonLogin
-              handle={handleLogin}
-              color="#0096FE"
-              textColor="#fff"
-            />
+            {
+              load ? <Loading/> :
+              <ButtonLogin
+                handle={handleLogin}
+                color="#0096FE"
+                textColor="#fff"
+              />
+            }
           </View>
           <View style={styles.footer}>
             <Text style={styles.footerText}>Sign in With Social Network</Text>

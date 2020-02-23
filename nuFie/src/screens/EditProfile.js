@@ -5,9 +5,11 @@ import {useSelector} from 'react-redux'
 import * as ImagePicker from 'expo-image-picker'
 import {UpdateProfile} from '../store/actions/user'
 import {useDispatch} from 'react-redux'
+import { useNavigation } from '@react-navigation/native'
 
 
 function EditProfile(props) {
+    const navigation = useNavigation()
     const dispatch = useDispatch()
     const [picture, setPicture] = useState('kk')
     const biodata = useSelector(state => state.user.biodata)
@@ -21,18 +23,23 @@ function EditProfile(props) {
     },[])
     const handleEdit = (dataEdited) => {
         let formData = new FormData()
+        let datatipe = picture.split('.')
+        let imagetipe = datatipe[datatipe.length-1]
         formData.append('firstName', dataEdited.firstName)
         formData.append('lastName', dataEdited.lastName)
-        formData.append('interests', dataEdited.tags)
+        formData.append('interests', JSON.stringify(dataEdited.tags))
         formData.append('aboutMe', dataEdited.aboutMe)
         formData.append('phoneNumber', dataEdited.phone)
         formData.append('gender', dataEdited.gender)
-        formData.append('image', {
-            uri: picture,
-            type: 'image/jpg',
-            name: 'profilePicture'
-        })
+        if(picture != biodata.profilePicture){
+            formData.append('image', {
+                uri: picture,
+                type: 'image/' + imagetipe,
+                name: 'profilePicture'
+            })
+        }
         dispatch(UpdateProfile(formData))
+        navigation.navigate('Profile')
         
     }
     const postImageWithCamera = async () => {

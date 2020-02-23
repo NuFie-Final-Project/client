@@ -1,6 +1,7 @@
 import axios from "axios";
 import firebase from "../../../config/config_firebase";
 
+
 export const RegisterAction = params => {
   return function(dispatch) {
     dispatch({ type: "SET_LOADING", val: true });
@@ -39,7 +40,6 @@ export const ReadSelf  = () => {
             }
         })
         .then(({data}) => {
-            console.log(data, 'ini data')
             dispatch({type: 'SET_BIODATA', val: data.user})
             dispatch({type: 'SET_LOADING', val: false})
         })
@@ -61,8 +61,9 @@ export const UpdateProfile = (props) => {
             data: props,
         })
         .then(({data}) => {
-            console.log(data, 'berhasil update user')
-            dispatch({type: 'SET_LOADING', val: false})
+          console.log(data)
+          dispatch({type: 'SET_BIODATA', val: data.user})
+          dispatch({type: 'SET_LOADING', val: false})
         })
         .catch((err) => {
             console.log(err, 'ini error update user')

@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export const createActivity = (activity) => {
     return function(dispatch, state) {
+        dispatch({type: 'SET_LOADING', val: true})
         axios({
             method: 'post',
             url: `${state().other.url}/activities`,
@@ -13,7 +14,7 @@ export const createActivity = (activity) => {
             }
         })
         .then(response => {
-            console.log(response.data, '========================')
+            dispatch({type: 'SET_LOADING', val: false})
         })
         .catch(error => {
             console.log({error});
@@ -72,15 +73,14 @@ export const FetchCategory = (props) => {
     return function (dispatch, state) {
         dispatch({type: 'SET_LOADING', val: true})
         axios({
-            url: `${state().other.url}/activities/category/` + props,
+            url: `${state().other.url}/activities/interest/` + props,
             method: 'GET',
             headers: {
                 token: state().user.token
             }
         })
         .then(({data}) => {
-            console.log(data)
-            dispatch({type: 'SET_CATEGORY', val: data})
+            dispatch({type: 'SET_CATEGORY', val: data.activities})
             dispatch({type: 'SET_LOADING', val: false})
         })    
     }

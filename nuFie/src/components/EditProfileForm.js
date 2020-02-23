@@ -23,6 +23,8 @@ function EditProfileForm(props) {
         setPhone(userData.phone)
         setAboutMe(userData.aboutMe)
         setPhone(userData.phoneNumber)
+        setTags(userData.interests)
+        setGender(userData.gender)
     },[])
     const inputPhone = (value) => {
         if(value[0] !== '+') {

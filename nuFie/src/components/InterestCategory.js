@@ -8,7 +8,8 @@ export default function InterestCategory(props) {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const handlePress = () => {
-    dispatch(FetchCategory(props.text))
+    dispatch(FetchCategory(props.text.toLowerCase()))
+    navigation.navigate('Category')
   }
   return (
     <TouchableHighlight
