@@ -30,9 +30,9 @@ export default function MyPost() {
           )}
         </View>
       </ScrollView>
-      <View style={style.floatWarper}>
+      <View style={styles.floatWarper}>
         <TouchableOpacity onPress={() => navigation.navigate("ADD POST")}>
-          <Text style={style.addPostIcon}>+</Text>
+          <Text style={styles.addPostIcon}>+</Text>
         </TouchableOpacity>
       </View>
     </View>
