@@ -60,7 +60,6 @@ export default function IntroSlider(props) {
   const navigation = useNavigation();
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-<<<<<<< HEAD
       firebase
         .auth()
         .currentUser.getIdToken(true)
@@ -82,29 +81,6 @@ export default function IntroSlider(props) {
         .catch(error => {
           console.log(error, "ini error");
         });
-=======
-        firebase
-            .auth()
-            .currentUser.getIdToken(true)
-            .then((idToken) => {
-              console.log('==================')
-              const {email, firstName, lastName, password} = userData
-                return axios({
-                    method: 'POST',
-                    url: 'http://192.168.43.133:3000/users/signIn',
-                    data: {email, firstName, lastName, password, idToken}
-                })
-            })
-            .then(({data}) => {
-                dispatch({type: 'SET_LOGIN', val: data.userId})
-                dispatch({type: 'SET_TOKEN', val: data.token})
-                dispatch({type: 'SET_LOADING', val: false})
-                navigation.navigate('MainPage')
-            })
-            .catch((error) => {
-                console.log(error, 'ini error');
-            })
->>>>>>> d23a6d5ba6415d41b98042a0020d41bb527537e3
     } else {
       if (log == "logout") {
         navigation.navigate("Home");
