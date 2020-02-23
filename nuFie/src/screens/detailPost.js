@@ -12,15 +12,20 @@ import CountMember from '../components/memberCount'
 import ButtonP from '../components/ButtonOnPost'
 import { useNavigation } from '@react-navigation/native'
 
-export default function DetailPost() {
+export default function DetailPost({route}) {
     const navigation = useNavigation();
     const handleGroupChat = () => {
         navigation.navigate('ChatRoom')
     }
+
+    const activity = route.params.activity;
+
     return (
         <>
             <View style={style.editButtonContainer}>
-                <TouchableOpacity style={{alignItems: 'flex-end'}} onPress={() => navigation.navigate('EDIT POST')}>
+                <TouchableOpacity 
+                style={{alignItems: 'flex-end'}} 
+                onPress={() => navigation.navigate('EDIT POST', {editActivity: activity})}>
                     <View style={style.editButton}>
                         <Text>Edit Post</Text>
                     </View>
@@ -29,22 +34,22 @@ export default function DetailPost() {
             <View style={style.container}>
                 <View>
                     <Image 
-                        source={{uri: 'https://facebook.github.io/react/logo-og.png'}}
+                        source={{uri: activity.image}}
                         style={style.image} 
                     />
                 </View>
                 <ScrollView>
                     <View style={style.scroll}>
                         <View style={style.content}>
-                            <Text style={style.title}>This is litle of Interest</Text>
-                            <Text style={style.description}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</Text>
+                            <Text style={style.title}>{activity.title}</Text>
+                            <Text style={style.description}>{activity.description}</Text>
                         </View>
                         <View style={style.content}>
                         <Text style={style.title}>Promo Detail:</Text>
                             <Text style={style.description}>Lorem pularised in the 1960s with the release of Letraset sheets cont</Text>
                         </View>
                         <View style={style.CountMember}>
-                            <CountMember/>
+                            <CountMember totalMember={activity.members.length}/>
                         </View>
                         <View style={style.buttonWrap}>
                             <ButtonP text="Open Group Chat" handle={handleGroupChat}/>
