@@ -5,7 +5,6 @@ const initializeState = {
 }
 
 export default function activityReducer (state = initializeState, action) {
-<<<<<<< HEAD
     switch(action.type) {
         case 'FETCH_ACTIVITIES_START':
             return {
@@ -18,15 +17,11 @@ export default function activityReducer (state = initializeState, action) {
                 data: action.payload,
                 loading: false
             }
-        default: 
-=======
-    switch (action.type) {
         case 'SET_MYPOST':
             return {...state, data: action.val}
         case 'SET_CATEGORY':
             return {...state, category: action.val}
-        default:
->>>>>>> before rebase
+        default: 
             return state
     }
 }

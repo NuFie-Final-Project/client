@@ -14,7 +14,9 @@ export const createActivity = (activity) => {
             }
         })
         .then(response => {
+            console.log('berhasil Create')
             dispatch({type: 'SET_LOADING', val: false})
+            dispatch({type: 'SET_TRIGGER', val: 'add'})
         })
         .catch(error => {
             console.log({error});
@@ -22,22 +24,21 @@ export const createActivity = (activity) => {
     }
 }
 
-export const getActivities = (user) => {
-    return function(dispatch, getState) {
-        console.log('test')
+export const getActivities = () => {
+    return function(dispatch, state) {
         dispatch({
             type: 'FETCH_ACTIVITIES_START'
         })
         axios({
             method: 'get',
-            url: 'http://192.168.43.133:3000/activities?limit=20',
+            url: `${state().other.url}/activities?limit=20`,
             headers: {
-                token: user.token
+                token: state().user.token
             }
         })
         .then(response => {
             const activities = response.data.activities.filter(activity => {
-                return activity.owner == user.id
+                return activity.owner == state().user.login
             })
             dispatch({
                 type: 'FETCH_ACTIVITIES',
@@ -51,16 +52,17 @@ export const getActivities = (user) => {
 }
 
 export const editActivity = (activity) => {
-    return function(dispatch, getState) {
+    return function(dispatch, state) {
         axios({
             method: 'patch',
-            url: `http://192.168.43.133:3000/activities/${activity.id}`,
+            url: `${state().other.url}/activities/${activity.id}`,
             data: activity.data,
             headers: {
                 token: activity.token
             }
         })
         .then(response => {
+            dispatch({type: 'SET_TRIGGER', val: 'edit'})
             dispatch(getActivities({token: activity.token, id: activity.user_id}))
         })
         .catch(error => {
@@ -82,6 +84,29 @@ export const FetchCategory = (props) => {
         .then(({data}) => {
             dispatch({type: 'SET_CATEGORY', val: data.activities})
             dispatch({type: 'SET_LOADING', val: false})
+        })    
+    }
+}
+
+export const InviteFriend = (props) => {
+    return function (dispatch, state) {
+        dispatch({type: 'SET_LOADING', val: true})
+        axios({
+            url: `${state().other.url}/activities/invite/` + props.postId,
+            method: 'post',
+            headers: {
+                token: state().user.token
+            },
+            data: {
+                targetId: props.userId
+            }
+        })
+        .then(({data}) => {
+            console.log(data, 'berhasil invite')
+            dispatch({type: 'SET_LOADING', val: false})
+        })
+        .catch((err) => {
+            console.log(err, 'gagal Invite')
         })    
     }
 }

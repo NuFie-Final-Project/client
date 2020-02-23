@@ -13,8 +13,10 @@ import SelectPicker from 'react-native-form-select-picker';
 import { useSelector, useDispatch } from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { createActivity } from '../store/actions/Activity';
+import { useNavigation } from '@react-navigation/native';
 
 function postActivityForm({ route, openAlert, uploadImage }) {
+    const navigation = useNavigation();
     const dispatch = useDispatch()
     const [ tags, setTags ] = useState([]);
     const [ tagText, setTagText] = useState('');
@@ -41,10 +43,6 @@ function postActivityForm({ route, openAlert, uploadImage }) {
             setDescription('THIS IS A TEST')
         }
     }, [])
-
-    
-
-    // console.log(fileType)
 
     const addTags = (action) => {
         if(action.nativeEvent.key === ' ') {
@@ -91,9 +89,9 @@ function postActivityForm({ route, openAlert, uploadImage }) {
         formData.append("memberLimit", memberLimit);
         formData.append("due_date", date.toISOString());
         formData.append("location", location);
-        formData.append("address", address);
-        console.log(tags)
-        
+        formData.append("address", address)
+
+        navigation.navigate('MyPost')
         dispatch(createActivity({data: formData, token: user.token}))
     }
 

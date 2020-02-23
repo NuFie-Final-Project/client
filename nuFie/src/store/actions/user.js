@@ -61,7 +61,6 @@ export const UpdateProfile = (props) => {
             data: props,
         })
         .then(({data}) => {
-          console.log(data)
           dispatch({type: 'SET_BIODATA', val: data.user})
           dispatch({type: 'SET_LOADING', val: false})
         })
@@ -69,4 +68,24 @@ export const UpdateProfile = (props) => {
             console.log(err, 'ini error update user')
         })
     }
+}
+
+export const FindFriend = (props) => {
+  return function (dispatch, state){
+    dispatch({type: 'SET_LOADING', val: true})
+    axios({
+      url: `${state().other.url}/users/getByMostMatchingInterests`,
+      headers: {
+        token: props
+      },
+      method: 'GET'
+    })
+    .then(({data}) => {
+      dispatch({type: 'SET_SUGGESTFRIEND', val: data.users})
+      dispatch({type: 'SET_LOADING', val: false})
+    })
+    .catch((err) => {
+      console.log(err, 'find')
+    })
+  }
 }
