@@ -14,7 +14,7 @@ export default async function ExpoRegisterPushNotification(userId) {
     }
     const pushToken = await Notifications.getExpoPushTokenAsync()
     return axios({
-        url: 'http://192.168.43.247:3000/users/savePushToken',
+        url: 'http://172.16.15.240:3000/users/savePushToken',
         method: 'post',
         data: {
             userId, pushToken
