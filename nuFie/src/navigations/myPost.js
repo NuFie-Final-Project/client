@@ -7,6 +7,7 @@ import ChatRoom from "../screens/chattingRoom";
 import CreateActivity from "../screens/CreateActivity";
 import EditActivity from "../screens/EditActivity";
 import { View, TouchableHighlight } from "react-native";
+import FindFriend from '../screens/FindFriends'
 
 export default function StackMyPost() {
   const Stack = createStackNavigator();
@@ -53,6 +54,7 @@ export default function StackMyPost() {
         }}
       />
       <Stack.Screen name="EDIT POST" component={EditActivity} />
+      <Stack.Screen name="SearchFriend" component={FindFriend} />
     </Stack.Navigator>
   );
 }

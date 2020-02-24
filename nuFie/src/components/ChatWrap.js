@@ -1,8 +1,14 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {View, ScrollView, StyleSheet, Dimensions} from 'react-native'
 import Chat from './chatCard'
+import db from '../../config/config_firebase'
 
-export default function ChatWrap() {
+export default function ChatWrap(props) {
+    useEffect(() => {
+        db.firestore().collection('chat').doc(props.roomId).onSnapshot(function(doc) {
+            
+        })
+    },[])
     const arrMessage = [
         {
             message: 'haaaaai',
