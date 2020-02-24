@@ -13,8 +13,7 @@ import FeedsItem from "../components/FeedsItem";
 import { useNavigation } from "@react-navigation/native";
 import { getActivities } from "../store/actions/Activity";
 import { useSelector, useDispatch } from "react-redux";
-import ExpoNotif from '../components/exponotif'
-
+import ExpoNotif from "../components/exponotif";
 
 export default function Home() {
   const trigger = useSelector(state => state.other.trigger);
@@ -25,15 +24,15 @@ export default function Home() {
   };
   const dispatch = useDispatch();
 
-  console.log(user.biodata);
+  // console.log(user.biodata);
 
   useEffect(() => {
     dispatch(getActivities({ token: user.token, id: user.login }));
   }, [trigger]);
 
   useEffect(() => {
-    ExpoNotif(user.login)
-  },[])
+    ExpoNotif(user.login);
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.statusBar}></View>
@@ -45,11 +44,11 @@ export default function Home() {
             style={{ height: "100%", width: "100%" }}
           />
         </View>
-          <View style={styles.iconWrapper}>
-            <TouchableOpacity onPress={handleNotif}>
-              <Ionicons name="ios-notifications" size={28} color="#fff" />
-            </TouchableOpacity>
-          </View>
+        <View style={styles.iconWrapper}>
+          <TouchableOpacity onPress={handleNotif}>
+            <Ionicons name="ios-notifications" size={28} color="#fff" />
+          </TouchableOpacity>
+        </View>
       </View>
       <Text style={styles.titleScreen}>Recomendation Activity</Text>
       <ScrollView>

@@ -1,8 +1,8 @@
 const store = {
   show: false,
-  url: "http://172.16.15.240:3000",
+  url: "http://172.16.20.130:3000",
   trigger: "null",
-  pushToken: ''
+  pushToken: ""
 };
 
 export default function user(state = store, action) {
