@@ -1,10 +1,12 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import { Ionicons } from "@expo/vector-icons";
 import MyPost from "../screens/myPost";
 import DetailMyPost from "../screens/detailPost";
 import ChatRoom from "../screens/chattingRoom";
 import CreateActivity from "../screens/CreateActivity";
 import EditActivity from "../screens/EditActivity";
+import { View, TouchableHighlight } from "react-native";
 
 export default function StackMyPost() {
   const Stack = createStackNavigator();
@@ -25,7 +27,17 @@ export default function StackMyPost() {
           }
         }}
       />
-      <Stack.Screen name="Detail Post" component={DetailMyPost} />
+      <Stack.Screen
+        name="Detail Post"
+        component={DetailMyPost}
+        options={{
+          headerRight: () => (
+            <TouchableHighlight style={{ marginRight: 18 }}>
+              <Ionicons name="md-more" size={28} />
+            </TouchableHighlight>
+          )
+        }}
+      />
       <Stack.Screen name="ChatRoom" component={ChatRoom} />
       <Stack.Screen
         name="ADD POST"
