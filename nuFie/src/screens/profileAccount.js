@@ -1,125 +1,227 @@
-import React, {useEffect} from 'react'
-import {View, Text, StyleSheet, Image, ImageBackground, Dimensions} from 'react-native'
-import {Foundation} from '@expo/vector-icons'
-import Btn from '../components/ButtonOnPost'
-import { useNavigation } from '@react-navigation/native'
-import {Logout} from '../store/actions/user'
-import {useDispatch, useSelector} from 'react-redux'
-import {ReadSelf} from '../store/actions/user'
+import React, { useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  ImageBackground,
+  Dimensions
+} from "react-native";
+import Constants from "expo-constants";
+import { Entypo, FontAwesome, Foundation, Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
+import Btn from "../components/ButtonOnPost";
+import { useNavigation } from "@react-navigation/native";
+import { Logout } from "../store/actions/user";
+import { useDispatch, useSelector } from "react-redux";
+import { ReadSelf } from "../store/actions/user";
+import Interest from "../components/interestItem";
 
 export default function ProfileUser(params) {
-    const loading = useSelector(state => state.user.loading)
-    const biodata = useSelector(state => state.user.biodata)
-    const defaultProfile = useSelector(state => state.user.profilePictureDefault)
-    const dispatch = useDispatch()
-    const navigation = useNavigation();
-    const handleEdit  = () => {
-        navigation.navigate('EDIT PROFILE')
-    }
-    const handleLogout = () => {
-        dispatch(Logout())
-    }
+  const loading = useSelector(state => state.user.loading);
+  const biodata = useSelector(state => state.user.biodata);
+  const defaultProfile = useSelector(state => state.user.profilePictureDefault);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const handleEdit = () => {
+    navigation.navigate("EDIT PROFILE");
+  };
+  const handleLogout = () => {
+    dispatch(Logout());
+  };
 
-    const simbol = () => {
-        const gen = biodata.gender
-        if(gen == undefined) {
-            return 'male-symbol'
-        }
-            return  gen.toLowerCase() + '-symbol'
+  const simbol = () => {
+    const gen = biodata.gender;
+    if (gen == undefined) {
+      return "male-symbol";
     }
-    useEffect(() => {
-        dispatch(ReadSelf())
-    },[])
-    return (
-        <View style={style.container}>
-            <ImageBackground 
-                style={style.backGround}
-                source={{uri: 'https://www.solidbackgrounds.com/images/2560x1440/2560x1440-davys-grey-solid-color-background.jpg'}}
-            >
-                <View style={style.titleWrap}>
-                    <Text style={style.title}>PROFILE</Text>
-                </View>
-            </ImageBackground>
-            <View style={style.information}>
-                <View>
-                    <Image 
-                        source={{uri: biodata.profilePicture  || defaultProfile}}
-                        style={style.profile} 
-                    />
-                </View>
-                <View style={style.nameWrap}>
-                    <Text style={style.name}>{biodata.firstName} {biodata.lastName}</Text>
-                    <Foundation name={simbol()} style={style.icon}/>
-                </View>
-                <View style={style.aboutMe}>
-                    <Text style={[style.title, style.aboutMeText]}>About Me</Text>
-                    <Text style={style.aboutMeText}>
-                        {biodata.aboutMe}
-                    </Text>
-                </View>
-                <View style={style.btnWrap}>
-                    <Btn text="EDIT PROFILE" handle={handleEdit}/>
-                    <Btn text="LOGOUT" handle={handleLogout}/>
-                </View>
-            </View>
+    return gen.toLowerCase() + "-symbol";
+  };
+  useEffect(() => {
+    dispatch(ReadSelf());
+  }, []);
+
+  const renderBiodata = () => (
+    <>
+      <Image
+        source={{ uri: biodata.profilePicture || defaultProfile }}
+        style={styles.profpict}
+      />
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Text style={styles.name}>
+          {biodata.firstName} {biodata.lastName}
+        </Text>
+        <Foundation name={simbol()} style={styles.icon} size={20} />
+      </View>
+      <View style={styles.contactWrapper}>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Entypo name="mail" color="#fff" size={13} />
+          <Text style={styles.contactText}>{biodata.email}</Text>
         </View>
-    )
-    
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <FontAwesome name="phone" color="#fff" size={13} />
+          <Text style={styles.contactText}>{biodata.phoneNumber}</Text>
+        </View>
+      </View>
+    </>
+  );
+
+  const checkGender = () => {
+    if (biodata.gender === "Female") {
+      return (
+        <>
+          <LinearGradient
+            colors={["#F67062", "#FC5296"]}
+            style={{ height: Constants.statusBarHeight }}
+            start={[1.1, 1.0]}
+          ></LinearGradient>
+          {/* batas status bar */}
+          <LinearGradient
+            colors={["#F67062", "#FC5296"]}
+            style={styles.headerWraper}
+            start={[1.1, 1.0]}
+          >
+            {renderBiodata()}
+          </LinearGradient>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <LinearGradient
+            colors={["#09C6F9", "#045DE9"]}
+            style={{ height: Constants.statusBarHeight }}
+            start={[1.1, 1.0]}
+          ></LinearGradient>
+          {/* batas status bar */}
+          <LinearGradient
+            colors={["#09C6F9", "#045DE9"]}
+            style={styles.headerWraper}
+            start={[1.1, 1.0]}
+          >
+            {renderBiodata()}
+          </LinearGradient>
+        </>
+      );
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>{checkGender()}</View>
+      <ScrollView>
+        <View style={styles.body}>
+          <Text style={styles.title}>About</Text>
+          <Text style={styles.textNormal}>{biodata.aboutMe}</Text>
+          <Text style={styles.title}>Interest</Text>
+          <View style={styles.interestWrapper}>
+            {biodata.interests.map((el, i) => (
+              <Interest text={el} key={i} />
+            ))}
+          </View>
+          <View style={styles.btnWrap}>
+            <Btn text="EDIT PROFILE" color="#49beb7" handle={handleEdit} />
+            <Btn text="LOGOUT" color="#c70039" handle={handleLogout} />
+          </View>
+        </View>
+      </ScrollView>
+    </View>
+    // <View style={style.container}>
+    //     <ImageBackground
+    //         style={style.backGround}
+    //         source={{uri: 'https://www.solidbackgrounds.com/images/2560x1440/2560x1440-davys-grey-solid-color-background.jpg'}}
+    //     >
+    //         <View style={style.titleWrap}>
+    //             <Text style={style.title}>PROFILE</Text>
+    //         </View>
+    //     </ImageBackground>
+    //     <View style={style.information}>
+    //         <View>
+    //             <Image
+    //                 source={{uri: biodata.profilePicture  || defaultProfile}}
+    //                 style={style.profile}
+    //             />
+    //         </View>
+    //         <View style={style.nameWrap}>
+    //             <Text style={style.name}>{biodata.firstName} {biodata.lastName}</Text>
+    //             <Foundation name={simbol()} style={style.icon}/>
+    //         </View>
+    //         <View style={style.aboutMe}>
+    //             <Text style={[style.title, style.aboutMeText]}>About Me</Text>
+    //             <Text style={style.aboutMeText}>
+    //                 {biodata.aboutMe}
+    //             </Text>
+    //         </View>
+    //         <View style={style.btnWrap}>
+    //             <Btn text="EDIT PROFILE" handle={handleEdit}/>
+    //             <Btn text="LOGOUT" handle={handleLogout}/>
+    //         </View>
+    //     </View>
+    // </View>
+  );
 }
 
-const style = StyleSheet.create({
-    container: {
-        paddingTop: 20
-    },
-    profile:{
-        width: 120,
-        height: 120,
-        borderRadius: 20,
-        marginTop: -50
-    },
-    backGround: {
-        width: Dimensions.get('window').width,
-        height: 200
-    },
-    information: {
-        alignItems: 'center',
-        borderTopRightRadius: 30,
-        borderTopLeftRadius: 30,
-        backgroundColor: 'white',
-        marginTop: -25,
-        height: '100%'
-    },
-    name: {
-        fontSize: 20,
-        fontWeight:'bold'
-    },
-    icon: {
-        fontSize: 25,
-        marginLeft: 8
-    },
-    nameWrap: {
-        flexDirection: 'row',
-        marginTop: 10
-    },
-    aboutMe: {
-        width: 300,
-        marginTop: 40,
-        height: 150
-    },
-    aboutMeText: {
-        textAlign: 'center'
-    },
-    btnWrap: {
-        position: 'relative',
-        top: Dimensions.get('window').height/8
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold'
-    },
-    titleWrap: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 150
-    }
-})
+const styles = StyleSheet.create({
+  container: {
+    height: "100%",
+    backgroundColor: "#fff"
+  },
+  header: {
+    height: "35%",
+    width: "100%"
+  },
+  headerWraper: {
+    height: "100%",
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  body: {
+    backgroundColor: "#fff",
+    paddingHorizontal: 14,
+    paddingVertical: 15
+  },
+  profpict: {
+    height: 110,
+    width: 110,
+    borderRadius: 12,
+    marginBottom: 4
+  },
+  title: {
+    fontWeight: "700",
+    fontSize: 18,
+    color: "#333333",
+    marginBottom: 4
+  },
+  name: {
+    fontWeight: "700",
+    fontSize: 18,
+    color: "#fff"
+  },
+  contactText: {
+    color: "#fff",
+    fontSize: 12,
+    marginLeft: 4
+  },
+  contactWrapper: {
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  textNormal: {
+    textAlign: "justify",
+    marginBottom: 12
+  },
+  interestWrapper: {
+    flexDirection: "row",
+    flexWrap: "wrap"
+  },
+  btnWrap: {
+    alignItems: "center",
+    marginTop: 50
+  },
+  icon: {
+    color: "#fff",
+    marginLeft: 4
+  }
+});
