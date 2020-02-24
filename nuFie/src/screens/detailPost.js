@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from "react";
 import {
   View,
@@ -58,6 +59,85 @@ export default function DetailPost({ route }) {
               <Text style={{ marginLeft: 6, fontWeight: "700", color: "#fff" }}>
                 {activity.members.length}/{activity.memberLimit}
               </Text>
+=======
+import React from 'react'
+import { 
+    View, 
+    Text, 
+    Image, 
+    StyleSheet, 
+    Dimensions, 
+    ScrollView ,
+    TouchableOpacity
+} from 'react-native'
+import CountMember from '../components/memberCount'
+import ButtonP from '../components/ButtonOnPost'
+import { useNavigation } from '@react-navigation/native'
+import { useDispatch } from 'react-redux';
+import { cancelActivity } from '../store/actions/Activity';
+
+export default function DetailPost({route}) {
+    const navigation = useNavigation();
+    const dispatch = useDispatch();
+
+    const handleGroupChat = () => {
+        navigation.navigate('ChatRoom')
+    }
+    
+    const activity = route.params.activity;
+    
+    const handleSearchFriend = () => {
+        navigation.navigate('SearchFriend',{data: activity})
+    }
+
+    const handleCancel = () => {
+        dispatch(cancelActivity(activity._id));
+        navigation.navigate('MyPost');
+    }
+    
+    return (
+        <>
+            <View style={style.editButtonContainer}>
+                <TouchableOpacity 
+                style={{alignItems: 'flex-end'}} 
+                onPress={() => navigation.navigate('EDIT POST', {editActivity: activity})}>
+                    <View style={style.editButton}>
+                        <Text>Edit Post</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+            <View style={style.container}>
+                <View>
+                    <Image 
+                        source={{uri: activity.image}}
+                        style={style.image} 
+                    />
+                </View>
+                <ScrollView>
+                    <View style={style.scroll}>
+                        <View style={style.content}>
+                            <Text style={style.title}>{activity.title}</Text>
+                            <Text style={style.description}>{activity.description}</Text>
+                        </View>
+                        <View style={style.content}>
+                        <Text style={style.title}>Promo Detail:</Text>
+                            <Text style={style.description}>Lorem pularised in the 1960s with the release of Letraset sheets cont</Text>
+                        </View>
+                        <View style={style.CountMember}>
+                            <CountMember totalMember={activity.members.length}/>
+                        </View>
+                        <View style={style.buttonWrap}>
+                            <ButtonP text="Open Group Chat" handle={handleGroupChat} />
+                            <ButtonP text="Search Friend" handle={handleSearchFriend} />
+                            {
+                                activity.status === 'open'
+                                    ?   <ButtonP text="Cancel Activity" handle={handleCancel}/>
+                                    :   <Text></Text>
+                            }
+                        </View>
+                    </View>
+                </ScrollView>
+>>>>>>> Want to pull request
             </View>
           </View>
           <Text

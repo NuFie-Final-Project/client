@@ -70,7 +70,6 @@ export const editActivity = (activity) => {
         })
         .then(response => {
             dispatch({type: 'SET_TRIGGER', val: 'edit'})
-            dispatch(getActivities({token: activity.token, id: activity.user_id}))
         })
         .catch(error => {
             console.log(error);
@@ -135,5 +134,23 @@ export const AcceptInvite = (props) => {
         .catch((err) => {
             console.log(err, 'gagal accpet')
         })    
+    }
+}
+
+export const cancelActivity = (id) => {
+    return function(dispatch, state) {
+        axios({
+            method: 'patch',
+            url: `${state().other.url}/activities/cancel/` + id,
+            headers: {
+                token: state().user.token
+            }
+        })
+        .then(response => {
+            dispatch({type: 'SET_TRIGGER', val: 'cancel'})
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 }
