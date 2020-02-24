@@ -40,9 +40,16 @@ export const getActivities = () => {
             const activities = response.data.activities.filter(activity => {
                 return activity.owner == state().user.login
             })
+            const invitation = response.data.activities.filter(activity => {
+                return activity.pendingInvites.includes(state().user.login)
+            })
             dispatch({
                 type: 'FETCH_ACTIVITIES',
                 payload: activities
+            })
+            dispatch({
+                type: 'SET_INVITATION',
+                val: invitation
             })
         })
         .catch(error => {
@@ -102,11 +109,31 @@ export const InviteFriend = (props) => {
             }
         })
         .then(({data}) => {
-            console.log(data, 'berhasil invite')
             dispatch({type: 'SET_LOADING', val: false})
         })
         .catch((err) => {
             console.log(err, 'gagal Invite')
+        })    
+    }
+}
+
+export const AcceptInvite = (props) => {
+    return function (dispatch, state) {
+        dispatch({type: 'SET_LOADING', val: true})
+        axios({
+            url: `${state().other.url}/activities/inviteAccept/` + props,
+            method: 'post',
+            headers: {
+                token: state().user.token
+            },
+        })
+        .then(({data}) => {
+            console.log('berhasil accept')
+            dispatch({type: 'SET_LOADING', val: false})
+            dispatch({type: 'SET_TRIGGER', val: 'acceptinvite'})
+        })
+        .catch((err) => {
+            console.log(err, 'gagal accpet')
         })    
     }
 }

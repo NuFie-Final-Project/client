@@ -65,6 +65,7 @@ export default function IntroSlider(props) {
             .auth()
             .currentUser.getIdToken(true)
             .then((idToken) => {
+              console.log('cek===')
               const {email, firstName, lastName, password} = userData
                 return axios({
                     method: 'POST',
