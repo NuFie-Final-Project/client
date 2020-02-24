@@ -10,7 +10,7 @@ const logoBrand = require("../../assets/logo.png");
 export default function LandingScreen() {
   const navigation = useNavigation();
   const moveToLogin = () => {
-    navigation.navigate("MainPage");
+    navigation.navigate("Login");
   };
   const moveToRegister = () => {
     navigation.navigate("Register");
