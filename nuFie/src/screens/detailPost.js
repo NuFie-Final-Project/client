@@ -14,10 +14,9 @@ import ButtonP from "../components/ButtonOnPost";
 import { useNavigation } from "@react-navigation/native";
 
 export default function DetailPost({ route }) {
-  // console.log(route);
   const navigation = useNavigation();
   const handleGroupChat = () => {
-    navigation.navigate("ChatRoom", {roomId: activity._id});
+    navigation.navigate("ChatRoom", { roomId: activity._id });
   };
 
   const activity = route.params.activity;

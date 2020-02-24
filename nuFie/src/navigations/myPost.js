@@ -14,8 +14,6 @@ import { useNavigation } from "@react-navigation/native";
 export default function StackMyPost({ route }) {
   const navigation = useNavigation();
   const handlePress = () => {
-    // console.log(Object.keys(route.state.route[1]));
-    // console.log("======", route.state.routes[1].params.activity);
     navigation.navigate("EDIT POST", {
       editActivity: route.state.routes[1].params.activity
     });
