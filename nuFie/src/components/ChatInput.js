@@ -1,16 +1,30 @@
-import React from 'react'
-import {View, Dimensions,TextInput, StyleSheet} from 'react-native'
+import React, {useState} from 'react'
+import {View, Dimensions,TextInput, StyleSheet, TouchableOpacity} from 'react-native'
 import {FontAwesome} from '@expo/vector-icons'
 
 export default function ChatInput(params) {
+    const [message, setMessage] = useState('')
+    const handleChange = (event) => {
+        setMessage(event.nativeEvent.text)
+    }
+
     return (
         <View style={style.inputWrap}>
             <TextInput
                 style={style.input}
                 multiline={true}
                 placeholder='Message'
+                onChange={handleChange}
+                value={message}
             />
-            <FontAwesome name="send" style={style.icon}/>
+            <TouchableOpacity
+                onPress={() => {
+                    setMessage('')
+                    params.handle(message)}
+                }
+            >
+                <FontAwesome name="send" style={style.icon}/>
+            </TouchableOpacity>
         </View>
     )
     

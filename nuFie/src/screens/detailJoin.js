@@ -12,18 +12,24 @@ import { MaterialIcons, FontAwesome, Ionicons } from "@expo/vector-icons";
 import CountMember from "../components/memberCount";
 import ButtonP from "../components/ButtonOnPost";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from 'react-redux';
+import { leaveActivity } from '../store/actions/Activity';
 
 export default function DetailPost({ route }) {
-  // console.log(route);
   const navigation = useNavigation();
   const handleGroupChat = () => {
-    navigation.navigate("ChatRoom", {roomId: activity._id});
+    navigation.navigate("ChatRoom");
   };
 
   const activity = route.params.activity;
 
-  const handleSearchFriend = () => {
-    navigation.navigate("Search Friend", { data: activity });
+  const dispatch = useDispatch();
+
+  const handleLeaveActivity = () => {
+    dispatch(leaveActivity(activity._id))
+        .then(() => {
+            navigation.navigate('LIST JOIN GROUP')
+        })
   };
 
   return (
@@ -80,10 +86,10 @@ export default function DetailPost({ route }) {
               handle={handleGroupChat}
             />
             <ButtonP
-              text="Search Friend"
-              color="#0c99c1"
+              text="Leave Group"
+              color="#dc3545"
               icon="md-search"
-              handle={handleSearchFriend}
+              handle={handleLeaveActivity}
             />
           </View>
         </View>

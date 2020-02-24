@@ -13,6 +13,7 @@ import FeedsItem from "../components/FeedsItem";
 import { useNavigation } from "@react-navigation/native";
 import { getActivities } from "../store/actions/Activity";
 import { useSelector, useDispatch } from "react-redux";
+import ExpoNotif from '../components/exponotif'
 
 
 export default function Home() {
@@ -24,9 +25,15 @@ export default function Home() {
   };
   const dispatch = useDispatch();
 
+  console.log(user.biodata);
+
   useEffect(() => {
     dispatch(getActivities({ token: user.token, id: user.login }));
   }, [trigger]);
+
+  useEffect(() => {
+    ExpoNotif(user.login)
+  },[])
   return (
     <View style={styles.container}>
       <View style={styles.statusBar}></View>

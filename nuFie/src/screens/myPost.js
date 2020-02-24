@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import Post from "../components/mypost Component";
 import { useNavigation } from "@react-navigation/native";
@@ -12,22 +12,38 @@ export default function MyPost() {
   const trigger = useSelector(state => state.other.trigger);
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
     dispatch(getActivities({ token: user.token, id: user.login }));
+    setReady(true)
   }, [trigger]);
+
+
+  const renderActivities = () => {
+    if (activities.loading)
+      return <Text>Loading</Text>
+    else if (activities.error) 
+      return <Text>Error</Text>
+    else if (activities.data.length === 0) 
+      return <Text 
+      style={{
+        paddingTop: 250, 
+        fontSize: 18,
+        fontWeight: 'bold'
+      }}>You haven't posted any activities</Text>
+    return activities.data.map(activity => {
+      return <Post key={activity._id} activity={activity} />;
+    })
+  }
+
+  if (!ready) return null
 
   return (
     <View style={styles.screen}>
       <ScrollView>
         <View style={styles.container}>
-          {activities.data.length === 0 ? (
-            <Text>Fetching data, Please Wait....</Text>
-          ) : (
-            activities.data.map(activity => {
-              return <Post key={activity._id} activity={activity} />;
-            })
-          )}
+          {renderActivities()}
         </View>
       </ScrollView>
       <View style={styles.floatWarper}>

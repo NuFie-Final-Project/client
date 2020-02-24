@@ -30,6 +30,9 @@ export default function ProfileUser(params) {
   const handleLogout = () => {
     dispatch(Logout());
   };
+  const handleListJoinGroup = () => {
+    navigation.navigate("LIST JOIN GROUP");
+  };
 
   const simbol = () => {
     const gen = biodata.gender;
@@ -122,43 +125,12 @@ export default function ProfileUser(params) {
           </View>
           <View style={styles.btnWrap}>
             <Btn text="EDIT PROFILE" color="#49beb7" handle={handleEdit} />
+            <Btn text="LIST JOIN GROUP" handle={handleListJoinGroup} />
             <Btn text="LOGOUT" color="#c70039" handle={handleLogout} />
           </View>
         </View>
       </ScrollView>
     </View>
-    // <View style={style.container}>
-    //     <ImageBackground
-    //         style={style.backGround}
-    //         source={{uri: 'https://www.solidbackgrounds.com/images/2560x1440/2560x1440-davys-grey-solid-color-background.jpg'}}
-    //     >
-    //         <View style={style.titleWrap}>
-    //             <Text style={style.title}>PROFILE</Text>
-    //         </View>
-    //     </ImageBackground>
-    //     <View style={style.information}>
-    //         <View>
-    //             <Image
-    //                 source={{uri: biodata.profilePicture  || defaultProfile}}
-    //                 style={style.profile}
-    //             />
-    //         </View>
-    //         <View style={style.nameWrap}>
-    //             <Text style={style.name}>{biodata.firstName} {biodata.lastName}</Text>
-    //             <Foundation name={simbol()} style={style.icon}/>
-    //         </View>
-    //         <View style={style.aboutMe}>
-    //             <Text style={[style.title, style.aboutMeText]}>About Me</Text>
-    //             <Text style={style.aboutMeText}>
-    //                 {biodata.aboutMe}
-    //             </Text>
-    //         </View>
-    //         <View style={style.btnWrap}>
-    //             <Btn text="EDIT PROFILE" handle={handleEdit}/>
-    //             <Btn text="LOGOUT" handle={handleLogout}/>
-    //         </View>
-    //     </View>
-    // </View>
   );
 }
 

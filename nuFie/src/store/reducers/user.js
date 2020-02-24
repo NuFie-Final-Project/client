@@ -30,6 +30,22 @@ export default function user (state = store, action){
             return {...state, suggestFriend: action.val}
         case 'SET_INVITATION':
                 return {...state, invitation: action.val}
+        case 'SET_CLEAR':
+            return {   
+                login: false,
+                token: false,
+                loading: false,
+                userData: {
+                    lastName: null,
+                    firstName: null,
+                    email: null,
+                    password: null
+                },
+                biodata: {firstName: '', lastName: '', gender: null, profilePicture: undefined},
+                profilePictureDefault: 'https://www.pngfind.com/pngs/m/110-1102775_download-empty-profile-hd-png-download.png',
+                suggestFriend: [],
+                invitation: []
+            }
         default:
             return state
     }
