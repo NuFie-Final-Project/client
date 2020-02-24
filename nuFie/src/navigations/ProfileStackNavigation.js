@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import ProfileAccount from '../screens/profileAccount';
 import EditProfile from '../screens/EditProfile';
 import ListJoinGroup from '../screens/ListJoinGroup';
+import DetailJoin from '../screens/detailJoin';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,7 @@ function ProfileStackNavigation() {
         }}/>
         <Stack.Screen name="LIST JOIN GROUP"
         component={ListJoinGroup}/>
+        <Stack.Screen name="DETAIL JOIN" component={DetailJoin} />
     </Stack.Navigator>
     )
 }

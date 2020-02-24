@@ -34,6 +34,7 @@ export default function ProfileUser(params) {
     useEffect(() => {
         dispatch(ReadSelf())
     },[])
+
     return (
         <View style={style.container}>
             <ImageBackground 

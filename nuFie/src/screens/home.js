@@ -24,6 +24,8 @@ export default function Home() {
   };
   const dispatch = useDispatch();
 
+  console.log(user.biodata);
+
   useEffect(() => {
     dispatch(getActivities({ token: user.token, id: user.login }));
   }, [trigger]);

@@ -1,13 +1,22 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 function JoinGroupCard(props) {
+
+    const navigation = useNavigation();
+
+    const activity = props.activity;
+
     return (
-        <View style={styles.cardContainer}>
-            <Text style={styles.cardTitle}>This Title Of Interest</Text>
-            <Text>Saturday, 22 February 2020</Text>
-            <Text>Pondok Indah Mall</Text>
-        </View>
+        <TouchableOpacity onPress={() => navigation.navigate('DETAIL JOIN', { activity: activity })}>
+            <View style={styles.cardContainer}>
+                <Text style={styles.cardTitle}>{activity.title}</Text>
+                <Text>{new Date(activity.due_date).toDateString()}</Text>
+                <Text>{activity.location}</Text>
+            </View>
+        </TouchableOpacity>
     )
 }
 
