@@ -1,6 +1,6 @@
 const store = {
   show: false,
-  url: "http://172.16.20.200:3000",
+  url: "http://172.16.20.204:3000",
   trigger: "null"
 };
 

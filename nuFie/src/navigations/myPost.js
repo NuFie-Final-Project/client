@@ -25,7 +25,7 @@ export default function StackMyPost() {
           }
         }}
       />
-      <Stack.Screen name="DetailMyPost" component={DetailMyPost} />
+      <Stack.Screen name="Detail Post" component={DetailMyPost} />
       <Stack.Screen name="ChatRoom" component={ChatRoom} />
       <Stack.Screen
         name="ADD POST"

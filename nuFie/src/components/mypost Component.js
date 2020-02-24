@@ -3,23 +3,25 @@ import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-export default function MyPost() {
+export default function MyPost(props) {
   const navigation = useNavigation();
   const handlePress = () => {
-    navigation.navigate("DetailMyPost", { activity: props.activity });
+    navigation.navigate("Detail Post", { activity: props.activity });
   };
   return (
     <TouchableHighlight onPress={handlePress}>
       <View style={styles.container}>
         <View style={styles.textWrapper}>
-          <Text style={styles.title}>Need Friends for Watching Concert</Text>
-          <Text style={styles.date}>Sunday, 29 February 2020</Text>
-          <Text style={styles.place}>JIEXPO Kemayoran,Jakarta</Text>
+          <Text style={styles.title}>{props.activity.title}</Text>
+          <Text style={styles.date}>
+            {new Date(props.activity.due_date).toDateString()}
+          </Text>
+          <Text style={styles.place}>{props.activity.location}</Text>
         </View>
         <View style={styles.badge}>
           <Ionicons name="ios-people" size={28} color="#fff" />
           <Text style={{ marginLeft: 8, fontWeight: "700", color: "#fff" }}>
-            2
+            {props.activity.members.length}
           </Text>
         </View>
       </View>
