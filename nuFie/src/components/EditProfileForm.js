@@ -51,7 +51,7 @@ function EditProfileForm(props) {
     }
     const addTags = (action) => {
         if(action.nativeEvent.key === ' ') {
-            setTags([...tags, tagText]);
+            setTags([...tags, tagText.slice(0, tagText.length-1)]);
             setTagText('');
         }
     }

@@ -7,7 +7,6 @@ import {AcceptInvite} from '../store/actions/Activity'
 export default function InvitationCard (props) {
     const dispatch = useDispatch()
     const handleAccept = () => {
-        console.log(props.data)
         dispatch(AcceptInvite(props.data._id))
     }
     const handleDecline = () => {

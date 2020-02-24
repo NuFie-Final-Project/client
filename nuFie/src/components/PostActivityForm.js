@@ -41,7 +41,6 @@ function postActivityForm({ route, openAlert, uploadImage, activity }) {
 
     useEffect(() => {
         if(route.name === 'EDIT POST') {
-            console.log(image);
             setTags(activity.tags);
             if(activity.isPromo) {
                 setIsPromo('YES');

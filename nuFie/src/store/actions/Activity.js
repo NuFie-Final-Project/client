@@ -38,7 +38,7 @@ export const getActivities = () => {
         })
         .then(response => {
             const activities = response.data.activities.filter(activity => {
-                return activity.owner == state().user.login
+                return activity.owner._id == state().user.login
             })
             const invitation = response.data.activities.filter(activity => {
                 return activity.pendingInvites.includes(state().user.login)

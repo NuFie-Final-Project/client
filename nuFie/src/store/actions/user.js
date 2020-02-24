@@ -78,7 +78,8 @@ export const FindFriend = (props) => {
       headers: {
         token: props
       },
-      method: 'GET'
+      method: 'GET',
+      data: {tags: state().user.biodata.interests}
     })
     .then(({data}) => {
       dispatch({type: 'SET_SUGGESTFRIEND', val: data.users})

@@ -4,12 +4,13 @@ import InputChat from '../components/ChatInput'
 import Chat from '../components/ChatWrap'
 
 
-export default function ChatRoom () {
+export default function ChatRoom (props) {
+    const roomId = props.route.params.roomId
     return (
         <View style={style.container}>
             <ScrollView>
                 <View style={style.scroll}>
-                    <Chat/>
+                    <Chat roomId={roomId}/>
                 </View>
             </ScrollView>
             <View style={style.float}>

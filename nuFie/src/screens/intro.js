@@ -5,7 +5,8 @@ import AppIntroSlider from "react-native-app-intro-slider";
 import firebase from "../../config/config_firebase";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import {ReadSelf} from '../store/actions/user'
 
 const Slides = [
   {
@@ -54,6 +55,7 @@ export default function IntroSlider(props) {
       </View>
     </LinearGradient>
   );
+  const route = useRoute()
   const dispatch = useDispatch()
   const userData  = useSelector(state => state.user.userData)
   const log  = useSelector(state => state.user.login)
@@ -65,7 +67,6 @@ export default function IntroSlider(props) {
             .auth()
             .currentUser.getIdToken(true)
             .then((idToken) => {
-              console.log('cek===')
               const {email, firstName, lastName, password} = userData
                 return axios({
                     method: 'POST',
@@ -78,6 +79,7 @@ export default function IntroSlider(props) {
                 dispatch({type: 'SET_LOGIN', val: data.userId})
                 dispatch({type: 'SET_TOKEN', val: data.token})
                 dispatch({type: 'SET_LOADING', val: false})
+                dispatch(ReadSelf())
                 navigation.navigate('MainPage')
             })
             .catch((error) => {
