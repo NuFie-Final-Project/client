@@ -127,7 +127,14 @@ function postActivityForm({ route, openAlert, uploadImage, activity }) {
             dispatch(createActivity({
                 data: formData, 
                 token: user.token,
-                user_id: user.login}))
+                user_id: user.login
+            }))
+                .then(() => {
+                    navigation.navigate('My Activity')
+                })
+
+
+            
         } else {
             let boolPromo;    
             if(isPromo) {
@@ -157,8 +164,9 @@ function postActivityForm({ route, openAlert, uploadImage, activity }) {
                 id: activity._id,
                 user_id: user.login
             }))
-
-            navigation.navigate('MyPost')
+            .then(() => {
+                navigation.navigate('My Activity')
+            })
         }
     }
 

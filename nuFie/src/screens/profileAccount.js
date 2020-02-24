@@ -20,6 +20,10 @@ export default function ProfileUser(params) {
         dispatch(Logout())
     }
 
+    const handleListJoinGroup = () => {
+        navigation.navigate('LIST JOIN GROUP')
+    }
+
     const simbol = () => {
         const gen = biodata.gender
         if(gen == undefined) {
@@ -30,6 +34,7 @@ export default function ProfileUser(params) {
     useEffect(() => {
         dispatch(ReadSelf())
     },[])
+
     return (
         <View style={style.container}>
             <ImageBackground 
@@ -58,6 +63,7 @@ export default function ProfileUser(params) {
                     </Text>
                 </View>
                 <View style={style.btnWrap}>
+                    <Btn text="LIST JOIN GROUP" handle={handleListJoinGroup}/>
                     <Btn text="EDIT PROFILE" handle={handleEdit}/>
                     <Btn text="LOGOUT" handle={handleLogout}/>
                 </View>

@@ -3,7 +3,7 @@ import axios from 'axios';
 export const createActivity = (activity) => {
     return function(dispatch, state) {
         dispatch({type: 'SET_LOADING', val: true})
-        axios({
+        return axios({
             method: 'post',
             url: `${state().other.url}/activities`,
             data: activity.data,
@@ -29,7 +29,7 @@ export const getActivities = () => {
         dispatch({
             type: 'FETCH_ACTIVITIES_START'
         })
-        axios({
+        return axios({
             method: 'get',
             url: `${state().other.url}/activities?limit=20`,
             headers: {
@@ -37,11 +37,27 @@ export const getActivities = () => {
             }
         })
         .then(response => {
-            const activities = response.data.activities.filter(activity => {
-                return activity.owner._id == state().user.login
-            })
-            const invitation = response.data.activities.filter(activity => {
-                return activity.pendingInvites.includes(state().user.login)
+
+            let activities = [];
+            let invitation = [];
+            let listGroup = [];
+
+
+            if(response.data.activities.length > 0) {
+                activities = response.data.activities.filter(activity => {
+                    return activity.owner._id == state().user.login
+                })
+                invitation = response.data.activities.filter(activity => {
+                    return activity.pendingInvites.includes(state().user.login)
+                })
+                listGroup = response.data.activities.filter(activity => {
+                    return activity.members.includes(state().user.login);
+                })
+            }
+
+            dispatch({
+                type: 'FETCH_ACTIVITIES_JOIN',
+                payload: listGroup
             })
             dispatch({
                 type: 'FETCH_ACTIVITIES',
@@ -51,6 +67,7 @@ export const getActivities = () => {
                 type: 'SET_INVITATION',
                 val: invitation
             })
+
         })
         .catch(error => {
             console.log(error);
@@ -60,7 +77,7 @@ export const getActivities = () => {
 
 export const editActivity = (activity) => {
     return function(dispatch, state) {
-        axios({
+        return axios({
             method: 'patch',
             url: `${state().other.url}/activities/${activity.id}`,
             data: activity.data,
@@ -70,7 +87,6 @@ export const editActivity = (activity) => {
         })
         .then(response => {
             dispatch({type: 'SET_TRIGGER', val: 'edit'})
-            dispatch(getActivities({token: activity.token, id: activity.user_id}))
         })
         .catch(error => {
             console.log(error);
@@ -81,7 +97,7 @@ export const editActivity = (activity) => {
 export const FetchCategory = (props) => {
     return function (dispatch, state) {
         dispatch({type: 'SET_LOADING', val: true})
-        axios({
+        return axios({
             url: `${state().other.url}/activities/interest/` + props,
             method: 'GET',
             headers: {
@@ -98,7 +114,7 @@ export const FetchCategory = (props) => {
 export const InviteFriend = (props) => {
     return function (dispatch, state) {
         dispatch({type: 'SET_LOADING', val: true})
-        axios({
+        return axios({
             url: `${state().other.url}/activities/invite/` + props.postId,
             method: 'post',
             headers: {
@@ -120,7 +136,7 @@ export const InviteFriend = (props) => {
 export const AcceptInvite = (props) => {
     return function (dispatch, state) {
         dispatch({type: 'SET_LOADING', val: true})
-        axios({
+        return axios({
             url: `${state().other.url}/activities/inviteAccept/` + props,
             method: 'post',
             headers: {
@@ -135,5 +151,41 @@ export const AcceptInvite = (props) => {
         .catch((err) => {
             console.log(err, 'gagal accpet')
         })    
+    }
+}
+
+export const cancelActivity = (id) => {
+    return function(dispatch, state) {
+        return axios({
+            method: 'patch',
+            url: `${state().other.url}/activities/cancel/` + id,
+            headers: {
+                token: state().user.token
+            }
+        })
+        .then(response => {
+            dispatch({type: 'SET_TRIGGER', val: 'cancel'})
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
+}
+
+export const leaveActivity = (id) => {
+    return function (dispatch, state) {
+        return axios({
+            method: 'post',
+            url: `${state().other.url}/activities/leave/${id}`,
+            headers: {
+                token: state().user.token
+            }
+        })
+        .then(response => {
+            dispatch({type: 'SET_TRIGGER', val: 'list_join_group'})
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 }
