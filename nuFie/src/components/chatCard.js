@@ -1,10 +1,11 @@
 import React from 'react'
 import {View, Image, Text, StyleSheet} from 'react-native'
+import {useSelector} from 'react-redux'
 
 export default function ChatCard(props) {
-    const id = 1
+    const id = useSelector(state => state.user.login)
     const owner = () => {
-        if(props.message.ownerId == id){
+        if(props.message.owner == id){
             return 'row-reverse'
         } else {
             return 'row'
@@ -13,7 +14,7 @@ export default function ChatCard(props) {
     return (
         <View style={[style.container, {flexDirection: owner()}]}>
             <Image 
-                source={{uri: 'https://facebook.github.io/react/logo-og.png'}}
+                source={{uri: props.message.profile}}
                 style={style.profile} 
             />
             <View>

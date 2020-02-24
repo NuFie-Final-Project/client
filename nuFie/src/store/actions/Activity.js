@@ -1,4 +1,5 @@
 import axios from 'axios';
+import db from '../../../config/config_firebase'
 
 export const createActivity = (activity) => {
     return function(dispatch, state) {
@@ -14,12 +15,17 @@ export const createActivity = (activity) => {
             }
         })
         .then(response => {
-            console.log('berhasil Create')
+            return db.firestore()
+                    .collection('chat')
+                    .doc(response.data.activity._id)
+                    .collection('arrMessage')
+        })
+        .then((data) => {
             dispatch({type: 'SET_LOADING', val: false})
             dispatch({type: 'SET_TRIGGER', val: 'add'})
         })
         .catch(error => {
-            console.log({error});
+            console.log(error);
         })
     }
 }
@@ -121,7 +127,8 @@ export const InviteFriend = (props) => {
                 token: state().user.token
             },
             data: {
-                targetId: props.userId
+                targetId: props.userId,
+                pushToken: props.pushToken
             }
         })
         .then(({data}) => {
@@ -144,7 +151,6 @@ export const AcceptInvite = (props) => {
             },
         })
         .then(({data}) => {
-            console.log('berhasil accept')
             dispatch({type: 'SET_LOADING', val: false})
             dispatch({type: 'SET_TRIGGER', val: 'acceptinvite'})
         })

@@ -29,12 +29,12 @@ export default function user (state = store, action){
         case 'SET_SUGGESTFRIEND':
             return {...state, suggestFriend: action.val}
         case 'SET_INVITATION':
-            return {...state, invitation: action.val}
-        case 'CLEAR_STATE':
-            console.log('INI CLEAR STATE'+ '====================');
-            return {
+                return {...state, invitation: action.val}
+        case 'SET_CLEAR':
+            return {   
                 login: false,
                 token: false,
+                loading: false,
                 userData: {
                     lastName: null,
                     firstName: null,
