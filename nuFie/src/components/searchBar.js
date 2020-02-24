@@ -20,7 +20,7 @@ export default function SearchBar() {
         />
         <TextInput
           style={styles.formSearch}
-          placeholder="Search Your Favorite Movie"
+          placeholder="Explore Activity Out of your Interest"
           onChange={handleChange}
           value={searchVal}
         />
