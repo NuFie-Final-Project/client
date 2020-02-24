@@ -4,7 +4,8 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  ImageBackground
+  ImageBackground,
+  TouchableOpacity
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Constants from "expo-constants";
@@ -12,6 +13,7 @@ import FeedsItem from "../components/FeedsItem";
 import { useNavigation } from "@react-navigation/native";
 import { getActivities } from "../store/actions/Activity";
 import { useSelector, useDispatch } from "react-redux";
+
 
 export default function Home() {
   const trigger = useSelector(state => state.other.trigger);
@@ -36,9 +38,11 @@ export default function Home() {
             style={{ height: "100%", width: "100%" }}
           />
         </View>
-        <View style={styles.iconWrapper}>
-          <Ionicons name="ios-notifications" size={28} color="#fff" />
-        </View>
+          <View style={styles.iconWrapper}>
+            <TouchableOpacity onPress={handleNotif}>
+              <Ionicons name="ios-notifications" size={28} color="#fff" />
+            </TouchableOpacity>
+          </View>
       </View>
       <Text style={styles.titleScreen}>Recomendation Activity</Text>
       <ScrollView>
