@@ -6,7 +6,7 @@ import {
   Ionicons
 } from "@expo/vector-icons";
 import MyPost from "../navigations/myPost";
-import Home from "../screens/home";
+import Home from "./homeNavigation";
 import Account from "./ProfileStackNavigation";
 import Search from "../navigations/searchNavigation"
 

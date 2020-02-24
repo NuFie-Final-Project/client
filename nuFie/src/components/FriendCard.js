@@ -18,7 +18,6 @@ function FriendCard(props) {
         dispatch(InviteFriend({userId: props.data._id, postId: props.detailPost._id}))
         setTextButton('WAITING RESPONSE');
         setIsButtonActive(true);
-        
     }
     useEffect(() => {
         if(props.detailPost.pendingInvites.includes(props.data._id)){

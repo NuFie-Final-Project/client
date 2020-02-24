@@ -15,7 +15,6 @@ function FindFriends(props) {
     const userData = useSelector(state => state.user)
     useEffect(() => {
         dispatch(FindFriend(userData.token))
-        console.log(userData.suggestFriend, '=======================')
     },[])
     return (
         <ScrollView style={styles.container}>
