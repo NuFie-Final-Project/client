@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import store from "./src/store/index";
 import { Provider } from "react-redux"
 import { NavigationContainer } from "@react-navigation/native"
@@ -8,8 +8,24 @@ import LoginScreen from "./src/screens/login"
 import RegisterScreen from "./src/screens/register"
 import Home from "./src/navigations/tabNavigation"
 import Intro from './src/screens/introStart'
+import {Notifications} from 'expo'
 
 export default function App() {
+    const [notification, setNotification] = useState({})
+    
+    console.log('ini notification')
+    console.log(notification)
+    const _handleNotification = function(notif) {
+        // handle notif disini
+        setNotification(notif)
+    }
+
+    useEffect(
+        () => {
+            _notificationSubscription = Notifications.addListener(_handleNotification)
+        },
+        []
+    )
   const Stack = createStackNavigator();
   return (
     <Provider store={store}>

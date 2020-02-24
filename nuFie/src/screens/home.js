@@ -13,9 +13,11 @@ import FeedsItem from "../components/FeedsItem";
 import { useNavigation } from "@react-navigation/native";
 import { getActivities } from "../store/actions/Activity";
 import { useSelector, useDispatch } from "react-redux";
+import ExpoRegisterPushNotification from '../components/ExpoRegisterPushNotification.js'
 
 
 export default function Home() {
+    // ExpoRegisterPushNotification()
   const trigger = useSelector(state => state.other.trigger);
   const user = useSelector(state => state.user);
   const navigation = useNavigation();
@@ -25,8 +27,14 @@ export default function Home() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log(user.login)
     dispatch(getActivities({ token: user.token, id: user.login }));
   }, [trigger]);
+
+  useEffect(() => {
+      ExpoRegisterPushNotification(user.login)
+  }, [])
+  
   return (
     <View style={styles.container}>
       <View style={styles.statusBar}></View>
