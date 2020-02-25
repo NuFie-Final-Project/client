@@ -226,16 +226,9 @@ function postActivityForm({ route, openAlert, uploadImage, activity, scrollToBot
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Title</Text>
                     <TextInput 
-<<<<<<< HEAD
-                        style={styles.textInput}
-                        value={title}
-                        onChangeText={(value) => setTitle(value)} 
-                    />
-=======
                     style={[styles.textInput, {borderColor: borderFormColor}]}
                     value={title}
                     onChangeText={(value) => setTitle(value)}></TextInput>
->>>>>>> Commi untuk pull dari development
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Description</Text>
@@ -279,18 +272,10 @@ function postActivityForm({ route, openAlert, uploadImage, activity, scrollToBot
                 <View style={{marginBottom: marginBottomTags}}>
                     <Text style={styles.inputLabel}>Interest Category</Text>
                     <TextInput 
-<<<<<<< HEAD
-                        style={styles.textInput}
-                        onKeyPress={addTags}
-                        value={tagText}
-                        onChangeText={(value) => setTagText(value)}
-                    />
-=======
                     style={[styles.textInput, {borderColor: borderFormColor}]}
                     onKeyPress={addTags}
                     value={tagText}
                     onChangeText={(value) => setTagText(value)}></TextInput>
->>>>>>> Commi untuk pull dari development
                     {
                         tags.length === 0 
                             ?   <View></View>
@@ -336,30 +321,16 @@ function postActivityForm({ route, openAlert, uploadImage, activity, scrollToBot
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Location</Text>
                     <TextInput 
-<<<<<<< HEAD
-                        style={styles.textInput}
-                        value={location}
-                        onChangeText={(value) => setLocation(value)}
-                    />
-=======
                     style={[styles.textInput, {borderColor: borderFormColor}]}
                     value={location}
                     onChangeText={(value) => setLocation(value)}></TextInput>
->>>>>>> Commi untuk pull dari development
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Address</Text>
                     <TextInput 
-<<<<<<< HEAD
-                        style={styles.textInput}
-                        value={address}
-                        onChangeText={(value) => setAddress(value)}
-                    />
-=======
                     style={[styles.textInput, {borderColor: borderFormColor}]}
                     value={address}
                     onChangeText={(value) => setAddress(value)}></TextInput>
->>>>>>> Commi untuk pull dari development
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Member Limit</Text>
@@ -369,24 +340,12 @@ function postActivityForm({ route, openAlert, uploadImage, activity, scrollToBot
                     onChangeText={(value) => setMemberLimit(value)}
                     keyboardType="phone-pad"></TextInput>
                 </View>
-<<<<<<< HEAD
-                <View style={styles.inputContainer}>
-                    {
-                        user.loading ? <Load/> :
-                        <TouchableOpacity onPress={postActivity}>
-                            <View style={styles.button}>
-                        <Text style={styles.buttonText}>{buttonTitle}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    }
-=======
                 <View style={{marginBottom: marginBottomButton}}>
                     <TouchableOpacity onPress={postActivity}>
                         <View style={styles.button}>
                     <Text style={styles.buttonText}>{buttonTitle}</Text>
                         </View>
                     </TouchableOpacity>
->>>>>>> Commi untuk pull dari development
                 </View>
                 {
                     warnings.length === 0
