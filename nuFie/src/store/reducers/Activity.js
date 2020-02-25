@@ -26,6 +26,8 @@ export default function activityReducer(state = initializeState, action) {
       return { ...state, category: action.val };
     case "FETCH_ACTIVITIES_JOIN":
       return { ...state, listJoin: action.payload };
+    case 'SET_DETAILMEMBER':
+        return {...state, detailMember: action.val}
     case "FETCH_ACTIVITIES_EXPLORE":
       return { ...state, listByExplore: action.payload };
     case "CLEAR_LIST_EXPLORE":

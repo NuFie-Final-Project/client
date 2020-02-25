@@ -215,6 +215,27 @@ export const exploreInterest = (interest) => {
   }
 }
 
+export const ActivityDetail = (props) => {
+  return function(dispatch, state) {
+    dispatch({ type: "SET_LOADING", val: true });
+    return axios({
+      method: "get",
+      url: `${state().other.url}/activities/${props}`,
+      headers: {
+        token: state().user.token
+      }
+    })
+    .then(({data}) => {
+      dispatch({ type: "SET_LOADING", val: false });
+      dispatch({type: 'SET_DETAILMEMBER', val: data.activity.members})
+    })
+    .catch((er) => {
+      dispatch({ type: "SET_LOADING", val: false });
+      dispatch({ type: "SET_ERROR", val: {bool: true, message: er.message} })
+    })
+  }
+} 
+
 export const getByInterest = () => {
   return function(dispatch, state) {
     return axios({
@@ -251,6 +272,78 @@ export const joinActivities = (id) => {
     })
     .catch(error => {
       console.log(error);
+    })
+  }
+}
+
+export const AcceptRequestJoin = (props) => {
+  return function (dispatch, state) {
+    dispatch({ type: "SET_LOADING", val: true });
+    return axios({
+      method: "post",
+      url: `${state().other.url}/activities/joinAccept/${props.activityId}`,
+      headers: {
+        token: state().user.token
+      },
+      data: {
+        targetId: props.targetId
+      }
+    })
+    .then(({data}) => {
+      dispatch({ type: "SET_LOADING", val: false });
+      dispatch({ type: "SET_TRIGGER", val: props.targetId });
+    })
+    .catch((er) => {
+      dispatch({ type: "SET_LOADING", val: false });
+      dispatch({ type: "SET_ERROR", val: {bool: true, message: er.message} })
+    })
+  }
+} 
+
+export const DeclineRequestJoin = (props) => {
+  return function (dispatch, state) {
+    dispatch({ type: "SET_LOADING", val: true });
+    return axios({
+      method: "post",
+      url: `${state().other.url}/activities/joinReject/${props.activityId}`,
+      headers: {
+        token: state().user.token
+      },
+      data: {
+        targetId: props.targetId
+      }
+    })
+    .then(({data}) => {
+      dispatch({ type: "SET_LOADING", val: false });
+      dispatch({ type: "SET_TRIGGER", val: props.targetId });
+    })
+    .catch((er) => {
+      dispatch({ type: "SET_LOADING", val: false });
+      dispatch({ type: "SET_ERROR", val: {bool: true, message: er.message} })
+    })
+  }
+}
+
+export const KickMember = (props) => {
+  return function (dispatch, state) {
+    dispatch({ type: "SET_LOADING", val: true });
+    return axios({
+      method: "post",
+      url: `${state().other.url}/activities/kick/${props.activityId}`,
+      headers: {
+        token: state().user.token
+      },
+      data: {
+        targetId: props.targetId
+      }
+    })
+    .then(({data}) => {
+      dispatch({ type: "SET_LOADING", val: false });
+      dispatch({ type: "SET_TRIGGER", val: props.targetId });
+    })
+    .catch((er) => {
+      dispatch({ type: "SET_LOADING", val: false });
+      dispatch({ type: "SET_ERROR", val: {bool: true, message: er.message} })
     })
   }
 }

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
 import SelectPicker from "react-native-form-select-picker";
+import Load from './loading'
 
 function EditProfileForm(props) {
-  const userData = useSelector(state => state.user.biodata);
+  const {biodata, loading} = useSelector(state => state.user);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [aboutMe, setAboutMe] = useState("");
@@ -15,17 +15,16 @@ function EditProfileForm(props) {
   const [tags, setTags] = useState([]);
   const [tagText, setTagText] = useState("");
   const [gender, setGender] = useState("");
-
   useEffect(() => {
-    setFirstName(userData.firstName);
-    setLastName(userData.lastName);
-    setPhone(userData.phone);
-    setAboutMe(userData.aboutMe);
-    setPhone(userData.phoneNumber);
-    if (userData.interests !== null) {
-      setTags(userData.interests);
+    setFirstName(biodata.firstName);
+    setLastName(biodata.lastName);
+    setPhone(biodata.phone);
+    setAboutMe(biodata.aboutMe);
+    setPhone(biodata.phoneNumber);
+    if (biodata.interests !== null) {
+      setTags(biodata.interests);
     }
-    setGender(userData.gender);
+    setGender(biodata.gender);
   }, []);
   const inputPhone = value => {
     if (value[0] !== "+") {
@@ -175,29 +174,32 @@ function EditProfileForm(props) {
           })}
         </View>
       )}
-      <TouchableOpacity
-        style={{ marginVertical: 25 }}
-        onPress={handleSubmitEdit}
-      >
-        <View
-          style={{
-            alignItems: "center",
-            backgroundColor: "#C4C4C4",
-            paddingVertical: 13,
-            borderRadius: 10
-          }}
+      {
+        loading ? <Load/> :
+        <TouchableOpacity
+          style={{ marginVertical: 25 }}
+          onPress={handleSubmitEdit}
         >
-          <Text
+          <View
             style={{
-              color: "white",
-              fontSize: 18,
-              fontWeight: "bold"
+              alignItems: "center",
+              backgroundColor: "#C4C4C4",
+              paddingVertical: 13,
+              borderRadius: 10
             }}
           >
-            EDIT PROFILE
-          </Text>
-        </View>
-      </TouchableOpacity>
+            <Text
+              style={{
+                color: "white",
+                fontSize: 18,
+                fontWeight: "bold"
+              }}
+            >
+              EDIT PROFILE
+            </Text>
+          </View>
+        </TouchableOpacity>
+      }
     </>
   );
 }

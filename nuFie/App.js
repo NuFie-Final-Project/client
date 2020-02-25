@@ -12,14 +12,14 @@ import InterestUpdate from "./src/screens/interestUpdate";
 import { Notifications } from "expo";
 
 export default function App() {
-  const [notification, setNotification] = useState({});
-  // console.log("==============ini push notif", notification);
-  const handleNotification = notif => {
-    setNotification(notif);
-  };
-  useEffect(() => {
-    _notificationSubscription = Notifications.addListener(handleNotification);
-  }, []);
+  // const [notification, setNotification] = useState({})
+  // console.log('==============ini push notif', notification)
+  // const handleNotification = (notif) => {
+  //   setNotification(notif)
+  // }
+  // useEffect(() => {
+  //   _notificationSubscription = Notifications.addListener(handleNotification)
+  // },[])
   const Stack = createStackNavigator();
   return (
     <Provider store={store}>

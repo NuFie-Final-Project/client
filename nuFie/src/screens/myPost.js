@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, RefreshControl } from "react-native";
 import Post from "../components/mypost Component";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -9,7 +9,6 @@ import { useSelector, useDispatch } from "react-redux";
 export default function MyPost() {
   const navigation = useNavigation();
   const activities = useSelector(state => state.activity);
-  const trigger = useSelector(state => state.other.trigger);
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const [ready, setReady] = useState(false)
@@ -17,9 +16,17 @@ export default function MyPost() {
   useEffect(() => {
     dispatch(getActivities({ token: user.token, id: user.login }));
     setReady(true)
-  }, [trigger]);
+  }, []);
 
-
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getActivities({ token: user.token, id: user.login }))
+    .then((data) => {
+      setRefreshing(false)
+    })
+  }, [refreshing]);
+  
   const renderActivities = () => {
     if (activities.loading)
       return <Text>Loading</Text>
@@ -41,7 +48,11 @@ export default function MyPost() {
 
   return (
     <View style={styles.screen}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+        }
+      >
         <View style={styles.container}>
           {renderActivities()}
         </View>

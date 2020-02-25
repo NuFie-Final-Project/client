@@ -6,7 +6,8 @@ import firebase from "../../config/config_firebase";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { ReadSelf } from "../store/actions/user";
+import {ReadSelf} from '../store/actions/user'
+import AwesomeAlert from 'react-native-awesome-alerts'
 
 const Slides = [
   {
