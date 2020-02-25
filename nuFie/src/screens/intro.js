@@ -55,7 +55,6 @@ export default function IntroSlider(props) {
       </View>
     </LinearGradient>
   );
-  const route = useRoute()
   const dispatch = useDispatch()
   const userData  = useSelector(state => state.user.userData)
   const log  = useSelector(state => state.user.login)
@@ -90,6 +89,7 @@ export default function IntroSlider(props) {
         if(log == 'logout'){
           dispatch({type: 'SET_LOGIN', val: false})
           navigation.navigate('Home')
+          console.log(email, firstName, lastName, password);
         }
         console.log("not logged in");
     }

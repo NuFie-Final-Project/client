@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { createActivity, editActivity } from '../store/actions/Activity';
 import { useNavigation } from '@react-navigation/native';
+import Load from './loading'
 
 function postActivityForm({ route, openAlert, uploadImage, activity }) {
     const dispatch = useDispatch()
@@ -176,18 +177,20 @@ function postActivityForm({ route, openAlert, uploadImage, activity }) {
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Title</Text>
                     <TextInput 
-                    style={styles.textInput}
-                    value={title}
-                    onChangeText={(value) => setTitle(value)}></TextInput>
+                        style={styles.textInput}
+                        value={title}
+                        onChangeText={(value) => setTitle(value)} 
+                    />
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Description</Text>
                     <TextInput 
-                    style={styles.textDescription}
-                    multiline={true}
-                    textAlignVertical="top"
-                    value={description}
-                    onChangeText={(value) => setDescription(value)}></TextInput>
+                        style={styles.textDescription}
+                        multiline={true}
+                        textAlignVertical="top"
+                        value={description}
+                        onChangeText={(value) => setDescription(value)}
+                    />
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Upload Image</Text>
@@ -221,10 +224,11 @@ function postActivityForm({ route, openAlert, uploadImage, activity }) {
                 <View style={{marginBottom: marginBottomTags}}>
                     <Text style={styles.inputLabel}>Interest Category</Text>
                     <TextInput 
-                    style={styles.textInput}
-                    onKeyPress={addTags}
-                    value={tagText}
-                    onChangeText={(value) => setTagText(value)}></TextInput>
+                        style={styles.textInput}
+                        onKeyPress={addTags}
+                        value={tagText}
+                        onChangeText={(value) => setTagText(value)}
+                    />
                     {
                         tags.length === 0 
                             ?   <View></View>
@@ -270,16 +274,18 @@ function postActivityForm({ route, openAlert, uploadImage, activity }) {
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Location</Text>
                     <TextInput 
-                    style={styles.textInput}
-                    value={location}
-                    onChangeText={(value) => setLocation(value)}></TextInput>
+                        style={styles.textInput}
+                        value={location}
+                        onChangeText={(value) => setLocation(value)}
+                    />
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Address</Text>
                     <TextInput 
-                    style={styles.textInput}
-                    value={address}
-                    onChangeText={(value) => setAddress(value)}></TextInput>
+                        style={styles.textInput}
+                        value={address}
+                        onChangeText={(value) => setAddress(value)}
+                    />
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Member Limit</Text>
@@ -290,11 +296,14 @@ function postActivityForm({ route, openAlert, uploadImage, activity }) {
                     keyboardType="phone-pad"></TextInput>
                 </View>
                 <View style={styles.inputContainer}>
-                    <TouchableOpacity onPress={postActivity}>
-                        <View style={styles.button}>
-                    <Text style={styles.buttonText}>{buttonTitle}</Text>
-                        </View>
-                    </TouchableOpacity>
+                    {
+                        user.loading ? <Load/> :
+                        <TouchableOpacity onPress={postActivity}>
+                            <View style={styles.button}>
+                        <Text style={styles.buttonText}>{buttonTitle}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    }
                 </View>
             </View>
         </>
