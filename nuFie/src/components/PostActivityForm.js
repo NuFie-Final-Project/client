@@ -16,7 +16,7 @@ import { createActivity, editActivity } from '../store/actions/Activity';
 import { useNavigation } from '@react-navigation/native';
 import Load from './loading'
 
-function postActivityForm({ route, openAlert, uploadImage, activity }) {
+function postActivityForm({ route, openAlert, uploadImage, activity, scrollToBottom }) {
     const dispatch = useDispatch()
     const [ tags, setTags ] = useState([]);
     const [ tagText, setTagText] = useState('');
@@ -32,6 +32,11 @@ function postActivityForm({ route, openAlert, uploadImage, activity }) {
     const [ marginBottomTags, setMarginBottomTags ] = useState(20);
     const [ buttonTitle, setButtonTitle ] = useState('');
     const [newImage, setNewImage] = useState(false);
+    const [ borderFormColor, setBorderFormColor ] = useState('#C1C1C1');
+    const [ warnings, setWarnings ] = useState([]);
+    const [ marginBottomButton, setMarginBottomButton ] = useState(0);
+    const [ loadingState, setLoadingState ] = useState(true);
+    const warningsTemp = [];
     
     const user = useSelector(state => state.user);
     const navigation = useNavigation();
@@ -43,13 +48,13 @@ function postActivityForm({ route, openAlert, uploadImage, activity }) {
     useEffect(() => {
         if(route.name === 'EDIT POST') {
             setTags(activity.tags);
+            setTitle(activity.title);
+            setDescription(activity.description);
             if(activity.isPromo) {
                 setIsPromo('YES');
             } else {
                 setIsPromo('NO');
             }
-            setTitle(activity.title);
-            setDescription(activity.description);
             setDate(new Date(activity.due_date));
             if(activity.memberLimit === null) {
                 setMemberLimit('0');
@@ -65,6 +70,7 @@ function postActivityForm({ route, openAlert, uploadImage, activity }) {
                 setImage(uploadImage.uri)
             }
             setButtonTitle('EDIT');
+            setLoadingState(false);
         } else if(route.name === 'ADD POST') {
             setImage(uploadImage.uri);
             setButtonTitle('POST');
@@ -95,6 +101,39 @@ function postActivityForm({ route, openAlert, uploadImage, activity }) {
             setDate(selectedDate)
         }
     }
+
+    const formValidation = () => {
+        if(title.length === 0) {
+            warningsTemp.push('Title cannot be empty')
+        }
+        if(description.length < 100) {
+            warningsTemp.push('Description cannot be empty');
+        }
+        if(parseInt(memberLimit) < 2) {
+            warningsTemp.push('Member limit must be greater or equal to 2');
+        }
+        if(date < new Date()) {
+            warningsTemp.push(`You can't set the date before`);
+        } 
+        if(!image) {
+            warningsTemp.push(`You have to upload an image`);
+        }
+        if(tags.length === 0) {
+            warningsTemp.push(`Tags cannot be empty`);
+        }
+        if(location.length === 0) {
+            warningsTemp.push(`Location cannot be empty`);
+        }
+        if(address.length === 0) {
+            warningsTemp.push(`Address cannot be empty`);
+        }
+        if(warningsTemp.length > 0) {
+            return false
+        } else {
+            return true
+        }
+    }
+    
     let uriParts
     let fileType
 
@@ -104,9 +143,14 @@ function postActivityForm({ route, openAlert, uploadImage, activity }) {
     } 
 
     const postActivity = () => {
-        if(route.name === 'ADD POST') {
+        if(!formValidation()) {
+            setWarnings([...warningsTemp]);
+            setMarginBottomButton(20);
+            scrollToBottom();
+        } else {
+            if(route.name === 'ADD POST') {
             let boolPromo;    
-            if(isPromo) {
+            if(isPromo === 'YES') {
                 boolPromo = true;
             } else {
                 boolPromo = false;
@@ -124,6 +168,7 @@ function postActivityForm({ route, openAlert, uploadImage, activity }) {
             formData.append("due_date", date.toISOString());
             formData.append("location", location);
             formData.append("address", address);
+            formData.append("isPromo", boolPromo);
             
             dispatch(createActivity({
                 data: formData, 
@@ -133,42 +178,46 @@ function postActivityForm({ route, openAlert, uploadImage, activity }) {
                 .then(() => {
                     navigation.navigate('My Activity')
                 })
-
-
-            
-        } else {
-            let boolPromo;    
-            if(isPromo) {
-                boolPromo = true;
             } else {
-                boolPromo = false;
+                let boolPromo;    
+                if(isPromo === 'YES') {
+                    boolPromo = true;
+                } else {
+                    console.log('jalan')
+                    boolPromo = false;
+                }
+                const formData = new FormData();
+                formData.append("title", title);
+                formData.append("description", description);
+                if(newImage) {
+                    formData.append("image", {
+                        uri: image,
+                        name: `photo.${fileType}`,
+                        type: `image/${fileType}`
+                    });
+                }
+                formData.append("tags", JSON.stringify(tags));
+                formData.append("memberLimit", memberLimit);
+                formData.append("due_date", date.toISOString());
+                formData.append("location", location);
+                formData.append("address", address);
+                formData.append("isPromo", boolPromo);
+                
+                dispatch(editActivity({
+                    data: formData, 
+                    token: user.token, 
+                    id: activity._id,
+                    user_id: user.login
+                }))
+                .then(() => {
+                    navigation.navigate('My Activity')
+                })
             }
-            const formData = new FormData();
-            formData.append("title", title);
-            formData.append("description", description);
-            if(newImage) {
-                formData.append("image", {
-                    uri: image,
-                    name: `photo.${fileType}`,
-                    type: `image/${fileType}`
-                });
-            }
-            formData.append("tags", JSON.stringify(tags));
-            formData.append("memberLimit", memberLimit);
-            formData.append("due_date", date.toISOString());
-            formData.append("location", location);
-            formData.append("address", address);
-            
-            dispatch(editActivity({
-                data: formData, 
-                token: user.token, 
-                id: activity._id,
-                user_id: user.login
-            }))
-            .then(() => {
-                navigation.navigate('My Activity')
-            })
         }
+    }
+
+    if(route.name === 'EDIT POST' && loadingState) {
+        return null;
     }
 
     return (
@@ -177,10 +226,16 @@ function postActivityForm({ route, openAlert, uploadImage, activity }) {
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Title</Text>
                     <TextInput 
+<<<<<<< HEAD
                         style={styles.textInput}
                         value={title}
                         onChangeText={(value) => setTitle(value)} 
                     />
+=======
+                    style={[styles.textInput, {borderColor: borderFormColor}]}
+                    value={title}
+                    onChangeText={(value) => setTitle(value)}></TextInput>
+>>>>>>> Commi untuk pull dari development
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Description</Text>
@@ -224,11 +279,18 @@ function postActivityForm({ route, openAlert, uploadImage, activity }) {
                 <View style={{marginBottom: marginBottomTags}}>
                     <Text style={styles.inputLabel}>Interest Category</Text>
                     <TextInput 
+<<<<<<< HEAD
                         style={styles.textInput}
                         onKeyPress={addTags}
                         value={tagText}
                         onChangeText={(value) => setTagText(value)}
                     />
+=======
+                    style={[styles.textInput, {borderColor: borderFormColor}]}
+                    onKeyPress={addTags}
+                    value={tagText}
+                    onChangeText={(value) => setTagText(value)}></TextInput>
+>>>>>>> Commi untuk pull dari development
                     {
                         tags.length === 0 
                             ?   <View></View>
@@ -274,27 +336,40 @@ function postActivityForm({ route, openAlert, uploadImage, activity }) {
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Location</Text>
                     <TextInput 
+<<<<<<< HEAD
                         style={styles.textInput}
                         value={location}
                         onChangeText={(value) => setLocation(value)}
                     />
+=======
+                    style={[styles.textInput, {borderColor: borderFormColor}]}
+                    value={location}
+                    onChangeText={(value) => setLocation(value)}></TextInput>
+>>>>>>> Commi untuk pull dari development
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Address</Text>
                     <TextInput 
+<<<<<<< HEAD
                         style={styles.textInput}
                         value={address}
                         onChangeText={(value) => setAddress(value)}
                     />
+=======
+                    style={[styles.textInput, {borderColor: borderFormColor}]}
+                    value={address}
+                    onChangeText={(value) => setAddress(value)}></TextInput>
+>>>>>>> Commi untuk pull dari development
                 </View>
                 <View style={styles.inputContainer}>
                     <Text style={styles.inputLabel}>Member Limit</Text>
                     <TextInput 
-                    style={styles.textInput}
+                    style={[styles.textInput, {borderColor: borderFormColor}]}
                     value={memberLimit}
                     onChangeText={(value) => setMemberLimit(value)}
                     keyboardType="phone-pad"></TextInput>
                 </View>
+<<<<<<< HEAD
                 <View style={styles.inputContainer}>
                     {
                         user.loading ? <Load/> :
@@ -304,7 +379,36 @@ function postActivityForm({ route, openAlert, uploadImage, activity }) {
                             </View>
                         </TouchableOpacity>
                     }
+=======
+                <View style={{marginBottom: marginBottomButton}}>
+                    <TouchableOpacity onPress={postActivity}>
+                        <View style={styles.button}>
+                    <Text style={styles.buttonText}>{buttonTitle}</Text>
+                        </View>
+                    </TouchableOpacity>
+>>>>>>> Commi untuk pull dari development
                 </View>
+                {
+                    warnings.length === 0
+                        ?   <Text></Text>
+                        :   <View style={styles.warningsContainer}>
+                            {
+                                warnings.map((warning, i) => {
+                                    return <View key={i} style={styles.warningContainer}>
+                                        <FontAwesome 
+                                        name="arrow-right"
+                                        color="#721C1B" 
+                                        size={20}/>
+                                        <Text style={{
+                                            marginLeft: 10, 
+                                            color: '#721C1B',
+                                            fontWeight: 'bold'
+                                            }}>{warning}</Text>
+                                    </View>
+                                })
+                            }
+                    </View>
+                }
             </View>
         </>
     )
@@ -326,7 +430,6 @@ const styles = StyleSheet.create({
         borderRadius: 9,
         paddingVertical: 3,
         paddingHorizontal: 12,
-        borderColor: '#C1C1C1'
     },
     textDescription: {
         marginTop: 6,
@@ -338,7 +441,7 @@ const styles = StyleSheet.create({
         height: 100
     },
     uploadImage: {
-        height: 150,
+        height: 240,
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
@@ -349,7 +452,7 @@ const styles = StyleSheet.create({
     },
     uploadedImage: {
         width: '100%', 
-        height: 150, 
+        height: 240, 
         borderRadius: 9,
         marginTop: 6,
     },
@@ -392,6 +495,18 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         color: 'white'
+    },
+    warningsContainer: {
+        backgroundColor: '#f8d7da',
+        borderColor: '#f5c6cb',
+        borderWidth: 2,
+        paddingVertical: 15,
+        paddingHorizontal: 30,
+        borderRadius: 10,
+    },
+    warningContainer: {
+        flexDirection: 'row',
+        marginBottom: 15
     }
 })
 

@@ -5,12 +5,17 @@ import AwesomeAlert from "react-native-awesome-alerts";
 import * as ImagePicker from "expo-image-picker";
 
 function createActivity({ route }) {
-  const [showAlert, setShowAlert] = useState(false);
-  const [uploadImage, setUploadImage] = useState("");
+  const [ showAlert, setShowAlert ] = useState(false);
+  const [ uploadImage, setUploadImage ] = useState("");
+  const [ scrollView, setScrollView ] = useState("");
 
   const openAlert = object => {
     setShowAlert(object.showAlert);
   };
+
+  const scrollToBottom = () => {
+    scrollView.scrollToEnd({animated: true})
+  }
 
   const postImageWithCamera = async () => {
     setShowAlert(false);
@@ -67,16 +72,21 @@ function createActivity({ route }) {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ backgroundColor: "#fff" }}>
+    <ScrollView 
+    contentContainerStyle={{ backgroundColor: "#fff" }}
+    ref={(view) => {
+      setScrollView(view);
+    }}>
       <PostActivityForm
         route={route}
         openAlert={openAlert}
         uploadImage={uploadImage}
+        scrollToBottom={scrollToBottom}
       ></PostActivityForm>
       <AwesomeAlert
         show={showAlert}
         showProgress={false}
-        title="Choose Your Method"
+        title="Choose Upload Method"
         closeOnTouchOutside={true}
         closeOnHardwareBackPress={false}
         showCancelButton={true}
@@ -88,6 +98,13 @@ function createActivity({ route }) {
         onConfirmPressed={postingImageWithGallery}
         onDismiss={() => {
           setShowAlert(false);
+        }}
+        overlayStyle={{
+          height: '130%'
+        }}
+        alertContainerStyle={{
+          position: 'absolute',
+          bottom: 165
         }}
       />
     </ScrollView>
