@@ -91,6 +91,13 @@ function EditActivity({ route }) {
         onDismiss={() => {
           setShowAlert(false);
         }}
+        overlayStyle={{
+          height: '130%'
+        }}
+        alertContainerStyle={{
+          position: 'absolute',
+          bottom: 200
+        }}
       />
     </ScrollView>
   );
