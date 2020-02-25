@@ -27,6 +27,8 @@ export default function CategoryScreen ({ route }) {
         })
     }, []);
 
+    console.log(listJoinExplore);
+
     if(loading) return null;
 
     const dataReady = () => {
