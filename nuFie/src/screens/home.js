@@ -54,7 +54,12 @@ export default function Home({ route }) {
         </View>
         <View style={styles.iconWrapper}>
           <TouchableOpacity onPress={handleNotif}>
-            <Ionicons name="ios-notifications" size={28} color="#fff" />
+            <View>
+              <View style={styles.badgeNotif}>
+                <Text style={styles.notifText}>10</Text>
+              </View>
+              <Ionicons name="ios-notifications" size={28} color="#fff" />
+            </View>
           </TouchableOpacity>
         </View>
       </View>
@@ -113,5 +118,23 @@ const styles = StyleSheet.create({
   iconWrapper: {
     position: "absolute",
     right: 15
+  },
+  badgeNotif: {
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
+    height: 21,
+    width: 21,
+    borderRadius: 21,
+    padding: 2,
+    zIndex: 3,
+    backgroundColor: "#f00",
+    left: 4,
+    top: -5
+  },
+  notifText: {
+    fontSize: 10,
+    color: "#fff",
+    fontWeight: "700"
   }
 });
