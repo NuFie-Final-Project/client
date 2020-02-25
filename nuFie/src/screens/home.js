@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,28 +11,36 @@ import { Ionicons } from "@expo/vector-icons";
 import Constants from "expo-constants";
 import FeedsItem from "../components/FeedsItem";
 import { useNavigation } from "@react-navigation/native";
-import { getActivities } from "../store/actions/Activity";
+import { getActivities, getByInterest } from "../store/actions/Activity";
 import { useSelector, useDispatch } from "react-redux";
 import ExpoNotif from "../components/exponotif";
 
-export default function Home() {
+export default function Home({ route }) {
   const trigger = useSelector(state => state.other.trigger);
+  const listByInterest = useSelector(state => state.activity.listByInterest);
   const user = useSelector(state => state.user);
   const navigation = useNavigation();
+  const [ loading, setLoading ] = useState(true);
   const handleNotif = () => {
     navigation.navigate("Invitation");
   };
   const dispatch = useDispatch();
 
-  // console.log(user.biodata);
-
   useEffect(() => {
-    dispatch(getActivities({ token: user.token, id: user.login }));
-  }, [trigger]);
+    dispatch(getByInterest())
+    .then(() => {
+      setLoading(false);
+    })
+  }, []);
 
   useEffect(() => {
     ExpoNotif(user.login);
   }, []);
+
+  if(loading) {
+    return null;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.statusBar}></View>
@@ -53,13 +61,11 @@ export default function Home() {
       <Text style={styles.titleScreen}>Recomendation Activity</Text>
       <ScrollView>
         <View style={styles.listWrapper}>
-          <FeedsItem />
-          <FeedsItem />
-          <FeedsItem />
-          <FeedsItem />
-          <FeedsItem />
-          <FeedsItem />
-          <FeedsItem />
+          {
+            listByInterest.map(activity => {
+              return <FeedsItem key={activity._id} data={activity} routeName={route.name} />
+            })
+          }
         </View>
       </ScrollView>
     </View>
