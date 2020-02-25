@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { LinearGradient } from "expo-linear-gradient";
 import Home from "../screens/home";
 import Invitation from "../screens/invitation";
-import detailFeed from '../screens/detailFeed';
+import detailFeed from "../screens/detailFeed";
 
 export default function StackMyPost() {
   const Stack = createStackNavigator();
@@ -39,7 +39,7 @@ export default function StackMyPost() {
           headerTintColor: "#fff"
         }}
       />
-      <Stack.Screen name="Detail Feed" component={detailFeed}/>
+      <Stack.Screen name="Detail Feed" component={detailFeed} />
     </Stack.Navigator>
   );
 }
