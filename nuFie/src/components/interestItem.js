@@ -9,7 +9,7 @@ export default function interestItem(props) {
   if (props.text.toLowerCase() == "music") {
     colorGradient = ["#03C8A8", "#89D8D3"];
   } else if (props.text.toLowerCase() == "movie") {
-    colorGradient = ["#FBDA61", "#FF5ACD"];
+    colorGradient = ["#F56545", "#99201C"];
   } else if (props.text.toLowerCase() == "sports") {
     colorGradient = ["#FAD961", "#F76B1C"];
   } else if (props.text.toLowerCase() == "travelling") {

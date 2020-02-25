@@ -6,7 +6,7 @@ import firebase from "../../config/config_firebase";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import {ReadSelf} from '../store/actions/user'
+import { ReadSelf } from "../store/actions/user";
 
 const Slides = [
   {
@@ -55,43 +55,47 @@ export default function IntroSlider(props) {
       </View>
     </LinearGradient>
   );
-  const dispatch = useDispatch()
-  const userData  = useSelector(state => state.user.userData)
-  const log  = useSelector(state => state.user.login)
-  const url = useSelector(state => state.other.url)
-  const navigation = useNavigation()
+  const dispatch = useDispatch();
+  const userData = useSelector(state => state.user.userData);
+  const log = useSelector(state => state.user.login);
+  const url = useSelector(state => state.other.url);
+  const navigation = useNavigation();
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
-        firebase
-            .auth()
-            .currentUser.getIdToken(true)
-            .then((idToken) => {
-              const {email, firstName, lastName, password} = userData
-              console.log(email, firstName, lastName, password);
-                return axios({
-                    method: 'POST',
-                    url: `${url}/users/signIn`,
-                    data: {email, firstName, lastName, password, idToken}
-                })
-            })
-            .then(({data}) => {
-                console.log('berhasil Login')
-                dispatch({type: 'SET_LOGIN', val: data.userId})
-                dispatch({type: 'SET_TOKEN', val: data.token})
-                dispatch({type: 'SET_LOADING', val: false})
-                dispatch(ReadSelf())
-                navigation.navigate('MainPage')
-            })
-            .catch((error) => {
-                console.log(error, 'ini error');
-            })
-    } else {
-        if(log == 'logout'){
-          dispatch({type: 'SET_LOGIN', val: false})
-          navigation.navigate('Home')
+      firebase
+        .auth()
+        .currentUser.getIdToken(true)
+        .then(idToken => {
+          const { email, firstName, lastName, password } = userData;
           console.log(email, firstName, lastName, password);
-        }
-        console.log("not logged in");
+          return axios({
+            method: "POST",
+            url: `${url}/users/signIn`,
+            data: { email, firstName, lastName, password, idToken }
+          });
+        })
+        .then(({ data, status }) => {
+          console.log("berhasil Login");
+          dispatch({ type: "SET_LOGIN", val: data.userId });
+          dispatch({ type: "SET_TOKEN", val: data.token });
+          dispatch({ type: "SET_LOADING", val: false });
+          dispatch(ReadSelf());
+          if (status == "201") {
+            navigation.navigate("InterestUpdate");
+          } else {
+            navigation.navigate("MainPage");
+          }
+        })
+        .catch(error => {
+          console.log(error, "ini error");
+        });
+    } else {
+      if (log == "logout") {
+        dispatch({ type: "SET_LOGIN", val: false });
+        navigation.navigate("Home");
+        console.log(email, firstName, lastName, password);
+      }
+      console.log("not logged in");
     }
   });
 
