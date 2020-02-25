@@ -5,7 +5,8 @@ import {
   StyleSheet,
   ScrollView,
   ImageBackground,
-  TouchableOpacity
+  TouchableOpacity,
+  RefreshControl
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Constants from "expo-constants";
@@ -41,6 +42,14 @@ export default function Home({ route }) {
     return null;
   }
 
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getActivities({ token: user.token, id: user.login }))
+    .then((data) => {
+      setRefreshing(false)
+    })
+  }, [refreshing]);
   return (
     <View style={styles.container}>
       <View style={styles.statusBar}></View>
@@ -64,7 +73,11 @@ export default function Home({ route }) {
         </View>
       </View>
       <Text style={styles.titleScreen}>Recomendation Activity</Text>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+        }
+      >
         <View style={styles.listWrapper}>
           {
             listByInterest.map(activity => {

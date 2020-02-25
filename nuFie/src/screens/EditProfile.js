@@ -12,11 +12,11 @@ function EditProfile(props) {
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const [picture, setPicture] = useState('kk')
-    const biodata = useSelector(state => state.user.biodata)
-    const defaultProfile = useSelector(state => state.user.profilePictureDefault)
+    const {profilePictureDefault, biodata, loading} = useSelector(state => state.user)
+
     useEffect(() => {
         if(biodata.profilePicture == ''){
-            setPicture(defaultProfile)
+            setPicture(profilePictureDefault)
         } else {
             setPicture(biodata.profilePicture)
         }
@@ -39,7 +39,9 @@ function EditProfile(props) {
             })
         }
         dispatch(UpdateProfile(formData))
-        navigation.navigate('Profile')
+        .then((data) => {
+            navigation.navigate('Profile')
+        })
         
     }
     const postImageWithCamera = async () => {
@@ -100,7 +102,7 @@ function EditProfile(props) {
                 </TouchableOpacity>
             </View>
             <View style={styles.formContainer}>
-                <EditProfileForm handleEdit={handleEdit}></EditProfileForm>
+                <EditProfileForm handleEdit={handleEdit}/>
             </View>
         </ScrollView>
     )

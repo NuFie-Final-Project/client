@@ -9,21 +9,36 @@ import {
   TouchableOpacity
 } from "react-native";
 import { MaterialIcons, FontAwesome, Ionicons } from "@expo/vector-icons";
-import CountMember from "../components/memberCount";
 import ButtonP from "../components/ButtonOnPost";
 import { useNavigation } from "@react-navigation/native";
+import {useDispatch, useSelector} from 'react-redux'
+import {ActivityDetail} from '../store/actions/Activity'
+import Load from '../components/loading'
 
 export default function DetailPost({ route }) {
+  const {loading} = useSelector(state => state.user)
+  const dispatch = useDispatch()
   const navigation = useNavigation();
   const handleGroupChat = () => {
     navigation.navigate("ChatRoom", { roomId: activity._id });
   };
-
+  
   const activity = route.params.activity;
+
+  const handleReq = () => {
+    navigation.navigate('PendingRequest', {data: activity.pendingJoins, activityId: activity._id})
+  }
 
   const handleSearchFriend = () => {
     navigation.navigate("Search Friend", { data: activity });
   };
+
+  const handleMemberList = () => {
+    dispatch(ActivityDetail(activity._id))
+    .then((data) => {
+      navigation.navigate("MemberList", {activityId: activity._id, from: 'mypost'})
+    })
+  }
 
   return (
     <ScrollView contentContainerStyle={{ height: "100%" }}>
@@ -53,12 +68,19 @@ export default function DetailPost({ route }) {
                 </Text>
               </View>
             </View>
-            <View style={styles.badgeWrapper}>
-              <Ionicons name="ios-people" size={28} color="#fff" />
-              <Text style={{ marginLeft: 6, fontWeight: "700", color: "#fff" }}>
-                {activity.members.length}/{activity.memberLimit}
-              </Text>
-            </View>
+            {
+              loading ? <Load/> :
+              <TouchableOpacity
+                onPress={handleMemberList}
+              >
+                <View style={styles.badgeWrapper}>
+                  <Ionicons name="ios-people" size={28} color="#fff" />
+                    <Text style={{ marginLeft: 6, fontWeight: "700", color: "#fff" }}>
+                      {activity.members.length}/{activity.memberLimit}
+                    </Text>
+                </View>
+              </TouchableOpacity>
+            }
           </View>
           <Text
             style={{
@@ -83,6 +105,12 @@ export default function DetailPost({ route }) {
               color="#0c99c1"
               icon="md-search"
               handle={handleSearchFriend}
+            />
+            <ButtonP
+              text="Requested"
+              color="#0c99c1"
+              icon="md-search"
+              handle={handleReq}
             />
           </View>
         </View>

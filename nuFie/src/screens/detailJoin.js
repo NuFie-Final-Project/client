@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   View,
   Text,
@@ -9,13 +9,17 @@ import {
   TouchableOpacity
 } from "react-native";
 import { MaterialIcons, FontAwesome, Ionicons } from "@expo/vector-icons";
-import CountMember from "../components/memberCount";
 import ButtonP from "../components/ButtonOnPost";
 import { useNavigation } from "@react-navigation/native";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { leaveActivity } from '../store/actions/Activity';
+import { ActivityDetail } from '../store/actions/Activity'
+import Load from '../components/loading'
 
 export default function DetailPost({ route }) {
+  const {loading} = useSelector(state => state.user)
+  const [loadLeave, setLoadLeave] = useState(false)
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const handleGroupChat = () => {
     navigation.navigate("ChatRoomFromMember",{roomId: route.params.activity._id});
@@ -23,12 +27,19 @@ export default function DetailPost({ route }) {
 
   const activity = route.params.activity;
 
-  const dispatch = useDispatch();
+  const handleListMember = () => {
+    dispatch(ActivityDetail(route.params.activity._id))
+    .then((data) => {
+      navigation.navigate("DETAILJOINMEMBER", {from: false})
+    })
+  }
 
   const handleLeaveActivity = () => {
+    setLoadLeave(true)
     dispatch(leaveActivity(activity._id))
         .then(() => {
             navigation.navigate('LIST JOIN GROUP')
+            setLoadLeave(false)
         })
   };
 
@@ -60,12 +71,17 @@ export default function DetailPost({ route }) {
                 </Text>
               </View>
             </View>
-            <View style={styles.badgeWrapper}>
-              <Ionicons name="ios-people" size={28} color="#fff" />
-              <Text style={{ marginLeft: 6, fontWeight: "700", color: "#fff" }}>
-                {activity.members.length}/{activity.memberLimit}
-              </Text>
-            </View>
+            {
+              loading ? <Load/> :
+            <TouchableOpacity onPress={handleListMember}>
+              <View style={styles.badgeWrapper}>
+                <Ionicons name="ios-people" size={28} color="#fff" />
+                <Text style={{ marginLeft: 6, fontWeight: "700", color: "#fff" }}>
+                  {activity.members.length}/{activity.memberLimit}
+                </Text>
+              </View>
+            </TouchableOpacity>
+            }
           </View>
           <Text
             style={{
@@ -85,12 +101,15 @@ export default function DetailPost({ route }) {
               iconColor="#fff"
               handle={handleGroupChat}
             />
-            <ButtonP
-              text="Leave Group"
-              color="#dc3545"
-              icon="md-search"
-              handle={handleLeaveActivity}
-            />
+            {
+              loadLeave ? <Load/> :
+              <ButtonP
+                text="Leave Group"
+                color="#dc3545"
+                icon="md-search"
+                handle={handleLeaveActivity}
+              />
+            }
           </View>
         </View>
       </View>

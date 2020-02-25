@@ -4,28 +4,40 @@ import firebase from "../../../config/config_firebase";
 export const RegisterAction = params => {
   return function(dispatch) {
     dispatch({ type: "SET_LOADING", val: true });
-    return firebase
+    firebase
       .auth()
-      .createUserWithEmailAndPassword(params.email, params.password);
+      .createUserWithEmailAndPassword(params.email, params.password)
+      .then(() => {
+      })
+      .catch((er) => {
+        dispatch({ type: "SET_LOADING", val: false });
+        dispatch({ type: "SET_ERROR", val: {bool: true, message: er.message} })
+      })
   };
 };
 
 export const LoginEmailPassword = params => {
   return function(dispatch) {
     dispatch({ type: "SET_LOADING", val: true });
-    return firebase
+    firebase
       .auth()
-      .signInWithEmailAndPassword(params.email, params.password);
+      .signInWithEmailAndPassword(params.email, params.password)
+      .then((data) => {
+      })
+      .catch((er) => {
+        dispatch({ type: "SET_LOADING", val: false });
+        dispatch({ type: "SET_ERROR", val: {bool: true, message: er.message} })
+      })
   };
 };
 
 export const Logout = () => {
   return function(dispatch) {
     try {
-      firebase.auth().signOut();
       dispatch({ type: "CLEAR_STATE" });
       dispatch({ type: "CLEAR_ACTIVITY" });
       dispatch({ type: "SET_LOGIN", val: "logout" });
+      firebase.auth().signOut();
     } catch (e) {
       console.log("error");
     }
@@ -54,8 +66,8 @@ export const ReadSelf = () => {
 
 export const UpdateProfile = props => {
   return function(dispatch, state) {
-    dispatch({ type: "SET_LOADING", val: false });
-    axios({
+    dispatch({ type: "SET_LOADING", val: true });
+    return axios({
       method: "patch",
       url: `${state().other.url}/users`,
       headers: {
@@ -84,13 +96,6 @@ export const FindFriend = props => {
       method: "POST",
       data: { tags: state().user.biodata.interests }
     })
-      .then(({ data }) => {
-        dispatch({ type: "SET_SUGGESTFRIEND", val: data.users });
-        dispatch({ type: "SET_LOADING", val: false });
-      })
-      .catch(err => {
-        console.log(err, "find");
-      })
       .then(({ data }) => {
         dispatch({ type: "SET_SUGGESTFRIEND", val: data.users });
         dispatch({ type: "SET_LOADING", val: false });

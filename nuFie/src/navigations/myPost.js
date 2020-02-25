@@ -10,6 +10,9 @@ import EditActivity from "../screens/EditActivity";
 import { View, TouchableHighlight } from "react-native";
 import FindFriend from "../screens/FindFriends";
 import { useNavigation } from "@react-navigation/native";
+import DetailMember from '../screens/DetailMember'
+import DetailProfile from '../screens/ProfileMember'
+import ListPending from '../screens/PendingRequest'
 
 export default function StackMyPost({ route }) {
   const navigation = useNavigation();
@@ -76,6 +79,9 @@ export default function StackMyPost({ route }) {
         }}
       />
       <Stack.Screen name="EDIT POST" component={EditActivity} />
+      <Stack.Screen name="MemberList" component={DetailMember} />
+      <Stack.Screen name="DetailMember" component={DetailProfile} />
+      <Stack.Screen name="PendingRequest" component={ListPending} />
       <Stack.Screen
         name="Search Friend"
         component={FindFriend}

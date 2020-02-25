@@ -1,4 +1,5 @@
 const initializeState = {
+<<<<<<< HEAD
   data: [],
   error: null,
   category: [],
@@ -47,3 +48,44 @@ export default function activityReducer(state = initializeState, action) {
       return state;
   }
 }
+=======
+    data: [], 
+    error: null,
+    category: [],
+    listJoin: [],
+    detailMember: []
+}
+
+export default function activityReducer (state = initializeState, action) {
+    switch(action.type) {
+        case 'FETCH_ACTIVITIES_START':
+            return {
+                ...state,
+                loading: true
+            }
+        case 'FETCH_ACTIVITIES': 
+            return {
+                ...state,
+                data: action.payload,
+                loading: false
+            }
+        case 'SET_MYPOST':
+            return {...state, data: action.val}
+        case 'SET_CATEGORY':
+            return {...state, category: action.val}
+        case 'FETCH_ACTIVITIES_JOIN':
+            return {...state, listJoin: action.payload}
+        case 'SET_DETAILMEMBER':
+            return {...state, detailMember: action.val}
+        case 'CLEAR_ACTIVITY':
+            return {
+                data: [], 
+                error: null,
+                category: [],
+                listJoin: []
+            }
+        default: 
+            return state
+    }
+}
+>>>>>>> 80% Bug done

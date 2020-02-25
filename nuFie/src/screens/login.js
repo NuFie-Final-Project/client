@@ -15,9 +15,12 @@ import { LoginEmailPassword } from "../store/actions/user";
 import {useSelector} from 'react-redux'
 import ButtonLogin from "../components/buttonLoginRegis";
 import Loading from '../components/loading'
+import AwesomeAlert from 'react-native-awesome-alerts'
 
 export default function Login() {
   const load = useSelector(state => state.user.loading)
+  const {errorTrigger} = useSelector(state => state.other)
+  console.log(errorTrigger.message)
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +31,6 @@ export default function Login() {
       val: { email, password, firstName: null, lastName: null }
     });
     dispatch(LoginEmailPassword({ email, password }));
-    // navigation.navigate("MainPage")
   };
   const handleEmail = prop => {
     setEmail(prop.nativeEvent.text);
@@ -89,6 +91,14 @@ export default function Login() {
             </View>
           </View>
         </ImageBackground>
+        <AwesomeAlert
+          show={errorTrigger.bool}
+          showProgress={false}
+          title="Oppssss"
+          message={errorTrigger.message}
+          onDismiss={() => {dispatch({type: 'SET_ERROR', val: {bool: false, message: ''}})}}
+          
+        />
       </View>
     </KeyboardAvoidingView>
   );
