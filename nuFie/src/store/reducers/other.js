@@ -1,6 +1,6 @@
 const store = {
   show: false,
-  url: "http://172.16.20.130:3000",
+  url: "http://ec2-18-219-119-178.us-east-2.compute.amazonaws.com:55555",
   trigger: "null",
   pushToken: ""
 };

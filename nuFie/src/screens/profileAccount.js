@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   header: {
-    height: "35%",
+    height: "39%",
     width: "100%"
   },
   headerWraper: {
