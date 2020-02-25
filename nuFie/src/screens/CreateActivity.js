@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Text, TextInput, ScrollView, StyleSheet } from "react-native";
+import React, { useState, useRef } from "react";
+import { Text, TextInput, ScrollView, StyleSheet, Dimensions } from "react-native";
 import PostActivityForm from "../components/PostActivityForm";
 import AwesomeAlert from "react-native-awesome-alerts";
 import * as ImagePicker from "expo-image-picker";
@@ -8,13 +8,16 @@ function createActivity({ route }) {
   const [ showAlert, setShowAlert ] = useState(false);
   const [ uploadImage, setUploadImage ] = useState("");
   const [ scrollView, setScrollView ] = useState("");
+  const scrollRef = useRef()
 
   const openAlert = object => {
     setShowAlert(object.showAlert);
   };
 
   const scrollToBottom = () => {
-    scrollView.scrollToEnd({animated: true})
+    setTimeout(() => {
+      scrollRef.current.scrollToEnd({animated: true})
+    }, 100)
   }
 
   const postImageWithCamera = async () => {
@@ -74,9 +77,7 @@ function createActivity({ route }) {
   return (
     <ScrollView 
     contentContainerStyle={{ backgroundColor: "#fff" }}
-    ref={(view) => {
-      setScrollView(view);
-    }}>
+    ref={scrollRef}>
       <PostActivityForm
         route={route}
         openAlert={openAlert}
@@ -100,11 +101,10 @@ function createActivity({ route }) {
           setShowAlert(false);
         }}
         overlayStyle={{
-          height: '130%'
+          height: '100%'
         }}
-        alertContainerStyle={{
-          position: 'absolute',
-          bottom: 165
+        contentContainerStyle={{
+          bottom: Dimensions.get('window').height / 2.2
         }}
       />
     </ScrollView>

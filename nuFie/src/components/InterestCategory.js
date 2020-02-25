@@ -30,7 +30,7 @@ export default function InterestCategory(props) {
   const navigation = useNavigation();
   const handlePress = () => {
     dispatch(FetchCategory(props.text.toLowerCase()));
-    navigation.navigate("Category");
+    navigation.navigate("Category", { interest: props.text });
   };
   return (
     <TouchableHighlight

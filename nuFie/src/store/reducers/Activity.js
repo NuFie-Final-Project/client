@@ -2,7 +2,9 @@ const initializeState = {
     data: [], 
     error: null,
     category: [],
-    listJoin: []
+    listJoin: [],
+    listByExplore: [],
+    listByInterest: []
 }
 
 export default function activityReducer (state = initializeState, action) {
@@ -24,12 +26,21 @@ export default function activityReducer (state = initializeState, action) {
             return {...state, category: action.val}
         case 'FETCH_ACTIVITIES_JOIN':
             return {...state, listJoin: action.payload}
+        case 'FETCH_ACTIVITIES_EXPLORE': 
+            return {...state, listByExplore: action.payload}
+        case 'CLEAR_LIST_EXPLORE':
+            return {...state, listByExplore: []}
         case 'CLEAR_ACTIVITY':
             return {
                 data: [], 
                 error: null,
                 category: [],
                 listJoin: []
+            }
+        case 'FETCH_ACTIVITIES_INTEREST':
+            return {
+                ...state,
+                listByInterest: action.payload
             }
         default: 
             return state

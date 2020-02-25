@@ -6,60 +6,120 @@ import {
   Dimensions,
   Image,
   ImageBackground,
-  TouchableHighlight
+  TouchableHighlight,
 } from "react-native";
 import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from '@react-navigation/native';
 
-export default function FeedsItem() {
-  return (
-    <View style={styles.cardFeed}>
-      <View style={styles.cardHeader}>
-        <Image
-          source={require("../../assets/edit_profile_dummy.jpg")}
-          style={styles.profpict}
-        />
-        <View style={{ justifyContent: "center" }}>
-          <Text style={{ fontWeight: "700" }}>Camila Jansen</Text>
-          <Text style={{ fontSize: 10, color: "#777777" }}>
-            Sun, 02 Maret 2020
-          </Text>
+export default function FeedsItem({ data, routeName }) {
+
+  const navigation = useNavigation();
+
+  if(routeName === 'Category') {
+    return (
+      <View style={styles.cardFeed}>
+        <View style={styles.cardHeader}>
+          <Image
+            source={{uri: data.image}}
+            style={styles.profpict}
+          />
+          <View style={{ justifyContent: "center" }}>
+            <Text style={{ fontWeight: "700" }}>Camila Jansen</Text>
+            <Text style={{ fontSize: 10, color: "#777777" }}>
+              Sun, 02 Maret 2020
+            </Text>
+          </View>
+          <TouchableHighlight style={styles.btnDetail} onPress={() => {
+            navigation.navigate('Detail Category', { activity: data});
+          }}>
+            <Text style={{ color: "#fff", fontSize: 12 }}>View Detail</Text>
+          </TouchableHighlight>
         </View>
-        <TouchableHighlight style={styles.btnDetail}>
-          <Text style={{ color: "#fff", fontSize: 12 }}>View Detail</Text>
-        </TouchableHighlight>
-      </View>
-      <View style={styles.cardImage}>
-        <ImageBackground
-          style={{ width: "100%", height: "100%" }}
-          source={require("../../assets/konser.jpg")}
-        />
-      </View>
-      <View style={styles.cardText}>
-        <Text style={styles.cardTitle}>Need Friends for Watching Concert</Text>
-        <View style={{ flexDirection: "row" }}>
-          <MaterialIcons name="place" color="#777777" />
-          <Text style={styles.place}>JIEXPO Kemayoran, Jakarta</Text>
+        <View style={styles.cardImage}>
+          <ImageBackground
+            style={{ width: "100%", height: "100%" }}
+            source={{uri: data.image}}
+          />
         </View>
-        <View style={{ flexDirection: "row" }}>
-          <FontAwesome name="calendar" color="#777777" />
-          <Text style={styles.date}>Sunday, 29 March 2020</Text>
+        <View style={styles.cardText}>
+        <Text style={styles.cardTitle}>{data.title}</Text>
+          <View style={{ flexDirection: "row" }}>
+            <MaterialIcons name="place" color="#777777" />
+            <Text style={styles.place}>{data.location}</Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <FontAwesome name="calendar" color="#777777" />
+            <Text style={styles.date}>{new Date(data.due_date).toDateString()}</Text>
+          </View>
         </View>
       </View>
-    </View>
-    // <View style={styles.card}>
-    //   <View></View>
-    //   <View style={styles.footer}>
-    //     <View style={styles.footerText}>
-    //       <Text>This is title of Interest</Text>
-    //       <Text>Sunday, 01 March 2020</Text>
-    //       <Text>CinemaXXI Pondok Indah Mall</Text>
-    //     </View>
-    //     <View>
-    //       <View style={styles.userPhoto}></View>
-    //     </View>
-    //   </View>
-    // </View>
-  );
+      // <View style={styles.card}>
+      //   <View></View>
+      //   <View style={styles.footer}>
+      //     <View style={styles.footerText}>
+      //       <Text>This is title of Interest</Text>
+      //       <Text>Sunday, 01 March 2020</Text>
+      //       <Text>CinemaXXI Pondok Indah Mall</Text>
+      //     </View>
+      //     <View>
+      //       <View style={styles.userPhoto}></View>
+      //     </View>
+      //   </View>
+      // </View>
+    );
+  } else {
+    return  (<View style={styles.cardFeed}>
+        <View style={styles.cardHeader}>
+          <Image
+            source={require("../../assets/edit_profile_dummy.jpg")}
+            style={styles.profpict}
+          />
+          <View style={{ justifyContent: "center" }}>
+            <Text style={{ fontWeight: "700" }}>Camila Jansen</Text>
+            <Text style={{ fontSize: 10, color: "#777777" }}>
+              Sun, 02 Maret 2020
+            </Text>
+          </View>
+          <TouchableHighlight style={styles.btnDetail} onPress={() => {
+            navigation.navigate('Detail Feed', { activity: data })
+          }}>
+            <Text style={{ color: "#fff", fontSize: 12 }}>View Detail</Text>
+          </TouchableHighlight>
+        </View>
+        <View style={styles.cardImage}>
+          <ImageBackground
+            style={{ width: "100%", height: "100%" }}
+            source={{uri: data.image}}
+          />
+        </View>
+        <View style={styles.cardText}>
+          <Text style={styles.cardTitle}>{data.title}</Text>
+          <View style={{ flexDirection: "row" }}>
+            <MaterialIcons name="place" color="#777777" />
+            <Text style={styles.place}>{data.location}</Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <FontAwesome name="calendar" color="#777777" />
+            <Text style={styles.date}>{new Date(data.due_date).toDateString()}</Text>
+          </View>
+        </View>
+      </View>
+      // <View style={styles.card}>
+      //   <View></View>
+      //   <View style={styles.footer}>
+      //     <View style={styles.footerText}>
+      //       <Text>This is title of Interest</Text>
+      //       <Text>Sunday, 01 March 2020</Text>
+      //       <Text>CinemaXXI Pondok Indah Mall</Text>
+      //     </View>
+      //     <View>
+      //       <View style={styles.userPhoto}></View>
+      //     </View>
+      //   </View>
+      // </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({

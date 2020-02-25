@@ -36,7 +36,9 @@ function postActivityForm({ route, openAlert, uploadImage, activity, scrollToBot
     const [ warnings, setWarnings ] = useState([]);
     const [ marginBottomButton, setMarginBottomButton ] = useState(0);
     const [ loadingState, setLoadingState ] = useState(true);
+    const [ userWarnings, setUserWarnings ] = useState([]);
     const warningsTemp = [];
+    const userWarningTemp = [];
     
     const user = useSelector(state => state.user);
     const navigation = useNavigation();
@@ -106,8 +108,8 @@ function postActivityForm({ route, openAlert, uploadImage, activity, scrollToBot
         if(title.length === 0) {
             warningsTemp.push('Title cannot be empty')
         }
-        if(description.length < 100) {
-            warningsTemp.push('Description cannot be empty');
+        if(description.length < 50) {
+            warningsTemp.push('Description must be at least 50 character');
         }
         if(parseInt(memberLimit) < 2) {
             warningsTemp.push('Member limit must be greater or equal to 2');
@@ -127,6 +129,15 @@ function postActivityForm({ route, openAlert, uploadImage, activity, scrollToBot
         if(address.length === 0) {
             warningsTemp.push(`Address cannot be empty`);
         }
+        if(user.biodata.aboutMe.length === 0) {
+            userWarningTemp.push('You have to filled About Me information First');
+        }
+        if(!user.biodata.phoneNumber) {
+            userWarningTemp.push(`You have to filled Phone Number information First`);
+        }
+        if(user.biodata.gender === 'undefined') {
+            userWarningTemp.push(`You have to filled Gender information First`);
+        }
         if(warningsTemp.length > 0) {
             return false
         } else {
@@ -145,6 +156,7 @@ function postActivityForm({ route, openAlert, uploadImage, activity, scrollToBot
     const postActivity = () => {
         if(!formValidation()) {
             setWarnings([...warningsTemp]);
+            setUserWarnings([...userWarningTemp]);
             setMarginBottomButton(20);
             scrollToBottom();
         } else {
@@ -351,6 +363,13 @@ function postActivityForm({ route, openAlert, uploadImage, activity, scrollToBot
                     warnings.length === 0
                         ?   <Text></Text>
                         :   <View style={styles.warningsContainer}>
+                            <Text style={{
+                                marginBottom: 25, 
+                                textAlign: 'center',
+                                fontSize: 17,
+                                fontWeight: 'bold',
+                                color: '#721C1B'
+                                }}>Form Validation Error</Text>
                             {
                                 warnings.map((warning, i) => {
                                     return <View key={i} style={styles.warningContainer}>
@@ -368,6 +387,37 @@ function postActivityForm({ route, openAlert, uploadImage, activity, scrollToBot
                             }
                     </View>
                 }
+                <View style={{marginTop: 20}}>
+                    {
+                        userWarnings.length === 0
+                            ?   <Text></Text>
+                            :   <View style={styles.warningsContainer}>
+                                <Text
+                                style={{
+                                    marginBottom: 25, 
+                                    textAlign: 'center',
+                                    fontSize: 17,
+                                    fontWeight: 'bold',
+                                    color: '#721C1B'
+                                    }}>User Validation Error</Text>
+                                    {
+                                        userWarnings.map((warning, i) => {
+                                            return <View key={i} style={styles.warningContainer}>
+                                                <FontAwesome 
+                                                name="arrow-right"
+                                                color="#721C1B" 
+                                                size={20}/>
+                                                <Text style={{
+                                                    marginLeft: 10, 
+                                                    color: '#721C1B',
+                                                    fontWeight: 'bold'
+                                                    }}>{warning}</Text>
+                                            </View>
+                                        })
+                                    }
+                                </View>    
+                        }
+                </View>
             </View>
         </>
     )

@@ -192,3 +192,65 @@ export const leaveActivity = id => {
       });
   };
 };
+
+export const exploreInterest = (interest) => {
+  return function(dispatch, state) {
+    return axios({
+      method: 'get',
+      url: `${state().other.url}/activities/interest/${interest}`,
+      headers: {
+        token: state().user.token
+      }
+    })
+    .then(response => {
+      const activities = response.data.activities;
+      dispatch({
+        type: 'FETCH_ACTIVITIES_EXPLORE',
+        payload: activities
+      })
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }
+}
+
+export const getByInterest = () => {
+  return function(dispatch, state) {
+    return axios({
+      method: 'get',
+      url: `${state().other.url}/activities/getRecommendedActivities`,
+      headers: {
+        token: state().user.token
+      }
+    })
+    .then(response => {
+      const interestActivities = response.data.activities;
+      dispatch({
+        type: 'FETCH_ACTIVITIES_INTEREST',
+        payload: interestActivities
+      })
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
+}
+
+export const joinActivities = (id) => {
+  return function (dispatch, state) {
+    return axios({
+      method: 'post',
+      url: `${state().other.url}/activities/join/${id}`,
+      headers: {
+        token: state().user.token
+      }
+    })
+    .then(response => {
+      dispatch({ type: "SET_TRIGGER", val: "join_group" });
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
+}
