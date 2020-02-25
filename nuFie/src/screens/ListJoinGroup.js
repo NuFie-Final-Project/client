@@ -11,7 +11,6 @@ function ListJoinGroup({ route }) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log('use Effect JAlan')
         dispatch(getActivities());
         setLoading(true);
     }, []);
@@ -25,7 +24,7 @@ function ListJoinGroup({ route }) {
             return <Text>You haven't join any activities</Text>
         } else {
             return listJoin.listJoin.map(activity => {
-                return <JoinGroupCard key={activity._id} activity={activity}></JoinGroupCard>
+                return <JoinGroupCard key={activity._id} activity={activity}/>
             })
         }
     }

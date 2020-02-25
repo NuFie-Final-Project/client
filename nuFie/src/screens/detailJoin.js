@@ -18,7 +18,7 @@ import { leaveActivity } from '../store/actions/Activity';
 export default function DetailPost({ route }) {
   const navigation = useNavigation();
   const handleGroupChat = () => {
-    navigation.navigate("ChatRoom");
+    navigation.navigate("ChatRoomFromMember",{roomId: route.params.activity._id});
   };
 
   const activity = route.params.activity;
