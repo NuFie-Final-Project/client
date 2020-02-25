@@ -21,7 +21,7 @@ export default function Home({ route }) {
   const listByInterest = useSelector(state => state.activity.listByInterest);
   const user = useSelector(state => state.user);
   const navigation = useNavigation();
-  const [ loading, setLoading ] = useState(true);
+  const [ loading, setLoading ] = useState(false);
   const handleNotif = () => {
     navigation.navigate("Invitation");
   };
@@ -39,7 +39,7 @@ export default function Home({ route }) {
   }, []);
 
   if(loading) {
-    return null;
+    return <View></View>
   }
 
   const [refreshing, setRefreshing] = useState(false);

@@ -13,11 +13,7 @@ function FindFriends(props) {
     dispatch(FindFriend(userData.token));
   }, []);
   return (
-<<<<<<< HEAD
     <ScrollView>
-=======
-    <ScrollView contentContainerStyle={{ }}>
->>>>>>> 80% Bug done
       <View style={styles.container}>
         {userData.suggestFriend.map(el => (
           <FriendCard key={el._id} detailPost={detailPost} data={el} />

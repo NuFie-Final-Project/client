@@ -193,26 +193,15 @@ export const leaveActivity = id => {
   };
 };
 
-<<<<<<< HEAD
 export const exploreInterest = (interest) => {
   return function(dispatch, state) {
     return axios({
       method: 'get',
       url: `${state().other.url}/activities/interest/${interest}`,
-=======
-
-export const ActivityDetail = (props) => {
-  return function(dispatch, state) {
-    dispatch({ type: "SET_LOADING", val: true });
-    return axios({
-      method: "get",
-      url: `${state().other.url}/activities/${props}`,
->>>>>>> 80% Bug done
       headers: {
         token: state().user.token
       }
     })
-<<<<<<< HEAD
     .then(response => {
       const activities = response.data.activities;
       dispatch({
@@ -225,6 +214,27 @@ export const ActivityDetail = (props) => {
     })
   }
 }
+
+export const ActivityDetail = (props) => {
+  return function(dispatch, state) {
+    dispatch({ type: "SET_LOADING", val: true });
+    return axios({
+      method: "get",
+      url: `${state().other.url}/activities/${props}`,
+      headers: {
+        token: state().user.token
+      }
+    })
+    .then(({data}) => {
+      dispatch({ type: "SET_LOADING", val: false });
+      dispatch({type: 'SET_DETAILMEMBER', val: data.activity.members})
+    })
+    .catch((er) => {
+      dispatch({ type: "SET_LOADING", val: false });
+      dispatch({ type: "SET_ERROR", val: {bool: true, message: er.message} })
+    })
+  }
+} 
 
 export const getByInterest = () => {
   return function(dispatch, state) {
@@ -265,17 +275,6 @@ export const joinActivities = (id) => {
     })
   }
 }
-=======
-    .then(({data}) => {
-      dispatch({ type: "SET_LOADING", val: false });
-      dispatch({type: 'SET_DETAILMEMBER', val: data.activity.members})
-    })
-    .catch((er) => {
-      dispatch({ type: "SET_LOADING", val: false });
-      dispatch({ type: "SET_ERROR", val: {bool: true, message: er.message} })
-    })
-  }
-} 
 
 export const AcceptRequestJoin = (props) => {
   return function (dispatch, state) {
@@ -348,4 +347,3 @@ export const KickMember = (props) => {
     })
   }
 }
->>>>>>> 80% Bug done

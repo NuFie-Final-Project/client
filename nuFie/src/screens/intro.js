@@ -6,12 +6,8 @@ import firebase from "../../config/config_firebase";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation, useRoute } from "@react-navigation/native";
-<<<<<<< HEAD
-import { ReadSelf } from "../store/actions/user";
-=======
 import {ReadSelf} from '../store/actions/user'
 import AwesomeAlert from 'react-native-awesome-alerts'
->>>>>>> 80% Bug done
 
 const Slides = [
   {
@@ -60,7 +56,6 @@ export default function IntroSlider(props) {
       </View>
     </LinearGradient>
   );
-<<<<<<< HEAD
   const dispatch = useDispatch();
   const userData = useSelector(state => state.user.userData);
   const log = useSelector(state => state.user.login);
@@ -102,45 +97,6 @@ export default function IntroSlider(props) {
         console.log(email, firstName, lastName, password);
       }
       console.log("not logged in");
-=======
-  const dispatch = useDispatch()
-  const {email, firstName, lastName, password} = useSelector(state => state.user.userData)
-  const log  = useSelector(state => state.user.login)
-  const {url, errorTrigger} = useSelector(state => state.other)
-  const navigation = useNavigation()
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-        firebase
-            .auth()
-            .currentUser.getIdToken(true)
-            .then((idToken) => {
-                return axios({
-                    method: 'POST',
-                    url: `${url}/users/signIn`,
-                    data: {email, firstName, lastName, password, idToken}
-                })
-            })
-            .then(({data}) => {
-                console.log('berhasil Login')
-                dispatch({type: 'SET_LOGIN', val: data.userId})
-                dispatch({type: 'SET_TOKEN', val: data.token})
-                dispatch({type: 'SET_LOADING', val: false})
-                dispatch(ReadSelf())
-                navigation.navigate('MainPage')
-            })
-            .catch((error) => {
-                dispatch({ type: "SET_LOADING", val: false });
-            })
-    } else {
-        if(log == 'logout'){
-          dispatch({ type: "CLEAR_STATE" });
-          dispatch({ type: "CLEAR_ACTIVITY" });
-          console.log(email, firstName, lastName, password, '=======================');
-          dispatch({type: 'SET_LOGIN', val: false})
-          navigation.navigate('Home')
-        }
-        console.log("not logged in");
->>>>>>> 80% Bug done
     }
   });
 
