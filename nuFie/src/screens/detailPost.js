@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   View,
   Text,
@@ -14,9 +14,10 @@ import { useNavigation } from "@react-navigation/native";
 import {useDispatch, useSelector} from 'react-redux'
 import {ActivityDetail} from '../store/actions/Activity'
 import Load from '../components/loading'
+import { FindFriend } from "../store/actions/user";
 
 export default function DetailPost({ route }) {
-  const {loading} = useSelector(state => state.user)
+  const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
   const navigation = useNavigation();
   const handleGroupChat = () => {
@@ -30,13 +31,21 @@ export default function DetailPost({ route }) {
   }
 
   const handleSearchFriend = () => {
-    navigation.navigate("Search Friend", { data: activity });
+    dispatch(FindFriend({data: activity, page: 1}))
+    .then(() => {
+      navigation.navigate("Search Friend", { data: activity })
+    })
   };
 
   const handleMemberList = () => {
+    setLoading(true)
     dispatch(ActivityDetail(activity._id))
     .then((data) => {
       navigation.navigate("MemberList", {activityId: activity._id, from: 'mypost'})
+      setLoading(false)
+    })
+    .catch((err) => {
+      setLoading(false)
     })
   }
 

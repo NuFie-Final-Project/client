@@ -1,19 +1,39 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View, RefreshControl } from "react-native";
 import Constants from "expo-constants";
 import FriendCard from "../components/FriendCard";
 import { FindFriend } from "../store/actions/user";
 import { useDispatch, useSelector } from "react-redux";
 
 function FindFriends(props) {
-  const detailPost = props.route.params.data;
-  const dispatch = useDispatch();
-  const userData = useSelector(state => state.user);
+  const dispatch = useDispatch()
+  const [refreshing, setRefreshing] = useState(false);
+  const [page, setPage] = useState(2)
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(FindFriend({data: detailPost, page: page}))
+    .then(() => { 
+      setPage(page+1)
+      setRefreshing(false)
+    })
+    .catch((err) => {
+      console.log(err.message, 'errrro')
+    })
+  }, [refreshing]);
+
   useEffect(() => {
-    dispatch(FindFriend(userData.token));
-  }, []);
+    if(userData.suggestFriend.length == 0){
+      setPage(1)
+    }
+  },[page])
+  const detailPost = props.route.params.data;
+  const userData = useSelector(state => state.user)
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+      }
+    >
       <View style={styles.container}>
         {userData.suggestFriend.map(el => (
           <FriendCard key={el._id} detailPost={detailPost} data={el} />

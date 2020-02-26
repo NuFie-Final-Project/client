@@ -6,7 +6,8 @@ import {
   ScrollView,
   Image,
   ImageBackground,
-  Dimensions
+  Dimensions,
+  Linking
 } from "react-native";
 import Constants from "expo-constants";
 import { Entypo, FontAwesome, Foundation, Ionicons } from "@expo/vector-icons";
@@ -20,6 +21,11 @@ export default function ProfileUser(params) {
   const biodata = params.route.params.data
   const defaultProfile = useSelector(state => state.user.profilePictureDefault);
   const dispatch = useDispatch();
+  const handlePhoneNumber = () => {
+    if(biodata.phoneNumber != ''){
+      Linking.openURL(`https://api.whatsapp.com/send?phone=${biodata.phoneNumber.slice(1, biodata.phoneNumber.length)}`)
+    }
+  }
 
   const simbol = () => {
     const gen = biodata.gender;
@@ -51,7 +57,7 @@ export default function ProfileUser(params) {
         </View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <FontAwesome name="phone" color="#fff" size={13} />
-          <Text style={styles.contactText}>{biodata.phoneNumber}</Text>
+          <Text style={styles.contactText} onPress={handlePhoneNumber}>{biodata.phoneNumber}</Text>
         </View>
       </View>
     </>

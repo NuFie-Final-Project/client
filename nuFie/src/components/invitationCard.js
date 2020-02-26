@@ -1,21 +1,26 @@
-import React from "react";
+import React, {useState} from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import Btn from "./btnAcceptDecline";
 import { useDispatch, useSelector } from "react-redux";
 import { AcceptInvite } from "../store/actions/Activity";
+import Load from '../components/loading'
 
 export default function InvitationCard(props) {
-  //   console.log(Object.keys(props.data.owner.profilePicture));
   const dispatch = useDispatch();
-  const profPict = useSelector(state => state.user.profilePictureDefault);
+  const {profilePictureDefault} = useSelector(state => state.user);
+  const [loading, setLoading] = useState(false)
   const handleAccept = () => {
-    dispatch(AcceptInvite(props.data._id));
+    setLoading(true)
+    dispatch(AcceptInvite(props.data._id))
+    .then(() => {
+      setLoading(false)
+    })
   };
   const handleDecline = () => {};
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: props.data.owner.profilePicture || profPict }}
+        source={{ uri: props.data.owner.profilePicture || {profilePictureDefault} }}
         style={styles.image}
       />
       <View style={styles.textWrapper}>
@@ -25,27 +30,15 @@ export default function InvitationCard(props) {
         <Text style={styles.inviteText}>
           Invited you to Join " {props.data.title} " Activity
         </Text>
-        <View style={styles.btnWrap}>
-          <Btn text="Accept" color="#00c6fb" handle={handleAccept} />
-          <Btn text="Decline" color="#ef4339" handle={handleDecline} />
-        </View>
+        {
+          loading ? <Load/> :
+          <View style={styles.btnWrap}>
+            <Btn text="Accept" color="#00c6fb" handle={handleAccept} />
+            <Btn text="Decline" color="#ef4339" handle={handleDecline} />
+          </View>
+        }
       </View>
     </View>
-    // <View style={style.container}>
-    //   <View>
-    //     <Image
-    //       source={{ uri: "https://facebook.github.io/react/logo-og.png" }}
-    //       style={style.profile}
-    //     />
-    //   </View>
-    //   <View style={style.right}>
-    //     <View>
-    //       <Text style={style.name}>Jhon Mayer</Text>
-    //       <Text>Wants to join your activity</Text>
-    //     </View>
-
-    //   </View>
-    // </View>
   );
 }
 

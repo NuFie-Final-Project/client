@@ -6,6 +6,7 @@ import BtnRegister from "../components/buttonLoginRegis";
 import { RegisterAction } from "../store/actions/user";
 import { useSelector, useDispatch } from "react-redux";
 import Load from "../components/loading";
+import AwesomeAlert from 'react-native-awesome-alerts'
 
 export default function Register() {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ export default function Register() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const {errorTrigger} = useSelector(state => state.other)
 
   const handleFirstName = event => {
     setFirstName(event.nativeEvent.text);
@@ -95,6 +97,13 @@ export default function Register() {
             />
           )}
         </View>
+        <AwesomeAlert
+          show={errorTrigger.bool}
+          showProgress={false}
+          title="Oppssss"
+          message={errorTrigger.message}
+          onDismiss={() => {dispatch({type: 'SET_ERROR', val: {bool: false, message: ''}})}}
+        />
       </KeyboardAvoidingView>
     </View>
 

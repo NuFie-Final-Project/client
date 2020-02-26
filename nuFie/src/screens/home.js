@@ -21,6 +21,8 @@ export default function Home({ route }) {
   const listByInterest = useSelector(state => state.activity.listByInterest);
   const user = useSelector(state => state.user);
   const navigation = useNavigation();
+  const [ loading, setLoading ] = useState(false);
+  const InvitationList = useSelector(state => state.user.invitation);
   const handleNotif = () => {
     navigation.navigate("Invitation");
   };
@@ -32,6 +34,10 @@ export default function Home({ route }) {
       setLoading(false);
     })
   }, []);
+
+  useEffect(() => {
+    dispatch(getActivities({ token: user.token, id: user.login }))
+  }, [trigger])
 
   useEffect(() => {
     ExpoNotif(user.login);
@@ -46,6 +52,13 @@ export default function Home({ route }) {
     })
   }, [refreshing]);
 
+  const badge = () => {
+    return (
+      <View style={styles.badgeNotif}>
+        <Text style={styles.notifText}>{InvitationList.length}</Text>
+      </View>
+    )
+  }
   return (
     <View style={styles.container}>
       <View style={styles.statusBar}></View>
@@ -61,7 +74,7 @@ export default function Home({ route }) {
           <TouchableOpacity onPress={handleNotif}>
             <View>
               <View style={styles.badgeNotif}>
-                <Text style={styles.notifText}>10</Text>
+                <Text style={styles.notifText}>{InvitationList.length}</Text>
               </View>
               <Ionicons name="ios-notifications" size={28} color="#fff" />
             </View>

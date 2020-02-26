@@ -26,7 +26,7 @@ export const createActivity = activity => {
         dispatch({ type: "SET_TRIGGER", val: "add" });
       })
       .catch(error => {
-        console.log(error);
+        dispatch({ type: "SET_LOADING", val: false });
       });
   };
 };
@@ -74,7 +74,7 @@ export const getActivities = () => {
         });
       })
       .catch(error => {
-        console.log(error);
+        dispatch({ type: "SET_LOADING", val: false });
       });
   };
 };
@@ -93,7 +93,7 @@ export const editActivity = activity => {
         dispatch({ type: "SET_TRIGGER", val: "edit" });
       })
       .catch(error => {
-        console.log(error);
+        dispatch({ type: "SET_LOADING", val: false });
       });
   };
 };
@@ -107,10 +107,14 @@ export const FetchCategory = props => {
       headers: {
         token: state().user.token
       }
-    }).then(({ data }) => {
+    })
+    .then(({ data }) => {
       dispatch({ type: "SET_CATEGORY", val: data.activities });
       dispatch({ type: "SET_LOADING", val: false });
-    });
+    })
+    .catch((err) => {
+      dispatch({ type: "SET_LOADING", val: false });
+    })
   };
 };
 
@@ -132,6 +136,7 @@ export const InviteFriend = props => {
         dispatch({ type: "SET_LOADING", val: false });
       })
       .catch(err => {
+        dispatch({ type: "SET_LOADING", val: false });
         console.log(err, "gagal Invite");
       });
   };
@@ -148,10 +153,12 @@ export const AcceptInvite = props => {
       }
     })
       .then(({ data }) => {
+        console.log('berhasil accpet')
         dispatch({ type: "SET_LOADING", val: false });
-        dispatch({ type: "SET_TRIGGER", val: "acceptinvite" });
+        dispatch({ type: "SET_TRIGGER", val: props });
       })
       .catch(err => {
+        dispatch({ type: "SET_LOADING", val: false });
         console.log(err, "gagal accpet");
       });
   };
@@ -170,6 +177,7 @@ export const cancelActivity = id => {
         dispatch({ type: "SET_TRIGGER", val: "cancel" });
       })
       .catch(error => {
+        dispatch({ type: "SET_LOADING", val: false });
         console.log(error);
       });
   };
@@ -188,6 +196,7 @@ export const leaveActivity = id => {
         dispatch({ type: "SET_TRIGGER", val: "list_join_group" });
       })
       .catch(error => {
+        dispatch({ type: "SET_LOADING", val: false });
         console.log(error);
       });
   };
@@ -210,6 +219,7 @@ export const exploreInterest = (interest) => {
       })
     })
     .catch(error => {
+      dispatch({ type: "SET_LOADING", val: false });
       console.log(error)
     })
   }
@@ -253,6 +263,7 @@ export const getByInterest = () => {
       })
     })
     .catch(error => {
+      dispatch({ type: "SET_LOADING", val: false });
       console.log(error);
     })
   }
@@ -271,6 +282,7 @@ export const joinActivities = (id) => {
       dispatch({ type: "SET_TRIGGER", val: "join_group" });
     })
     .catch(error => {
+      dispatch({ type: "SET_LOADING", val: false });
       console.log(error);
     })
   }
@@ -283,7 +295,8 @@ export const AcceptRequestJoin = (props) => {
       method: "post",
       url: `${state().other.url}/activities/joinAccept/${props.activityId}`,
       headers: {
-        token: state().user.token
+        token: state().user.token,
+        pushToken: props.pushToken
       },
       data: {
         targetId: props.targetId
@@ -307,7 +320,8 @@ export const DeclineRequestJoin = (props) => {
       method: "post",
       url: `${state().other.url}/activities/joinReject/${props.activityId}`,
       headers: {
-        token: state().user.token
+        token: state().user.token,
+        pushToken: props.pushToken
       },
       data: {
         targetId: props.targetId
@@ -334,7 +348,8 @@ export const KickMember = (props) => {
         token: state().user.token
       },
       data: {
-        targetId: props.targetId
+        targetId: props.targetId,
+        pushToken: props.pushToken
       }
     })
     .then(({data}) => {

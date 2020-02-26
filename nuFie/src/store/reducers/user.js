@@ -54,12 +54,14 @@ export default function user(state = store, action) {
           firstName: "",
           lastName: "",
           gender: null,
-          profilePicture: undefined
+          profilePicture: undefined,
+          interests: []
         },
         profilePictureDefault:
           "https://www.pngfind.com/pngs/m/110-1102775_download-empty-profile-hd-png-download.png",
         suggestFriend: [],
-        invitation: []
+        invitation: [],
+        interest: []
       };
     default:
       return state;

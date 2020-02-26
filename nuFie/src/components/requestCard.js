@@ -14,7 +14,13 @@ export default function InvitationCard (props) {
     const dispatch = useDispatch()
     const handleAccept = () => {
         setLoading(true)
-        dispatch(AcceptRequestJoin({activityId: props.activityId, targetId: data._id}))
+        dispatch(AcceptRequestJoin(
+            {
+                activityId: props.activityId, 
+                targetId: data._id, 
+                pushToken: data.pushToken
+            }
+        ))
         .then(() => {
             setLoading(false)
             navigation.navigate('My Activity')
@@ -22,7 +28,13 @@ export default function InvitationCard (props) {
     }
     const handleDecline = () => {
         setLoading(true)
-        dispatch(DeclineRequestJoin({activityId: props.activityId, targetId: data._id}))
+        dispatch(DeclineRequestJoin(
+            {
+                activityId: props.activityId, 
+                targetId: data._id,
+                pushToken: data.pushToken
+            }
+        ))
         .then(() => {
             setLoading(false)
             navigation.navigate('My Activity')

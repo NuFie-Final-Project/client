@@ -4,31 +4,27 @@ import Chat from "./chatCard";
 import db from "../../config/config_firebase";
 
 export default function ChatWrap(props) {
-  const [messages, setMessages] = useState([]);
-  useEffect(() => {
-    return db
-      .firestore()
-      .collection("chat")
-      .doc(props.roomId)
-      .collection("arrMessage")
-      .onSnapshot(function(querySnapshot) {
-        // let arrMessage = []
-        const messages = querySnapshot.docs
-          .map(doc => {
-            return {
-              id: doc.id,
-              ...doc.data()
-            };
-          })
-          .sort(function(a, b) {
-            return a.createdAt.seconds - b.createdAt.seconds;
-          });
-
-        console.log(messages[0]);
-        setMessages(messages);
-        console.log("update");
-      });
-  }, []);
+    const [messages, setMessages] = useState([])
+    useEffect(() => {
+        return db.firestore()
+            .collection('chat')
+            .doc(props.roomId)
+            .collection('arrMessage')
+            .onSnapshot(function(querySnapshot) {
+                // let arrMessage = []
+                const messages = querySnapshot.docs
+                    .map(doc => {
+                        return {
+                            id: doc.id,
+                            ...doc.data()
+                        }
+                    })
+                    .sort(function(a,b){
+                        return a.createdAt.seconds - b.createdAt.seconds
+                    })
+                setMessages(messages)
+            })
+    },[])
 
   return (
     // <ScrollView>
