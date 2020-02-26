@@ -6,6 +6,7 @@ import db from "../../config/config_firebase";
 export default function ChatWrap(props) {
     const [messages, setMessages] = useState([])
     useEffect(() => {
+      try {
         return db.firestore()
             .collection('chat')
             .doc(props.roomId)
@@ -23,6 +24,9 @@ export default function ChatWrap(props) {
                     })
                 setMessages(messages)
             })
+      } catch (error) {
+        console.log('=============error connection')
+      }
     },[])
 
   return (

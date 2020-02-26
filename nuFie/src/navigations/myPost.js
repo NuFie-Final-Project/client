@@ -7,7 +7,7 @@ import DetailMyPost from "../screens/detailPost";
 import ChatRoom from "../screens/chattingRoom";
 import CreateActivity from "../screens/CreateActivity";
 import EditActivity from "../screens/EditActivity";
-import { View, TouchableHighlight, Alert } from "react-native";
+import { View, TouchableHighlight, Alert, Text } from "react-native";
 import Menu, { MenuItem, MenuDivider } from "react-native-material-menu";
 import FindFriend from "../screens/FindFriends";
 import { useNavigation } from "@react-navigation/native";
@@ -71,25 +71,22 @@ export default function StackMyPost({ route }) {
   };
 
   const Stack = createStackNavigator();
-  const renderDropdown = () => {
-    const status = route.state.routes[1].params.activity.status;
-    status === "open" ? (
+  const renderDropdown = () => (
       <Menu
         ref={menu}
         button={
-          <TouchableHighlight style={{ marginRight: 18 }} onPress={showMenu}>
-            <Ionicons name="md-more" size={28} />
-          </TouchableHighlight>
+          route.state.routes[1].params.activity.status == 'open' 
+              ? <TouchableHighlight style={{ marginRight: 18 }} onPress={showMenu}>
+              <Ionicons name="md-more" size={28} />
+            </TouchableHighlight>
+            : <Text></Text>
         }
       >
         <MenuItem onPress={handleEdit}>Edit Activity</MenuItem>
         <MenuItem onPress={handlerCancel}>Cancel Activity</MenuItem>
         <MenuDivider />
       </Menu>
-    ) : (
-      <View></View>
-    );
-  };
+  );
   return (
     <Stack.Navigator>
       <Stack.Screen

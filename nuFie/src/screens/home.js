@@ -48,6 +48,9 @@ export default function Home({ route }) {
     setRefreshing(true);
     dispatch(getActivities({ token: user.token, id: user.login }))
     .then((data) => {
+      return dispatch(getByInterest())
+    })
+    .then(() => {
       setRefreshing(false)
     })
   }, [refreshing]);
@@ -89,6 +92,7 @@ export default function Home({ route }) {
       >
         <View style={styles.listWrapper}>
           {
+            listByInterest.length == 0 ? <Text>No Data</Text> :
             listByInterest.map(activity => {
               return <FeedsItem key={activity._id} data={activity} routeName={route.name} />
             })

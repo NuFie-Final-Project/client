@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 export default function Invitation() {
   const InvitationList = useSelector(state => state.user.invitation);
+  console.log(InvitationList)
   return (
     <ScrollView>
       <View style={style.container}>

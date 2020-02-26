@@ -139,7 +139,7 @@ function postActivityForm({ route, openAlert, uploadImage, activity, scrollToBot
         if(user.biodata.gender === 'undefined') {
             userWarningTemp.push(`You have to filled Gender information First`);
         }
-        if(warningsTemp.length > 0) {
+        if(warningsTemp.length > 0 || userWarningTemp.length > 0) {
             return false
         } else {
             return true
