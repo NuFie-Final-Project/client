@@ -21,7 +21,6 @@ export default function Home({ route }) {
   const listByInterest = useSelector(state => state.activity.listByInterest);
   const user = useSelector(state => state.user);
   const navigation = useNavigation();
-  const [ loading, setLoading ] = useState(false);
   const handleNotif = () => {
     navigation.navigate("Invitation");
   };
@@ -38,10 +37,6 @@ export default function Home({ route }) {
     ExpoNotif(user.login);
   }, []);
 
-  if(loading) {
-    return <View></View>
-  }
-
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -50,6 +45,7 @@ export default function Home({ route }) {
       setRefreshing(false)
     })
   }, [refreshing]);
+
   return (
     <View style={styles.container}>
       <View style={styles.statusBar}></View>

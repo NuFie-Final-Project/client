@@ -6,7 +6,8 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Button
 } from "react-native";
 import { MaterialIcons, FontAwesome, Ionicons, Entypo } from "@expo/vector-icons";
 import CountMember from "../components/memberCount";
@@ -14,9 +15,11 @@ import ButtonP from "../components/ButtonOnPost";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from 'react-redux';
 import { joinActivities } from '../store/actions/Activity';
+import loadingSpinner from '../../assets/spinner-loading.gif'
 
 export default function detailCategory({ route }) {
   const [ alreadyRequest, setAlreadyRequest ] = useState(false);
+  const [ loading, setLoading ] = useState(false);
   const navigation = useNavigation();
 
   const activity = route.params.activity;
@@ -26,9 +29,11 @@ export default function detailCategory({ route }) {
   const dispatch = useDispatch();
 
   const handleJoinActivitiy = () => {
+    setLoading(true);
     dispatch(joinActivities(activity._id))
     .then(() => {
       setAlreadyRequest(true);
+      setLoading(false);
     })
     .catch((error) => {
       console.log(error)
@@ -93,7 +98,18 @@ export default function detailCategory({ route }) {
                       icon="ios-log-in"
                       handle={handleJoinActivitiy}
                     />
-                :   <Text>Waitin For Respond</Text>
+                :   loading
+                    ? <Image source={loadingSpinner} />
+                    : <TouchableOpacity style={{
+                      backgroundColor: '#6c757d', 
+                      paddingHorizontal: 12,
+                      paddingVertical: 12,
+                      borderColor: 'black',
+                      borderRadius: 5,
+                      flexDirection: "row"}}
+                      disabled={true}>
+                      <Text>Waiting For Respond</Text>
+                    </TouchableOpacity>
             }
           </View>
         </View>

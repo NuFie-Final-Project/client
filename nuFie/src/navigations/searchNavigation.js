@@ -10,8 +10,8 @@ export default function StackMyPost() {
     return (
         <Stack.Navigator>
             <Stack.Screen name="Search" component={Search} options={{headerShown: false}} />
-            <Stack.Screen name="Category" component={CategoryScreen} options={{headerShown: false}} />
-            <Stack.Screen name="Detail Category" component={detailCategory} options={{headerShown: false}} />
+            <Stack.Screen name="Category" component={CategoryScreen}/>
+            <Stack.Screen name="Detail Category" component={detailCategory}/>
         </Stack.Navigator>
     )
     
