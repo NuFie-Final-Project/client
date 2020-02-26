@@ -4,6 +4,7 @@ import firebase from "../../../config/config_firebase";
 export const RegisterAction = params => {
   return function(dispatch) {
     dispatch({ type: "SET_LOADING", val: true });
+    dispatch({ type: "SET_ERROR", val: {bool: false, message: ''} })
     firebase
       .auth()
       .createUserWithEmailAndPassword(params.email, params.password)
@@ -19,6 +20,7 @@ export const RegisterAction = params => {
 export const LoginEmailPassword = params => {
   return function(dispatch) {
     dispatch({ type: "SET_LOADING", val: true });
+    dispatch({ type: "SET_ERROR", val: {bool: false, message: ''} })
     firebase
       .auth()
       .signInWithEmailAndPassword(params.email, params.password)
@@ -34,9 +36,10 @@ export const LoginEmailPassword = params => {
 export const Logout = () => {
   return function(dispatch) {
     try {
-      dispatch({ type: "CLEAR_STATE" });
+      dispatch({ type: "SET_CLEAR" });
       dispatch({ type: "CLEAR_ACTIVITY" });
       dispatch({ type: "SET_LOGIN", val: "logout" });
+      dispatch({type: 'SET_USERDATA', val:{firstName: '', lastName: '', email: '', password: ''}})
       firebase.auth().signOut();
     } catch (e) {
       console.log("error");
@@ -47,7 +50,7 @@ export const Logout = () => {
 export const ReadSelf = () => {
   return function(dispatch, state) {
     dispatch({ type: "SET_LOADING", val: true });
-    axios({
+    return axios({
       method: "GET",
       url: `${state().other.url}/users`,
       headers: {
@@ -89,12 +92,12 @@ export const FindFriend = props => {
   return function(dispatch, state) {
     dispatch({ type: "SET_LOADING", val: true });
     return axios({
-      url: `${state().other.url}/users/getByMostMatchingInterests`,
+      url: `${state().other.url}/users/getByMostMatchingInterests?page=${props.page}&limit=10`,
       headers: {
-        token: props
+        token: state().user.token
       },
       method: "POST",
-      data: { tags: state().user.biodata.interests }
+      data: { tags: props.data.tags }
     })
       .then(({ data }) => {
         dispatch({ type: "SET_SUGGESTFRIEND", val: data.users });

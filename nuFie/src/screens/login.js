@@ -20,7 +20,6 @@ import AwesomeAlert from 'react-native-awesome-alerts'
 export default function Login() {
   const load = useSelector(state => state.user.loading)
   const {errorTrigger} = useSelector(state => state.other)
-  console.log(errorTrigger.message)
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -97,7 +96,6 @@ export default function Login() {
           title="Oppssss"
           message={errorTrigger.message}
           onDismiss={() => {dispatch({type: 'SET_ERROR', val: {bool: false, message: ''}})}}
-          
         />
       </View>
     </KeyboardAvoidingView>

@@ -5,7 +5,7 @@ import AppIntroSlider from "react-native-app-intro-slider";
 import firebase from "../../config/config_firebase";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute, StackActions,NavigationAction, CommonActions } from "@react-navigation/native";
 import {ReadSelf} from '../store/actions/user'
 import AwesomeAlert from 'react-native-awesome-alerts'
 
@@ -61,44 +61,50 @@ export default function IntroSlider(props) {
   const log = useSelector(state => state.user.login);
   const url = useSelector(state => state.other.url);
   const navigation = useNavigation();
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      firebase
-        .auth()
-        .currentUser.getIdToken(true)
-        .then(idToken => {
-          const { email, firstName, lastName, password } = userData;
-          console.log(email, firstName, lastName, password);
-          return axios({
-            method: "POST",
-            url: `${url}/users/signIn`,
-            data: { email, firstName, lastName, password, idToken }
+  let flag = true
+  if(flag) {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        firebase
+          .auth()
+          .currentUser.getIdToken(true)
+          .then(idToken => {
+            const { email, firstName, lastName, password } = userData;
+            if(flag){
+              return axios({
+                method: "POST",
+                url: `${url}/users/signIn`,
+                data: { email, firstName, lastName, password, idToken }
+              });
+            }
+          })
+          .then(({ data, status }) => {
+            flag = false
+            console.log("berhasil Login");
+            dispatch({ type: "SET_LOGIN", val: data.userId });
+            dispatch({ type: "SET_TOKEN", val: data.token });
+            dispatch({ type: "SET_LOADING", val: false });
+            dispatch(ReadSelf());
+            if (status == "201") {
+              navigation.navigate("InterestUpdate");
+            } else if (status == "200"){
+              navigation.navigate("MainPage");
+            }
+          })
+          .catch(error => {
+            console.log(error, "ini error");
           });
-        })
-        .then(({ data, status }) => {
-          console.log("berhasil Login");
-          dispatch({ type: "SET_LOGIN", val: data.userId });
-          dispatch({ type: "SET_TOKEN", val: data.token });
-          dispatch({ type: "SET_LOADING", val: false });
-          dispatch(ReadSelf());
-          if (status == "201") {
-            navigation.navigate("InterestUpdate");
-          } else {
-            navigation.navigate("MainPage");
-          }
-        })
-        .catch(error => {
-          console.log(error, "ini error");
-        });
-    } else {
-      if (log == "logout") {
-        dispatch({ type: "SET_LOGIN", val: false });
-        navigation.navigate("Home");
-        console.log(email, firstName, lastName, password);
+      } else {
+        if (log == "logout") {
+          flag = true
+          dispatch({ type: "SET_LOGIN", val: false });
+          navigation.dispatch(CommonActions.reset()
+          )
+        }
+        console.log("not logged in");
       }
-      console.log("not logged in");
-    }
-  });
+    });
+  }
 
   return (
     <AppIntroSlider

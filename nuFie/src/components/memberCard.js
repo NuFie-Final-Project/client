@@ -23,7 +23,7 @@ function FriendCard(props) {
 
   const kickMember = () => {
     setLoading(true)
-    dispatch(KickMember({activityId: props.activity, targetId: props.data._id}))
+    dispatch(KickMember({activityId: props.activity, targetId: props.data._id, pushToken: props.data.pushToken}))
     .then(() => {
       navigation.goBack()
       setLoading(false)
