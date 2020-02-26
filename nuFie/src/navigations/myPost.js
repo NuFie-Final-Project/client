@@ -21,7 +21,6 @@ export default function StackMyPost({ route }) {
   const menu = useRef();
   const hideMenu = () => menu.current.hide();
   const showMenu = () => menu.current.show();
-  const [ showAlert, setShowAlert ] = useState(true);
   const dispatch = useDispatch();
   // console.log(Object.keys(route));
   // if (route.state) {
@@ -47,7 +46,7 @@ export default function StackMyPost({ route }) {
 
   const handlerCancel = () => {
     const id = route.state.routes[1].params.activity._id;
-    setShowAlert(true);
+    const members = route.state.routes[1].params.activity.members;
     return(
       Alert.alert(
         'Are You Sure?',
@@ -59,7 +58,7 @@ export default function StackMyPost({ route }) {
             style: 'cancel',
           },
           {text: 'OK', onPress: () => {
-            dispatch(cancelActivity(id))
+            dispatch(cancelActivity({id, members}))
             .then(() => {
               navigation.navigate('My Activity')
             })
@@ -71,8 +70,10 @@ export default function StackMyPost({ route }) {
   }
 
   const Stack = createStackNavigator();
-  const renderDropdown = () => (
-    <Menu
+  const renderDropdown = () => {
+    const status = route.state.routes[1].params.activity.status;
+    status === 'open'
+      ? (<Menu
       ref={menu}
       button={
         <TouchableHighlight style={{ marginRight: 18 }} onPress={showMenu}>
@@ -83,8 +84,9 @@ export default function StackMyPost({ route }) {
       <MenuItem onPress={handleEdit}>Edit Activity</MenuItem>
       <MenuItem onPress={handlerCancel}>Cancel Activity</MenuItem>
       <MenuDivider />
-    </Menu>
-  );
+    </Menu>)
+    : <View></View>
+  };
   return (
     <Stack.Navigator>
       <Stack.Screen

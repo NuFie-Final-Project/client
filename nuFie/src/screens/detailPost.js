@@ -18,7 +18,7 @@ import { FindFriend } from "../store/actions/user";
 
 export default function DetailPost({ route }) {
   const [loadingJoin, setLoadingJoin] = useState(false)
-  const {loading, biodata} = useSelector(state => state.user)
+  const [loading, setLoading] = useState(false)
   const user = useSelector(state => state.user);
   const dispatch = useDispatch()
   const navigation = useNavigation();
@@ -33,9 +33,11 @@ export default function DetailPost({ route }) {
   }
 
   const handleSearchFriend = () => {
+    setLoading(true)
     dispatch(FindFriend({data: activity, page: 1}))
     .then(() => {
       navigation.navigate("Search Friend", { data: activity })
+      setLoading(false)
     })
   };
 
@@ -80,7 +82,7 @@ export default function DetailPost({ route }) {
               </View>
             </View>
             {
-              loading ? <Load/> :
+              loadingJoin ? <Load/> :
               <TouchableOpacity
                 onPress={handleMemberList}
               >
@@ -111,18 +113,27 @@ export default function DetailPost({ route }) {
               iconColor="#fff"
               handle={handleGroupChat}
             />
-            <ButtonP
-              text="Search Friend"
-              color="#0c99c1"
-              icon="md-search"
-              handle={handleSearchFriend}
-            />
-            <ButtonP
-              text="Requested"
-              color="#0c99c1"
-              icon="md-search"
-              handle={handleReq}
-            />
+            {
+              activity.status === 'cancelled'
+              ? <Text></Text>
+              : loading ? <Load/> :
+                <ButtonP
+                  text="Search Friend"
+                  color="#0c99c1"
+                  icon="md-search"
+                  handle={handleSearchFriend}
+                />
+            }
+            {
+              activity.status === 'open'
+                ? <ButtonP
+                  text="Requested"
+                  color="#0c99c1"
+                  icon="md-search"
+                  handle={handleReq}
+                />
+                : <Text></Text>
+            }
           </View>
         </View>
       </View>

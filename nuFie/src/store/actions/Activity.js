@@ -164,12 +164,12 @@ export const AcceptInvite = props => {
   };
 };
 
-export const cancelActivity = id => {
+export const cancelActivity = data => {
   return function(dispatch, state) {
-    const pushTokens = activities.members.map(member => member.pushToken)
+    const pushTokens = data.members.map(member => member.pushToken)
     return axios({
       method: "patch",
-      url: `${state().other.url}/activities/cancel/` + id,
+      url: `${state().other.url}/activities/cancel/` + data.id,
       headers: {
         token: state().user.token,
         pushTokens

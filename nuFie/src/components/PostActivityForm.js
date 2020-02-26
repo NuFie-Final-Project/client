@@ -31,12 +31,13 @@ function postActivityForm({ route, openAlert, uploadImage, activity, scrollToBot
     const [ image, setImage ] = useState(uploadImage.uri);
     const [ marginBottomTags, setMarginBottomTags ] = useState(20);
     const [ buttonTitle, setButtonTitle ] = useState('');
-    const [newImage, setNewImage] = useState(false);
+    const [ newImage, setNewImage ] = useState(false);
     const [ borderFormColor, setBorderFormColor ] = useState('#C1C1C1');
     const [ warnings, setWarnings ] = useState([]);
     const [ marginBottomButton, setMarginBottomButton ] = useState(0);
     const [ loadingState, setLoadingState ] = useState(true);
     const [ userWarnings, setUserWarnings ] = useState([]);
+    const [ isClick, setIsClick ] = useState(false);
     const warningsTemp = [];
     const userWarningTemp = [];
     
@@ -154,11 +155,13 @@ function postActivityForm({ route, openAlert, uploadImage, activity, scrollToBot
     } 
 
     const postActivity = () => {
+        setIsClick(true);
         if(!formValidation()) {
             setWarnings([...warningsTemp]);
             setUserWarnings([...userWarningTemp]);
             setMarginBottomButton(20);
             scrollToBottom();
+            setIsClick(false);
         } else {
             if(route.name === 'ADD POST') {
             let boolPromo;    
@@ -188,6 +191,7 @@ function postActivityForm({ route, openAlert, uploadImage, activity, scrollToBot
                 user_id: user.login
             }))
                 .then(() => {
+                    setIsClick(false);
                     navigation.navigate('My Activity')
                 })
             } else {
@@ -222,6 +226,7 @@ function postActivityForm({ route, openAlert, uploadImage, activity, scrollToBot
                     user_id: user.login
                 }))
                 .then(() => {
+                    setIsClick(false);
                     navigation.navigate('My Activity')
                 })
             }
@@ -353,11 +358,15 @@ function postActivityForm({ route, openAlert, uploadImage, activity, scrollToBot
                     keyboardType="phone-pad"></TextInput>
                 </View>
                 <View style={{marginBottom: marginBottomButton}}>
-                    <TouchableOpacity onPress={postActivity}>
-                        <View style={styles.button}>
-                    <Text style={styles.buttonText}>{buttonTitle}</Text>
-                        </View>
-                    </TouchableOpacity>
+                    {
+                        !isClick
+                            ?   <TouchableOpacity onPress={postActivity}>
+                                    <View style={styles.button}>
+                                        <Text style={styles.buttonText}>{buttonTitle}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            :   <Load></Load>
+                    }
                 </View>
                 {
                     warnings.length === 0
