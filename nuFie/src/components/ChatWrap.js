@@ -11,7 +11,6 @@ export default function ChatWrap(props) {
             .doc(props.roomId)
             .collection('arrMessage')
             .onSnapshot(function(querySnapshot) {
-                // let arrMessage = []
                 const messages = querySnapshot.docs
                     .map(doc => {
                         return {
