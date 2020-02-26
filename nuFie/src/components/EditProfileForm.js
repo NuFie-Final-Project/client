@@ -15,6 +15,8 @@ function EditProfileForm(props) {
   const [tags, setTags] = useState([]);
   const [tagText, setTagText] = useState("");
   const [gender, setGender] = useState("");
+  const [errorPhone, setError] = useState(false)
+  const [blank, setBlank] = useState(false)
   useEffect(() => {
     setFirstName(biodata.firstName);
     setLastName(biodata.lastName);
@@ -47,7 +49,17 @@ function EditProfileForm(props) {
   };
 
   const handleSubmitEdit = () => {
-    props.handleEdit({ firstName, lastName, phone, aboutMe, gender, tags });
+    if(phone){
+      setBlank(false)
+      if(phone.length > 9){
+        setError(false)
+        props.handleEdit({ firstName, lastName, phone, aboutMe, gender, tags });
+      }else {
+        setError(true)
+      }
+    } else {
+      setBlank(true)
+    }
   };
   const addTags = action => {
     if (action.nativeEvent.key === " ") {
@@ -111,6 +123,13 @@ function EditProfileForm(props) {
       <Text style={{ fontSize: 13, fontWeight: "bold", marginBottom: 10 }}>
         Phone
       </Text>
+      {
+        errorPhone ? <Text>Invalid Phone Number</Text> : <Text></Text>
+      }
+      {
+        blank ? <Text>Please Input Phone Number</Text> : <Text></Text>
+      }
+
       <TextInput
         value={phone}
         onChangeText={inputPhone}

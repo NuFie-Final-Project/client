@@ -23,7 +23,10 @@ export default function ChatRoom(props) {
       .add(message)
       .then(data => {
         console.log("berhasil add");
-      });
+      })
+      .catch(() => {
+        console.log('=============')
+      })
   };
   return (
     <View style={style.container}>

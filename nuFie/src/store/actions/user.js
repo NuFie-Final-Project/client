@@ -68,6 +68,7 @@ export const ReadSelf = () => {
 };
 
 export const UpdateProfile = props => {
+  console.log(props)
   return function(dispatch, state) {
     dispatch({ type: "SET_LOADING", val: true });
     return axios({

@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import Btn from "./btnAcceptDecline";
 import { useDispatch, useSelector } from "react-redux";
-import { AcceptInvite } from "../store/actions/Activity";
+import { AcceptInvite, DeclineInvite } from "../store/actions/Activity";
 import Load from '../components/loading'
 
 export default function InvitationCard(props) {
@@ -16,7 +16,13 @@ export default function InvitationCard(props) {
       setLoading(false)
     })
   };
-  const handleDecline = () => {};
+  const handleDecline = () => {
+    setLoading(true)
+    dispatch(DeclineInvite(props.data._id))
+    .then(() => {
+      setLoading(false)
+    })
+  };
   return (
     <View style={styles.container}>
       <Image

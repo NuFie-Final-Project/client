@@ -14,10 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import dummpProfilePicture from '../../assets/edit_profile_dummy.jpg';
 
 export default function FeedsItem({ data, routeName }) {
-
-  const navigation = useNavigation();
-
-
+  const navigation = useNavigation()
   if(routeName === 'Category') {
     return (
       <View style={styles.cardFeed}>
@@ -63,19 +60,6 @@ export default function FeedsItem({ data, routeName }) {
           </View>
         </View>
       </View>
-      // <View style={styles.card}>
-      //   <View></View>
-      //   <View style={styles.footer}>
-      //     <View style={styles.footerText}>
-      //       <Text>This is title of Interest</Text>
-      //       <Text>Sunday, 01 March 2020</Text>
-      //       <Text>CinemaXXI Pondok Indah Mall</Text>
-      //     </View>
-      //     <View>
-      //       <View style={styles.userPhoto}></View>
-      //     </View>
-      //   </View>
-      // </View>
     );
   } else {
     return  (<View style={styles.cardFeed}>

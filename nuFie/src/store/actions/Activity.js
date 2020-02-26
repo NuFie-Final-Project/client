@@ -38,7 +38,7 @@ export const getActivities = () => {
     });
     return axios({
       method: "get",
-      url: `${state().other.url}/activities?limit=20`,
+      url: `${state().other.url}/activities?limit=10000`,
       headers: {
         token: state().user.token
       }
@@ -47,6 +47,7 @@ export const getActivities = () => {
         let activities = [];
         let invitation = [];
         let listGroup = [];
+        console.log('feeeeettcccch jalan')
 
         if (response.data.activities.length > 0) {
           activities = response.data.activities.filter(activity => {
@@ -160,6 +161,28 @@ export const AcceptInvite = props => {
       .catch(err => {
         dispatch({ type: "SET_LOADING", val: false });
         console.log(err, "gagal accpet");
+      });
+  };
+};
+
+export const DeclineInvite = props => {
+  return function(dispatch, state) {
+    dispatch({ type: "SET_LOADING", val: true });
+    return axios({
+      url: `${state().other.url}/activities/inviteReject/` + props,
+      method: "post",
+      headers: {
+        token: state().user.token
+      }
+    })
+      .then(({ data }) => {
+        console.log('berhasil accpet')
+        dispatch({ type: "SET_LOADING", val: false });
+        dispatch({ type: "SET_TRIGGER", val: props });
+      })
+      .catch(err => {
+        dispatch({ type: "SET_LOADING", val: false });
+        console.log(err, "gagal decline");
       });
   };
 };
