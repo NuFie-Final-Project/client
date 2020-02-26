@@ -125,7 +125,11 @@ export default function ProfileUser(params) {
           </View>
           <View style={styles.btnWrap}>
             <Btn text="EDIT PROFILE" color="#49beb7" handle={handleEdit} />
-            <Btn text="LIST JOIN GROUP" handle={handleListJoinGroup} />
+            <Btn
+              text="LIST JOIN GROUP"
+              color="#3282b8"
+              handle={handleListJoinGroup}
+            />
             <Btn text="LOGOUT" color="#c70039" handle={handleLogout} />
           </View>
         </View>
@@ -190,7 +194,10 @@ const styles = StyleSheet.create({
   },
   btnWrap: {
     alignItems: "center",
-    marginTop: 50
+    marginTop: 50,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around"
   },
   icon: {
     color: "#fff",
