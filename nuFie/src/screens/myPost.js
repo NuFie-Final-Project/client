@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, RefreshControl } from "react-native";
+import { View, Text, StyleSheet, ScrollView, RefreshControl, Image } from "react-native";
 import Post from "../components/mypost Component";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { getActivities } from "../store/actions/Activity";
 import { useSelector, useDispatch } from "react-redux";
+import loadingSpinner from '../../assets/ball-loading.gif';
 
 export default function MyPost() {
   const navigation = useNavigation();
@@ -29,7 +30,10 @@ export default function MyPost() {
   
   const renderActivities = () => {
     if (activities.loading)
-      return <Text>Loading</Text>
+      return (<View style={{alignItems: 'center', flex: 1}}>
+          <Image source={loadingSpinner} style={{width: 100, height: 100}}/>
+          <Text style={{fontSize: 15}}>Fetching data, Please wait....</Text>
+        </View>)
     else if (activities.error) 
       return <Text>Error</Text>
     else if (activities.data.length === 0) 

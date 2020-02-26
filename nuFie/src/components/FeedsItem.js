@@ -11,23 +11,32 @@ import {
 import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from '@react-navigation/native';
+import dummpProfilePicture from '../../assets/edit_profile_dummy.jpg';
 
 export default function FeedsItem({ data, routeName }) {
 
   const navigation = useNavigation();
 
+
   if(routeName === 'Category') {
     return (
       <View style={styles.cardFeed}>
         <View style={styles.cardHeader}>
-          <Image
-            source={{uri: data.image}}
-            style={styles.profpict}
-          />
+          {
+            data.owner.profilePicture
+              ?   <Image
+                    source={{uri: data.owner.profilePicture}}
+                    style={styles.profpict}
+                  />
+            :     <Image
+                    source={dummpProfilePicture}
+                    style={styles.profpict}
+                  />
+          }
           <View style={{ justifyContent: "center" }}>
-            <Text style={{ fontWeight: "700" }}>Camila Jansen</Text>
+          <Text style={{ fontWeight: "700" }}>{data.owner.firstName + ' ' + data.owner.lastName}</Text>
             <Text style={{ fontSize: 10, color: "#777777" }}>
-              Sun, 02 Maret 2020
+              {new Date(data.createdAt).toDateString()}
             </Text>
           </View>
           <TouchableHighlight style={styles.btnDetail} onPress={() => {
@@ -71,14 +80,21 @@ export default function FeedsItem({ data, routeName }) {
   } else {
     return  (<View style={styles.cardFeed}>
         <View style={styles.cardHeader}>
-          <Image
-            source={require("../../assets/edit_profile_dummy.jpg")}
-            style={styles.profpict}
-          />
+        {
+            data.owner.profilePicture
+              ?   <Image
+                    source={{uri: data.owner.profilePicture}}
+                    style={styles.profpict}
+                  />
+            :     <Image
+                    source={dummpProfilePicture}
+                    style={styles.profpict}
+                  />
+          }
           <View style={{ justifyContent: "center" }}>
-            <Text style={{ fontWeight: "700" }}>Camila Jansen</Text>
+            <Text style={{ fontWeight: "700" }}>{data.owner.firstName + ' ' + data.owner.lastName}</Text>
             <Text style={{ fontSize: 10, color: "#777777" }}>
-              Sun, 02 Maret 2020
+            {new Date(data.createdAt).toDateString()}
             </Text>
           </View>
           <TouchableHighlight style={styles.btnDetail} onPress={() => {

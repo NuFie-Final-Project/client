@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import {View , Text} from 'react-native'
+import {View , Text, Image} from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import PostCard from '../components/FeedsItem'
 import { exploreInterest } from '../store/actions/Activity';
 import { ScrollView } from 'react-native-gesture-handler';
+import loadingSpinner from '../../assets/ball-loading.gif';
 
 export default function CategoryScreen ({ route }) {
     const [ loading, setLoading ] = useState(true);
@@ -24,12 +25,16 @@ export default function CategoryScreen ({ route }) {
             dispatch({
                 type: 'CLEAR_LIST_EXPLORE'
             })
+            setLoading(true);
         })
     }, []);
 
-    console.log(listJoinExplore);
-
-    if(loading) return null;
+    if(loading) {
+        return (<View style={{alignItems: 'center', flex: 1}}>
+            <Image source={loadingSpinner} style={{width: 100, height: 100}}/>
+            <Text style={{fontSize: 15}}>Fetching data, Please wait....</Text>
+          </View>)
+    }
 
     const dataReady = () => {
         return listJoinExplore.map((el) => {
