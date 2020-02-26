@@ -53,7 +53,7 @@ const style = StyleSheet.create({
     // alignItems: "center"
   },
   chatBody: {
-    width: "98%",
+    width: "99%",
     paddingHorizontal: 6,
     paddingTop: 8,
     justifyContent: "center"
