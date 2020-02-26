@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
@@ -8,20 +8,53 @@ import ChatRoom from "../screens/chattingRoom";
 import CreateActivity from "../screens/CreateActivity";
 import EditActivity from "../screens/EditActivity";
 import { View, TouchableHighlight } from "react-native";
+import Menu, { MenuItem, MenuDivider } from "react-native-material-menu";
 import FindFriend from "../screens/FindFriends";
 import { useNavigation } from "@react-navigation/native";
-import DetailMember from '../screens/DetailMember'
-import DetailProfile from '../screens/ProfileMember'
-import ListPending from '../screens/PendingRequest'
+import DetailMember from "../screens/DetailMember";
+import DetailProfile from "../screens/ProfileMember";
+import ListPending from "../screens/PendingRequest";
 
 export default function StackMyPost({ route }) {
+  const menu = useRef();
+  const hideMenu = () => menu.current.hide();
+  const showMenu = () => menu.current.show();
+  // console.log(Object.keys(route));
+  // if (route.state) {
+  //   console.log(Object.keys(route.state), route.state.routes.length);
+  // }
+
   const navigation = useNavigation();
-  const handlePress = () => {
+  const handleEdit = () => {
     navigation.navigate("EDIT POST", {
       editActivity: route.state.routes[1].params.activity
     });
+    hideMenu();
+  };
+  const renderTitle = () => {
+    if (!route.state) {
+      return "My Activity";
+    } else if (!route.state.routes[1]) {
+      return "My Activity";
+    } else if (route.state.routes[1].params) {
+      return route.state.routes[1].params.activity.title;
+    }
   };
   const Stack = createStackNavigator();
+  const renderDropdown = () => (
+    <Menu
+      ref={menu}
+      button={
+        <TouchableHighlight style={{ marginRight: 18 }} onPress={showMenu}>
+          <Ionicons name="md-more" size={28} />
+        </TouchableHighlight>
+      }
+    >
+      <MenuItem onPress={handleEdit}>Edit Activity</MenuItem>
+      <MenuItem onPress={hideMenu}>Cancel Activity</MenuItem>
+      <MenuDivider />
+    </Menu>
+  );
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -43,17 +76,22 @@ export default function StackMyPost({ route }) {
         name="Detail Post"
         component={DetailMyPost}
         options={{
-          headerRight: () => (
-            <TouchableHighlight
-              style={{ marginRight: 18 }}
-              onPress={handlePress}
-            >
-              <Ionicons name="md-more" size={28} />
-            </TouchableHighlight>
-          )
+          headerRight: () => renderDropdown()
+          // <TouchableHighlight
+          //   style={{ marginRight: 18 }}
+          //   onPress={handlePress}
+          // >
+          //   <Ionicons name="md-more" size={28} />
+          // </TouchableHighlight>
         }}
       />
-      <Stack.Screen name="ChatRoom" component={ChatRoom} />
+      <Stack.Screen
+        name="ChatRoom"
+        component={ChatRoom}
+        options={{
+          title: renderTitle()
+        }}
+      />
       <Stack.Screen
         name="ADD POST"
         component={CreateActivity}
