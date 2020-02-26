@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { ScrollView, Text, StyleSheet } from "react-native";
 import PostActivityForm from "../components/PostActivityForm";
 import AwesomeAlert from "react-native-awesome-alerts";
@@ -8,10 +8,17 @@ function EditActivity({ route }) {
   const [showAlert, setShowAlert] = useState(false);
   const [uploadImage, setUploadImage] = useState("");
   const activity = route.params.editActivity;
+  const scrollRef = useRef();
 
   const openAlert = object => {
     setShowAlert(object.showAlert);
   };
+
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      scrollRef.current.scrollToEnd({animated: true})
+    }, 100)
+  }
 
   const postImageWithCamera = async () => {
     setShowAlert(false);
@@ -68,12 +75,14 @@ function EditActivity({ route }) {
   };
 
   return (
-    <ScrollView>
+    <ScrollView
+    ref={scrollRef}>
       <PostActivityForm
         route={route}
         openAlert={openAlert}
         uploadImage={uploadImage}
         activity={activity}
+        scrollToBottom={scrollToBottom}
       ></PostActivityForm>
       <AwesomeAlert
         show={showAlert}
