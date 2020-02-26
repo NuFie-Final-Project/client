@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -11,50 +11,55 @@ import {
 import { MaterialIcons, FontAwesome, Ionicons } from "@expo/vector-icons";
 import ButtonP from "../components/ButtonOnPost";
 import { useNavigation } from "@react-navigation/native";
-import {useDispatch, useSelector} from 'react-redux'
-import {ActivityDetail} from '../store/actions/Activity'
-import Load from '../components/loading'
+import { useDispatch, useSelector } from "react-redux";
+import { ActivityDetail } from "../store/actions/Activity";
+import Load from "../components/loading";
 import { FindFriend } from "../store/actions/user";
 
 export default function DetailPost({ route }) {
-  const [loadingJoin, setLoadingJoin] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [loadingJoin, setLoadingJoin] = useState(false);
+  const [loading, setLoading] = useState(false);
   const user = useSelector(state => state.user);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const handleGroupChat = () => {
     navigation.navigate("ChatRoom", { roomId: activity._id });
   };
-  
+
   const activity = route.params.activity;
 
   const handleReq = () => {
-    navigation.navigate('PendingRequest', {data: activity.pendingJoins, activityId: activity._id})
-  }
+    navigation.navigate("PendingRequest", {
+      data: activity.pendingJoins,
+      activityId: activity._id
+    });
+  };
 
   const handleSearchFriend = () => {
-    setLoading(true)
-    dispatch(FindFriend({data: activity, page: 1}))
-    .then(() => {
-      navigation.navigate("Search Friend", { data: activity })
-      setLoading(false)
-    })
+    setLoading(true);
+    dispatch(FindFriend({ data: activity, page: 1 })).then(() => {
+      navigation.navigate("Search Friend", { data: activity });
+      setLoading(false);
+    });
   };
 
   const handleMemberList = () => {
-    setLoadingJoin(true)
+    setLoadingJoin(true);
     dispatch(ActivityDetail(activity._id))
-    .then((data) => {
-      navigation.navigate("MemberList", {activityId: activity._id, from: 'mypost'})
-      setLoadingJoin(false)
-    })
-    .catch((err) => {
-      setLoadingJoin(false)
-    })
-  }
+      .then(data => {
+        navigation.navigate("MemberList", {
+          activityId: activity._id,
+          from: "mypost"
+        });
+        setLoadingJoin(false);
+      })
+      .catch(err => {
+        setLoadingJoin(false);
+      });
+  };
 
   return (
-    <ScrollView contentContainerStyle={{ height: "100%" }}>
+    <ScrollView contentContainerStyle={{ minHeight: "100%" }}>
       <View style={styles.container}>
         <Image source={{ uri: activity.image }} style={styles.imageActivity} />
         <View style={styles.textWrapper}>
@@ -81,19 +86,20 @@ export default function DetailPost({ route }) {
                 </Text>
               </View>
             </View>
-            {
-              loadingJoin ? <Load/> :
-              <TouchableOpacity
-                onPress={handleMemberList}
-              >
+            {loadingJoin ? (
+              <Load />
+            ) : (
+              <TouchableOpacity onPress={handleMemberList}>
                 <View style={styles.badgeWrapper}>
                   <Ionicons name="ios-people" size={28} color="#fff" />
-                    <Text style={{ marginLeft: 6, fontWeight: "700", color: "#fff" }}>
-                      {activity.members.length}/{activity.memberLimit}
-                    </Text>
+                  <Text
+                    style={{ marginLeft: 6, fontWeight: "700", color: "#fff" }}
+                  >
+                    {activity.members.length}/{activity.memberLimit}
+                  </Text>
                 </View>
               </TouchableOpacity>
-            }
+            )}
           </View>
           <Text
             style={{
@@ -113,27 +119,28 @@ export default function DetailPost({ route }) {
               iconColor="#fff"
               handle={handleGroupChat}
             />
-            {
-              activity.status === 'cancelled'
-              ? <Text></Text>
-              : loading ? <Load/> :
-                <ButtonP
-                  text="Search Friend"
-                  color="#0c99c1"
-                  icon="md-search"
-                  handle={handleSearchFriend}
-                />
-            }
-            {
-              activity.status === 'open'
-                ? <ButtonP
-                  text="Requested"
-                  color="#0c99c1"
-                  icon="md-search"
-                  handle={handleReq}
-                />
-                : <Text></Text>
-            }
+            {activity.status === "cancelled" ? (
+              <Text></Text>
+            ) : loading ? (
+              <Load />
+            ) : (
+              <ButtonP
+                text="Search Friend"
+                color="#0c99c1"
+                icon="md-search"
+                handle={handleSearchFriend}
+              />
+            )}
+            {activity.status === "open" ? (
+              <ButtonP
+                text="Requested"
+                color="#0c99c1"
+                icon="md-search"
+                handle={handleReq}
+              />
+            ) : (
+              <Text></Text>
+            )}
           </View>
         </View>
       </View>
