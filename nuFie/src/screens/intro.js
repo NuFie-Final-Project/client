@@ -5,9 +5,15 @@ import AppIntroSlider from "react-native-app-intro-slider";
 import firebase from "../../config/config_firebase";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigation, useRoute, StackActions,NavigationAction, CommonActions } from "@react-navigation/native";
-import {ReadSelf} from '../store/actions/user'
-import AwesomeAlert from 'react-native-awesome-alerts'
+import {
+  useNavigation,
+  useRoute,
+  StackActions,
+  NavigationAction,
+  CommonActions
+} from "@react-navigation/native";
+import { ReadSelf } from "../store/actions/user";
+import AwesomeAlert from "react-native-awesome-alerts";
 
 const Slides = [
   {
@@ -61,8 +67,8 @@ export default function IntroSlider(props) {
   const log = useSelector(state => state.user.login);
   const url = useSelector(state => state.other.url);
   const navigation = useNavigation();
-  let flag = true
-  if(flag) {
+  let flag = true;
+  if (flag) {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         firebase
@@ -70,7 +76,7 @@ export default function IntroSlider(props) {
           .currentUser.getIdToken(true)
           .then(idToken => {
             const { email, firstName, lastName, password } = userData;
-            if(flag){
+            if (flag) {
               return axios({
                 method: "POST",
                 url: `${url}/users/signIn`,
@@ -79,16 +85,18 @@ export default function IntroSlider(props) {
             }
           })
           .then(({ data, status }) => {
-            flag = false
-            console.log("berhasil Login");
-            dispatch({ type: "SET_LOGIN", val: data.userId });
-            dispatch({ type: "SET_TOKEN", val: data.token });
-            dispatch({ type: "SET_LOADING", val: false });
-            dispatch(ReadSelf());
-            if (status == "201") {
-              navigation.navigate("InterestUpdate");
-            } else if (status == "200"){
-              navigation.navigate("MainPage");
+            if (flag) {
+              console.log("berhasil Login");
+              dispatch({ type: "SET_LOGIN", val: data.userId });
+              dispatch({ type: "SET_TOKEN", val: data.token });
+              dispatch({ type: "SET_LOADING", val: false });
+              dispatch(ReadSelf());
+              if (status == "201") {
+                navigation.navigate("InterestUpdate");
+              } else if (status == "200") {
+                navigation.navigate("MainPage");
+              }
+              flag = false;
             }
           })
           .catch(error => {
@@ -96,10 +104,9 @@ export default function IntroSlider(props) {
           });
       } else {
         if (log == "logout") {
-          flag = true
+          flag = true;
           dispatch({ type: "SET_LOGIN", val: false });
-          navigation.dispatch(CommonActions.reset()
-          )
+          navigation.dispatch(CommonActions.reset());
         }
         console.log("not logged in");
       }
