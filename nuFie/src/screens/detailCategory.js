@@ -30,9 +30,9 @@ export default function detailCategory({ route }) {
 
   const handleJoinActivitiy = () => {
     setLoading(true);
+    setAlreadyRequest(true);
     dispatch(joinActivities(activity._id))
     .then(() => {
-      setAlreadyRequest(true);
       setLoading(false);
     })
     .catch((error) => {
