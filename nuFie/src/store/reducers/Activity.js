@@ -37,7 +37,8 @@ export default function activityReducer(state = initializeState, action) {
         data: [],
         error: null,
         category: [],
-        listJoin: [],
+        listJoin: [],  
+        listByExplore: [],
         listByInterest: []
       };
     case "FETCH_ACTIVITIES_INTEREST":

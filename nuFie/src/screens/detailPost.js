@@ -17,7 +17,9 @@ import Load from '../components/loading'
 import { FindFriend } from "../store/actions/user";
 
 export default function DetailPost({ route }) {
-  const [loading, setLoading] = useState(false)
+  const [loadingJoin, setLoadingJoin] = useState(false)
+  const {loading, biodata} = useSelector(state => state.user)
+  const user = useSelector(state => state.user);
   const dispatch = useDispatch()
   const navigation = useNavigation();
   const handleGroupChat = () => {
@@ -38,14 +40,14 @@ export default function DetailPost({ route }) {
   };
 
   const handleMemberList = () => {
-    setLoading(true)
+    setLoadingJoin(true)
     dispatch(ActivityDetail(activity._id))
     .then((data) => {
       navigation.navigate("MemberList", {activityId: activity._id, from: 'mypost'})
-      setLoading(false)
+      setLoadingJoin(false)
     })
     .catch((err) => {
-      setLoading(false)
+      setLoadingJoin(false)
     })
   }
 

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
@@ -7,18 +7,22 @@ import DetailMyPost from "../screens/detailPost";
 import ChatRoom from "../screens/chattingRoom";
 import CreateActivity from "../screens/CreateActivity";
 import EditActivity from "../screens/EditActivity";
-import { View, TouchableHighlight } from "react-native";
+import { View, TouchableHighlight, Alert } from "react-native";
 import Menu, { MenuItem, MenuDivider } from "react-native-material-menu";
 import FindFriend from "../screens/FindFriends";
 import { useNavigation } from "@react-navigation/native";
 import DetailMember from "../screens/DetailMember";
 import DetailProfile from "../screens/ProfileMember";
 import ListPending from "../screens/PendingRequest";
+import { cancelActivity } from '../store/actions/Activity';
+import { useDispatch } from 'react-redux';
 
 export default function StackMyPost({ route }) {
   const menu = useRef();
   const hideMenu = () => menu.current.hide();
   const showMenu = () => menu.current.show();
+  const [ showAlert, setShowAlert ] = useState(true);
+  const dispatch = useDispatch();
   // console.log(Object.keys(route));
   // if (route.state) {
   //   console.log(Object.keys(route.state), route.state.routes.length);
@@ -40,6 +44,32 @@ export default function StackMyPost({ route }) {
       return route.state.routes[1].params.activity.title;
     }
   };
+
+  const handlerCancel = () => {
+    const id = route.state.routes[1].params.activity._id;
+    setShowAlert(true);
+    return(
+      Alert.alert(
+        'Are You Sure?',
+        '',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => {
+            dispatch(cancelActivity(id))
+            .then(() => {
+              navigation.navigate('My Activity')
+            })
+          }},
+        ],
+        {cancelable: false},
+      )
+    )
+  }
+
   const Stack = createStackNavigator();
   const renderDropdown = () => (
     <Menu
@@ -51,7 +81,7 @@ export default function StackMyPost({ route }) {
       }
     >
       <MenuItem onPress={handleEdit}>Edit Activity</MenuItem>
-      <MenuItem onPress={hideMenu}>Cancel Activity</MenuItem>
+      <MenuItem onPress={handlerCancel}>Cancel Activity</MenuItem>
       <MenuDivider />
     </Menu>
   );
