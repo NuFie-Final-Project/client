@@ -15,11 +15,13 @@ import ButtonP from "../components/ButtonOnPost";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from 'react-redux';
 import { joinActivities } from '../store/actions/Activity';
-import loadingSpinner from '../../assets/spinner-loading.gif'
+import loadingSpinner from '../../assets/spinner-loading.gif';
+import LoadingTest from "../components/loading";
 
 export default function detailCategory({ route }) {
   const [ alreadyRequest, setAlreadyRequest ] = useState(false);
   const [ loading, setLoading ] = useState(false);
+  const [ isOwner, setIsOwner ] = useState(false);
   const navigation = useNavigation();
 
   const activity = route.params.activity;
@@ -30,9 +32,9 @@ export default function detailCategory({ route }) {
 
   const handleJoinActivitiy = () => {
     setLoading(true);
+    setAlreadyRequest(true);
     dispatch(joinActivities(activity._id))
     .then(() => {
-      setAlreadyRequest(true);
       setLoading(false);
     })
     .catch((error) => {
@@ -43,6 +45,9 @@ export default function detailCategory({ route }) {
   if(activity.pendingJoins.includes(user.login) && !alreadyRequest) {
     setAlreadyRequest(true);
   }
+  if(activity.owner._id === user.login && !isOwner) {
+    setIsOwner(true);
+  } 
 
   return (
     <ScrollView contentContainerStyle={{ height: "100%" }}>
@@ -91,7 +96,9 @@ export default function detailCategory({ route }) {
           <Text style={styles.description}>{activity.description}</Text>
           <View style={styles.buttonWrap}>
             {
-              !alreadyRequest 
+              isOwner
+                ? <Text></Text>
+                : !alreadyRequest 
                 ?   <ButtonP
                       text="Join Group"
                       color="#03A9F4"
@@ -99,7 +106,7 @@ export default function detailCategory({ route }) {
                       handle={handleJoinActivitiy}
                     />
                 :   loading
-                    ? <Image source={loadingSpinner} />
+                    ? <LoadingTest></LoadingTest>
                     : <TouchableOpacity style={{
                       backgroundColor: '#6c757d', 
                       paddingHorizontal: 12,

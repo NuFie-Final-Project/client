@@ -17,6 +17,17 @@ export default function MyPost(props) {
             {new Date(props.activity.due_date).toDateString()}
           </Text>
           <Text style={styles.place}>{props.activity.location}</Text>
+          {
+            props.activity.status === 'open'
+              ? <Text style={{
+                color: '#155727', 
+                fontSize: 11,
+              }}>{props.activity.status}</Text>
+              : <Text style={{
+                color: '#721c24', 
+                fontSize: 11,
+              }}>{props.activity.status}</Text>
+          }
         </View>
         <View style={styles.badge}>
           <Ionicons name="ios-people" size={28} color="#fff" />
