@@ -9,22 +9,29 @@ import {
   TouchableOpacity,
   Button
 } from "react-native";
-import { MaterialIcons, FontAwesome, Ionicons, Entypo } from "@expo/vector-icons";
+import {
+  MaterialIcons,
+  FontAwesome,
+  Ionicons,
+  Entypo
+} from "@expo/vector-icons";
 import CountMember from "../components/memberCount";
 import ButtonP from "../components/ButtonOnPost";
 import { useNavigation } from "@react-navigation/native";
-import { useDispatch, useSelector } from 'react-redux';
-import { joinActivities } from '../store/actions/Activity';
-import loadingSpinner from '../../assets/spinner-loading.gif';
+import { useDispatch, useSelector } from "react-redux";
+import { joinActivities } from "../store/actions/Activity";
+import loadingSpinner from "../../assets/spinner-loading.gif";
 import LoadingTest from "../components/loading";
+import Interest from "../components/interestItem";
 
 export default function detailCategory({ route }) {
-  const [ alreadyRequest, setAlreadyRequest ] = useState(false);
-  const [ loading, setLoading ] = useState(false);
-  const [ isOwner, setIsOwner ] = useState(false);
+  const [alreadyRequest, setAlreadyRequest] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
   const navigation = useNavigation();
 
   const activity = route.params.activity;
+  // console.log(activity);
 
   const user = useSelector(state => state.user);
 
@@ -34,20 +41,20 @@ export default function detailCategory({ route }) {
     setLoading(true);
     setAlreadyRequest(true);
     dispatch(joinActivities(activity._id))
-    .then(() => {
-      setLoading(false);
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
-  if(activity.pendingJoins.includes(user.login) && !alreadyRequest) {
+  if (activity.pendingJoins.includes(user.login) && !alreadyRequest) {
     setAlreadyRequest(true);
   }
-  if(activity.owner._id === user.login && !isOwner) {
+  if (activity.owner._id === user.login && !isOwner) {
     setIsOwner(true);
-  } 
+  }
 
   return (
     <ScrollView contentContainerStyle={{ height: "100%" }}>
@@ -94,30 +101,47 @@ export default function detailCategory({ route }) {
             Activity Description
           </Text>
           <Text style={styles.description}>{activity.description}</Text>
+          <Text
+            style={{
+              marginTop: 12,
+              fontWeight: "700",
+              fontSize: 16
+            }}
+          >
+            Interest
+          </Text>
+          <View style={styles.interestWrapper}>
+            {activity.tags.map((el, i) => (
+              <Interest text={el} key={i} />
+            ))}
+          </View>
           <View style={styles.buttonWrap}>
-            {
-              isOwner
-                ? <Text></Text>
-                : !alreadyRequest 
-                ?   <ButtonP
-                      text="Join Group"
-                      color="#03A9F4"
-                      icon="ios-log-in"
-                      handle={handleJoinActivitiy}
-                    />
-                :   loading
-                    ? <LoadingTest></LoadingTest>
-                    : <TouchableOpacity style={{
-                      backgroundColor: '#6c757d', 
-                      paddingHorizontal: 12,
-                      paddingVertical: 12,
-                      borderColor: 'black',
-                      borderRadius: 5,
-                      flexDirection: "row"}}
-                      disabled={true}>
-                      <Text>Waiting For Respond</Text>
-                    </TouchableOpacity>
-            }
+            {isOwner ? (
+              <Text></Text>
+            ) : !alreadyRequest ? (
+              <ButtonP
+                text="Join Group"
+                color="#03A9F4"
+                icon="ios-log-in"
+                handle={handleJoinActivitiy}
+              />
+            ) : loading ? (
+              <LoadingTest></LoadingTest>
+            ) : (
+              <TouchableOpacity
+                style={{
+                  backgroundColor: "#6c757d",
+                  paddingHorizontal: 12,
+                  paddingVertical: 12,
+                  borderColor: "black",
+                  borderRadius: 5,
+                  flexDirection: "row"
+                }}
+                disabled={true}
+              >
+                <Text>Waiting For Respond</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>
@@ -156,7 +180,7 @@ const styles = StyleSheet.create({
   description: {
     color: "#3a3a3a",
     textAlign: "justify",
-    marginBottom: 25
+    marginBottom: 4
   },
   badgeWrapper: {
     flexDirection: "row",
@@ -168,5 +192,10 @@ const styles = StyleSheet.create({
   },
   buttonWrap: {
     alignItems: "center"
+  },
+  interestWrapper: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginBottom: 30
   }
 });
