@@ -134,6 +134,10 @@ export const InviteFriend = props => {
     })
       .then(({ data }) => {
         dispatch({ type: "SET_LOADING", val: false });
+        db.firestore().collection('trigger').add({trigger: `${state().other.url}/activities/invite/` + props.postId})
+        .then(() => {
+          console.log('rr')
+        })
       })
       .catch(err => {
         dispatch({ type: "SET_LOADING", val: false });
@@ -154,6 +158,10 @@ export const AcceptInvite = props => {
       .then(({ data }) => {
         dispatch({ type: "SET_LOADING", val: false });
         dispatch({ type: "SET_TRIGGER", val: `${state().other.url}/activities/inviteAccept/` + props });
+        db.firestore().collection('trigger').add({trigger: '========='})
+        .then(() => {
+          console.log('rr')
+        })
       })
       .catch(err => {
         dispatch({ type: "SET_LOADING", val: false });
@@ -174,6 +182,7 @@ export const DeclineInvite = props => {
       .then(({ data }) => {
         dispatch({ type: "SET_LOADING", val: false });
         dispatch({ type: "SET_TRIGGER", val: `${state().other.url}/activities/inviteReject/` + props });
+        db.firestore().collection('trigger').add({trigger: '========='})
       })
       .catch(err => {
         dispatch({ type: "SET_LOADING", val: false });
@@ -212,6 +221,7 @@ export const leaveActivity = id => {
     })
       .then(response => {
         dispatch({ type: "SET_TRIGGER", val: response.data });
+        db.firestore().collection('trigger').add({trigger: '========='})
       })
       .catch(error => {
         dispatch({ type: "SET_LOADING", val: false });
@@ -254,6 +264,7 @@ export const ActivityDetail = (props) => {
     .then(({data}) => {
       dispatch({ type: "SET_LOADING", val: false });
       dispatch({type: 'SET_DETAILMEMBER', val: data.activity.members})
+      db.firestore().collection('trigger').add({trigger: '========='})
     })
     .catch((er) => {
       dispatch({ type: "SET_LOADING", val: false });
@@ -295,6 +306,7 @@ export const joinActivities = (id) => {
     })
     .then(response => {
       dispatch({ type: "SET_TRIGGER", val: "join_group" });
+      db.firestore().collection('trigger').add({trigger: '========='})
     })
     .catch(error => {
       dispatch({ type: "SET_LOADING", val: false });
@@ -319,6 +331,7 @@ export const AcceptRequestJoin = (props) => {
     .then(({data}) => {
       dispatch({ type: "SET_LOADING", val: false });
       dispatch({ type: "SET_TRIGGER", val: props.targetId });
+      db.firestore().collection('trigger').add({trigger: '========='})
     })
     .catch((er) => {
       dispatch({ type: "SET_LOADING", val: false });
@@ -344,6 +357,7 @@ export const DeclineRequestJoin = (props) => {
     .then(({data}) => {
       dispatch({ type: "SET_LOADING", val: false });
       dispatch({ type: "SET_TRIGGER", val: props.targetId });
+      db.firestore().collection('trigger').add({trigger: '========='})
     })
     .catch((er) => {
       dispatch({ type: "SET_LOADING", val: false });
@@ -369,6 +383,7 @@ export const KickMember = (props) => {
     .then(({data}) => {
       dispatch({ type: "SET_LOADING", val: false });
       dispatch({ type: "SET_TRIGGER", val: props.targetId });
+      db.firestore().collection('trigger').add({trigger: '========='})
     })
     .catch((er) => {
       dispatch({ type: "SET_LOADING", val: false });

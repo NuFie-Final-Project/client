@@ -15,6 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import { getActivities, getByInterest } from "../store/actions/Activity";
 import { useSelector, useDispatch } from "react-redux";
 import ExpoNotif from "../components/exponotif";
+import firebaseTrigger from '../hooks/useTrigger'
 
 export default function Home({ route }) {
   const trigger = useSelector(state => state.other.trigger);
@@ -27,7 +28,7 @@ export default function Home({ route }) {
     navigation.navigate("Invitation");
   };
   const dispatch = useDispatch();
-
+  firebaseTrigger({ token: user.token, id: user.login })
   useEffect(() => {
     dispatch(getByInterest())
     .then(() => {
@@ -40,7 +41,8 @@ export default function Home({ route }) {
   }, [trigger])
 
   useEffect(() => {
-    ExpoNotif(user.login);
+    console.log('===========notif jalan')
+    ExpoNotif(user.login)
   }, []);
 
   const [refreshing, setRefreshing] = useState(false);

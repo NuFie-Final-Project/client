@@ -13,6 +13,7 @@ import { Notifications } from "expo";
 
 export default function App() {
   const Stack = createStackNavigator();
+  console.disableYellowBox = true
   return (
     <Provider store={store}>
       <NavigationContainer>

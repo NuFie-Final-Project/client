@@ -7,7 +7,7 @@ import SelectPicker from "react-native-form-select-picker";
 import Load from './loading'
 
 function EditProfileForm(props) {
-  const {biodata, loading} = useSelector(state => state.user);
+  const [loading, setLoading] = useState(false)
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [aboutMe, setAboutMe] = useState("");
@@ -17,6 +17,7 @@ function EditProfileForm(props) {
   const [gender, setGender] = useState("");
   const [errorPhone, setError] = useState(false)
   const [blank, setBlank] = useState(false)
+  const {biodata} = useSelector(state => state.user)
   useEffect(() => {
     setFirstName(biodata.firstName);
     setLastName(biodata.lastName);

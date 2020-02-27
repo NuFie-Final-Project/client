@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   cardImage: {
     height: 220,
     width: "100%",
-    backgroundColor: "#f00"
+    backgroundColor: "#c2c2c2"
   },
   promoWrapper: {
     width: "23%",

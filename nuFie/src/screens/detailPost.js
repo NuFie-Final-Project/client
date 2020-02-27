@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ActivityDetail } from "../store/actions/Activity";
 import Load from "../components/loading";
 import { FindFriend } from "../store/actions/user";
+import Tag from '../components/interestItem'
 
 export default function DetailPost({ route }) {
   const [loadingJoin, setLoadingJoin] = useState(false);
@@ -108,9 +109,23 @@ export default function DetailPost({ route }) {
               fontSize: 16
             }}
           >
-            Activity Description
+            Activity Descriptions
           </Text>
           <Text style={styles.description}>{activity.description}</Text>
+          <Text
+            style={{
+              fontWeight: "700",
+              fontSize: 16,
+              marginBottom: 8
+            }}
+          >
+            Tags
+          </Text>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap', marginBottom: 20}}>
+            {
+              activity.tags.map((el, i) => {return <Tag key={i} text={el}/>})
+            }
+          </View>
           <View style={styles.buttonWrap}>
             <ButtonP
               color="#27aa80"
@@ -133,9 +148,9 @@ export default function DetailPost({ route }) {
             )}
             {activity.status === "open" ? (
               <ButtonP
-                text="Requested"
+                text="Join Request"
                 color="#0c99c1"
-                icon="md-search"
+                icon="ios-contacts"
                 handle={handleReq}
               />
             ) : (
@@ -179,7 +194,7 @@ const styles = StyleSheet.create({
   description: {
     color: "#3a3a3a",
     textAlign: "justify",
-    marginBottom: 25
+    marginBottom: 10
   },
   badgeWrapper: {
     flexDirection: "row",
@@ -190,6 +205,7 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   buttonWrap: {
-    alignItems: "center"
+    alignItems: "center",
+    marginBottom: 20
   }
 });
