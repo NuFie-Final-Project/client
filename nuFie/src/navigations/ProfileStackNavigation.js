@@ -49,9 +49,9 @@ function ProfileStackNavigation() {
         }}
       />
       <Stack.Screen name="DETAIL JOIN" component={DetailJoin} />
-      <Stack.Screen name="DETAILJOINMEMBER" component={DetailMember} />
-      <Stack.Screen name="DetailMember" component={DetailProfile} />
-      <Stack.Screen name="ChatRoomFromMember" component={ChatRoom} />
+      <Stack.Screen name="DETAILJOINMEMBER" options={{title: 'Member List'}} component={DetailMember} />
+      <Stack.Screen name="DetailMember" options={{title: 'Detail Member'}} component={DetailProfile} />
+      <Stack.Screen name="ChatRoomFromMember" options={{title: 'Chat Room'}} component={ChatRoom} />
     </Stack.Navigator>
   );
 }

@@ -11,7 +11,6 @@ export default function user(state = store, action) {
     case "SET_SHOW":
       return { ...state, show: action.val };
     case "SET_TRIGGER":
-      console.log('=====trigger')
       return { ...state, trigger: action.val };
     case "SET_PUSHTOKEN":
       return { ...state, pushToken: action.val };

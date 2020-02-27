@@ -1,7 +1,5 @@
 import React from "react";
-import Constants from "expo-constants";
 import { StyleSheet, View, Text, ImageBackground } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import BtnLogin from "../components/buttonLoginRegis";
 
@@ -16,15 +14,21 @@ export default function LandingScreen() {
     navigation.navigate("Register");
   };
   return (
-    <LinearGradient colors={["#3C8CE7", "#00EAFF"]} style={{ flexGrow: 1 }}>
-      <View style={styles.container}>
-        <View style={styles.wrapperText}>
-          <View style={{ height: 150, width: 150 }}>
-            <ImageBackground
-              source={logoBrand}
-              style={{ height: "100%", width: "100%" }}
-            />
-          </View>
+    <View style={styles.container}>
+      <View style={styles.bg}>
+        <ImageBackground
+          source={require("../../assets/intro-bg.png")}
+          style={{ height: "100%", width: "100%" }}
+        />
+      </View>
+      <View style={styles.bg2}></View>
+      <View style={styles.bg3}></View>
+      <View style={styles.bodyWrapper}>
+        <View style={{ height: 150, width: 150, marginBottom: 180 }}>
+          <ImageBackground
+            source={logoBrand}
+            style={{ height: "100%", width: "100%" }}
+          />
         </View>
         <View style={styles.wrapperButton}>
           <BtnLogin
@@ -33,32 +37,67 @@ export default function LandingScreen() {
             color="#4d80e4"
             textColor="#fff"
           />
-          <BtnLogin text="REGISTER" handle={moveToRegister} />
+          <BtnLogin
+            text="REGISTER"
+            color="#70bcf3"
+            textColor="#fff"
+            handle={moveToRegister}
+          />
         </View>
       </View>
-    </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     height: "100%",
-    alignItems: "center",
-    justifyContent: "space-around",
-    paddingTop: Constants.statusBarHeight,
     paddingBottom: 50
   },
-  wrapperText: {
-    alignSelf: "center",
-    justifyContent: "center"
+  bg: {
+    width: "100%",
+    height: "56%",
+    position: "absolute",
+    zIndex: -2
+  },
+  bg2: {
+    height: 200,
+    width: 200,
+    backgroundColor: "#70bcf3",
+    position: "absolute",
+    bottom: -100,
+    right: -70,
+    borderRadius: 200,
+    zIndex: -1
+  },
+  bg3: {
+    height: 160,
+    width: 160,
+    backgroundColor: "#486dac",
+    position: "absolute",
+    bottom: 60,
+    left: -110,
+    borderRadius: 200,
+    zIndex: -1
+  },
+  bodyWrapper: {
+    height: "100%",
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center"
   },
   wrapperButton: {
     width: "90%",
     alignItems: "center"
-  },
-  titleWelcome: {
-    fontSize: 32,
-    color: "#fff",
-    textAlign: "center"
   }
+  // wrapperText: {
+  //   alignSelf: "center",
+  //   justifyContent: "center"
+  // },
+
+  // titleWelcome: {
+  //   fontSize: 32,
+  //   color: "#fff",
+  //   textAlign: "center"
+  // }
 });

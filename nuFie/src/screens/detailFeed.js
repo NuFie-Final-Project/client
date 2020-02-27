@@ -19,10 +19,11 @@ import CountMember from "../components/memberCount";
 import ButtonP from "../components/ButtonOnPost";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-import { joinActivities } from "../store/actions/Activity";
+import { joinActivities, getByInterest } from "../store/actions/Activity";
 import loadingSpinner from "../../assets/spinner-loading.gif";
 import LoadingTest from "../components/loading";
 import Interest from "../components/interestItem";
+
 
 export default function detailCategory({ route }) {
   const [alreadyRequest, setAlreadyRequest] = useState(false);
@@ -31,7 +32,6 @@ export default function detailCategory({ route }) {
   const navigation = useNavigation();
 
   const activity = route.params.activity;
-  // console.log(activity);
 
   const user = useSelector(state => state.user);
 
@@ -42,10 +42,13 @@ export default function detailCategory({ route }) {
     setAlreadyRequest(true);
     dispatch(joinActivities(activity._id))
       .then(() => {
-        setLoading(false);
+        return dispatch(getByInterest())
+      })
+      .then(() => {
+        navigation.goBack()
+        setLoading(false)
       })
       .catch(error => {
-        console.log(error);
       });
   };
 

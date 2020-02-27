@@ -22,10 +22,8 @@ export default function ChatRoom(props) {
       .collection("arrMessage")
       .add(message)
       .then(data => {
-        console.log("berhasil add");
       })
       .catch(() => {
-        console.log('=============')
       })
   };
   return (

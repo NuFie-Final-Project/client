@@ -25,7 +25,6 @@ export default function ChatWrap(props) {
                 setMessages(messages)
             })
       } catch (error) {
-        console.log('=============error connection')
       }
     },[])
 

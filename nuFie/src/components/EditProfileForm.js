@@ -123,13 +123,6 @@ function EditProfileForm(props) {
       <Text style={{ fontSize: 13, fontWeight: "bold", marginBottom: 10 }}>
         Phone
       </Text>
-      {
-        errorPhone ? <Text>Invalid Phone Number</Text> : <Text></Text>
-      }
-      {
-        blank ? <Text>Please Input Phone Number</Text> : <Text></Text>
-      }
-
       <TextInput
         value={phone}
         onChangeText={inputPhone}
@@ -202,7 +195,7 @@ function EditProfileForm(props) {
           <View
             style={{
               alignItems: "center",
-              backgroundColor: "#C4C4C4",
+              backgroundColor: "#01B8E7",
               paddingVertical: 13,
               borderRadius: 10
             }}
@@ -218,6 +211,12 @@ function EditProfileForm(props) {
             </Text>
           </View>
         </TouchableOpacity>
+      }
+      {
+        errorPhone ? <Text style={styles.warning}>Invalid Phone Number</Text> : <Text></Text>
+      }
+      {
+        blank ? <Text style={styles.warning}>Please Input Phone Number</Text> : <Text></Text>
       }
     </>
   );
@@ -250,6 +249,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderColor: "#C1C1C1",
     height: 36
+  },
+  warning: {
+    color: "#f00"
   }
 });
 
