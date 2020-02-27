@@ -17,7 +17,6 @@ function FindFriends(props) {
       setRefreshing(false)
     })
     .catch((err) => {
-      console.log(err.message, 'errrro')
     })
   }, [refreshing]);
 

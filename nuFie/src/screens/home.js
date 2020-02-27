@@ -84,7 +84,7 @@ export default function Home({ route }) {
           </TouchableOpacity>
         </View>
       </View>
-      <Text style={styles.titleScreen}>Recomendation Activity</Text>
+      <Text style={styles.titleScreen}>Recomended Activity</Text>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>

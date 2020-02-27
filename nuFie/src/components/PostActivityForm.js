@@ -199,7 +199,6 @@ function postActivityForm({ route, openAlert, uploadImage, activity, scrollToBot
                 if(isPromo === 'YES') {
                     boolPromo = true;
                 } else {
-                    console.log('jalan')
                     boolPromo = false;
                 }
                 const formData = new FormData();

@@ -18,7 +18,7 @@ import AwesomeAlert from "react-native-awesome-alerts";
 const Slides = [
   {
     key: "slides1",
-    title: "Disover People With Same Interest",
+    title: "Discover People With Same Interest",
     text: "There will be many people with same Interest like you in our app",
     image: require("../../assets/asset3.png"),
     colors: ["#78ebcc", "#16a2ff"]
@@ -86,7 +86,6 @@ export default function IntroSlider(props) {
           })
           .then(({ data, status }) => {
             if (flag) {
-              console.log("berhasil Login");
               dispatch({ type: "SET_LOGIN", val: data.userId });
               dispatch({ type: "SET_TOKEN", val: data.token });
               dispatch({ type: "SET_LOADING", val: false });
@@ -100,7 +99,6 @@ export default function IntroSlider(props) {
             }
           })
           .catch(error => {
-            console.log(error, "ini error");
           });
       } else {
         if (log == "logout") {
@@ -108,7 +106,6 @@ export default function IntroSlider(props) {
           dispatch({ type: "SET_LOGIN", val: false });
           navigation.dispatch(CommonActions.reset());
         }
-        console.log("not logged in");
       }
     });
   }

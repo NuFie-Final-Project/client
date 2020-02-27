@@ -6,103 +6,136 @@ import {
   Dimensions,
   Image,
   ImageBackground,
-  TouchableHighlight,
+  TouchableHighlight
 } from "react-native";
 import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useNavigation } from '@react-navigation/native';
-import dummpProfilePicture from '../../assets/edit_profile_dummy.jpg';
+import { useNavigation } from "@react-navigation/native";
+import dummpProfilePicture from "../../assets/edit_profile_dummy.jpg";
 
 export default function FeedsItem({ data, routeName }) {
-  const navigation = useNavigation()
-  if(routeName === 'Category') {
+  const navigation = useNavigation();
+  if (routeName === "Category") {
     return (
       <View style={styles.cardFeed}>
         <View style={styles.cardHeader}>
-          {
-            data.owner.profilePicture
-              ?   <Image
-                    source={{uri: data.owner.profilePicture}}
-                    style={styles.profpict}
-                  />
-            :     <Image
-                    source={dummpProfilePicture}
-                    style={styles.profpict}
-                  />
-          }
+          {data.owner.profilePicture ? (
+            <Image
+              source={{ uri: data.owner.profilePicture }}
+              style={styles.profpict}
+            />
+          ) : (
+            <Image source={dummpProfilePicture} style={styles.profpict} />
+          )}
           <View style={{ justifyContent: "center" }}>
-          <Text style={{ fontWeight: "700" }}>{data.owner.firstName + ' ' + data.owner.lastName}</Text>
+            <Text style={{ fontWeight: "700" }}>
+              {data.owner.firstName + " " + data.owner.lastName}
+            </Text>
             <Text style={{ fontSize: 10, color: "#777777" }}>
               {new Date(data.createdAt).toDateString()}
             </Text>
           </View>
-          <TouchableHighlight style={styles.btnDetail} onPress={() => {
-            navigation.navigate('Detail Category', { activity: data});
-          }}>
+          <TouchableHighlight
+            style={styles.btnDetail}
+            onPress={() => {
+              navigation.navigate("Detail Category", { activity: data });
+            }}
+          >
             <Text style={{ color: "#fff", fontSize: 12 }}>View Detail</Text>
           </TouchableHighlight>
         </View>
         <View style={styles.cardImage}>
           <ImageBackground
             style={{ width: "100%", height: "100%" }}
-            source={{uri: data.image}}
+            source={{ uri: data.image }}
           />
         </View>
         <View style={styles.cardText}>
-        <Text style={styles.cardTitle}>{data.title}</Text>
-          <View style={{ flexDirection: "row" }}>
-            <MaterialIcons name="place" color="#777777" />
-            <Text style={styles.place}>{data.location}</Text>
+          <View style={styles.textWrapper}>
+            <Text style={styles.cardTitle}>{data.title}</Text>
+            <View style={{ flexDirection: "row" }}>
+              <MaterialIcons name="place" color="#777777" />
+              <Text style={styles.place}>{data.location}</Text>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <FontAwesome name="calendar" color="#777777" />
+              <Text style={styles.date}>
+                {new Date(data.due_date).toDateString()}
+              </Text>
+            </View>
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <FontAwesome name="calendar" color="#777777" />
-            <Text style={styles.date}>{new Date(data.due_date).toDateString()}</Text>
-          </View>
+          {!data.isPromo ? (
+            <View></View>
+          ) : (
+            <View style={styles.promoWrapper}>
+              <View style={styles.promoBtn}>
+                <FontAwesome name="thumbs-up" color="#fff" size={14} />
+                <Text style={styles.textPromo}>Has Promo</Text>
+              </View>
+            </View>
+          )}
         </View>
       </View>
     );
   } else {
-    return  (<View style={styles.cardFeed}>
+    return (
+      <View style={styles.cardFeed}>
         <View style={styles.cardHeader}>
-        {
-            data.owner.profilePicture
-              ?   <Image
-                    source={{uri: data.owner.profilePicture}}
-                    style={styles.profpict}
-                  />
-            :     <Image
-                    source={dummpProfilePicture}
-                    style={styles.profpict}
-                  />
-          }
+          {data.owner.profilePicture ? (
+            <Image
+              source={{ uri: data.owner.profilePicture }}
+              style={styles.profpict}
+            />
+          ) : (
+            <Image source={dummpProfilePicture} style={styles.profpict} />
+          )}
           <View style={{ justifyContent: "center" }}>
-            <Text style={{ fontWeight: "700" }}>{data.owner.firstName + ' ' + data.owner.lastName}</Text>
+            <Text style={{ fontWeight: "700" }}>
+              {data.owner.firstName + " " + data.owner.lastName}
+            </Text>
             <Text style={{ fontSize: 10, color: "#777777" }}>
-            {new Date(data.createdAt).toDateString()}
+              {new Date(data.createdAt).toDateString()}
             </Text>
           </View>
-          <TouchableHighlight style={styles.btnDetail} onPress={() => {
-            navigation.navigate('Detail Feed', { activity: data })
-          }}>
+          <TouchableHighlight
+            style={styles.btnDetail}
+            onPress={() => {
+              navigation.navigate("Detail Feed", { activity: data });
+            }}
+          >
             <Text style={{ color: "#fff", fontSize: 12 }}>View Detail</Text>
           </TouchableHighlight>
         </View>
         <View style={styles.cardImage}>
           <ImageBackground
             style={{ width: "100%", height: "100%" }}
-            source={{uri: data.image}}
+            source={{ uri: data.image }}
           />
         </View>
         <View style={styles.cardText}>
-          <Text style={styles.cardTitle}>{data.title}</Text>
-          <View style={{ flexDirection: "row" }}>
-            <MaterialIcons name="place" color="#777777" />
-            <Text style={styles.place}>{data.location}</Text>
+          <View style={styles.textWrapper}>
+            <Text style={styles.cardTitle}>{data.title}</Text>
+            <View style={{ flexDirection: "row" }}>
+              <MaterialIcons name="place" color="#777777" />
+              <Text style={styles.place}>{data.location}</Text>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <FontAwesome name="calendar" color="#777777" />
+              <Text style={styles.date}>
+                {new Date(data.due_date).toDateString()}
+              </Text>
+            </View>
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <FontAwesome name="calendar" color="#777777" />
-            <Text style={styles.date}>{new Date(data.due_date).toDateString()}</Text>
-          </View>
+          {!data.isPromo ? (
+            <View></View>
+          ) : (
+            <View style={styles.promoWrapper}>
+              <View style={styles.promoBtn}>
+                <FontAwesome name="thumbs-up" color="#fff" size={14} />
+                <Text style={styles.textPromo}>Has Promo</Text>
+              </View>
+            </View>
+          )}
         </View>
       </View>
       // <View style={styles.card}>
@@ -148,8 +181,32 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#f00"
   },
+  promoWrapper: {
+    width: "23%",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  promoBtn: {
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    backgroundColor: "#21bf73",
+    flexDirection: "row",
+    borderRadius: 7,
+    alignItems: "center"
+  },
+  textWrapper: {
+    width: "77%"
+  },
   cardText: {
-    paddingHorizontal: 8
+    paddingHorizontal: 8,
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  textPromo: {
+    color: "#fff",
+    fontWeight: "700",
+    marginLeft: 5,
+    fontSize: 10
   },
   cardTitle: {
     fontWeight: "700",

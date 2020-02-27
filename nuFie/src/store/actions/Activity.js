@@ -15,6 +15,7 @@ export const createActivity = activity => {
       }
     })
       .then(response => {
+        dispatch({ type: "SET_TRIGGER", val: response.data.activity._id });
         return db
           .firestore()
           .collection("chat")
@@ -22,8 +23,7 @@ export const createActivity = activity => {
           .collection("arrMessage");
       })
       .then(data => {
-        dispatch({ type: "SET_LOADING", val: false });
-        dispatch({ type: "SET_TRIGGER", val: "add" });
+        dispatch({ type: "SET_LOADING", val: false })
       })
       .catch(error => {
         dispatch({ type: "SET_LOADING", val: false });
@@ -47,7 +47,6 @@ export const getActivities = () => {
         let activities = [];
         let invitation = [];
         let listGroup = [];
-        console.log('feeeeettcccch jalan')
 
         if (response.data.activities.length > 0) {
           activities = response.data.activities.filter(activity => {
@@ -91,7 +90,7 @@ export const editActivity = activity => {
       }
     })
       .then(response => {
-        dispatch({ type: "SET_TRIGGER", val: "edit" });
+        dispatch({ type: "SET_TRIGGER", val: response.data });
       })
       .catch(error => {
         dispatch({ type: "SET_LOADING", val: false });
@@ -138,7 +137,6 @@ export const InviteFriend = props => {
       })
       .catch(err => {
         dispatch({ type: "SET_LOADING", val: false });
-        console.log(err, "gagal Invite");
       });
   };
 };
@@ -154,13 +152,11 @@ export const AcceptInvite = props => {
       }
     })
       .then(({ data }) => {
-        console.log('berhasil accpet')
         dispatch({ type: "SET_LOADING", val: false });
-        dispatch({ type: "SET_TRIGGER", val: props });
+        dispatch({ type: "SET_TRIGGER", val: `${state().other.url}/activities/inviteAccept/` + props });
       })
       .catch(err => {
         dispatch({ type: "SET_LOADING", val: false });
-        console.log(err, "gagal accpet");
       });
   };
 };
@@ -176,13 +172,11 @@ export const DeclineInvite = props => {
       }
     })
       .then(({ data }) => {
-        console.log('berhasil accpet')
         dispatch({ type: "SET_LOADING", val: false });
-        dispatch({ type: "SET_TRIGGER", val: props });
+        dispatch({ type: "SET_TRIGGER", val: `${state().other.url}/activities/inviteReject/` + props });
       })
       .catch(err => {
         dispatch({ type: "SET_LOADING", val: false });
-        console.log(err, "gagal decline");
       });
   };
 };
@@ -199,11 +193,10 @@ export const cancelActivity = data => {
       }
     })
       .then(response => {
-        dispatch({ type: "SET_TRIGGER", val: "cancel" });
+        dispatch({ type: "SET_TRIGGER", val: response.data });
       })
       .catch(error => {
         dispatch({ type: "SET_LOADING", val: false });
-        console.log(error);
       });
   };
 };
@@ -218,11 +211,10 @@ export const leaveActivity = id => {
       }
     })
       .then(response => {
-        dispatch({ type: "SET_TRIGGER", val: "list_join_group" });
+        dispatch({ type: "SET_TRIGGER", val: response.data });
       })
       .catch(error => {
         dispatch({ type: "SET_LOADING", val: false });
-        console.log(error);
       });
   };
 };
@@ -245,7 +237,6 @@ export const exploreInterest = (interest) => {
     })
     .catch(error => {
       dispatch({ type: "SET_LOADING", val: false });
-      console.log(error)
     })
   }
 }
@@ -289,7 +280,6 @@ export const getByInterest = () => {
     })
     .catch(error => {
       dispatch({ type: "SET_LOADING", val: false });
-      console.log(error);
     })
   }
 }
@@ -308,7 +298,6 @@ export const joinActivities = (id) => {
     })
     .catch(error => {
       dispatch({ type: "SET_LOADING", val: false });
-      console.log(error);
     })
   }
 }

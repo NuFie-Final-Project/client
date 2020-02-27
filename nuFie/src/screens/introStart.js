@@ -6,7 +6,6 @@ import {Notifications} from 'expo'
 export default function Intro() {
     const navigation = useNavigation()
     const [notification, setNotification] = useState({})
-    console.log('==============ini push notif', notification)
     const handleNotification = (notif) => {
       setNotification(notif)
     }

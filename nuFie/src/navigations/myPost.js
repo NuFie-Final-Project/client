@@ -23,10 +23,6 @@ export default function StackMyPost({ route }) {
   const showMenu = () => menu.current.show();
   const [showAlert, setShowAlert] = useState(true);
   const dispatch = useDispatch();
-  // console.log(Object.keys(route));
-  // if (route.state) {
-  //   console.log(Object.keys(route.state), route.state.routes.length);
-  // }
 
   const navigation = useNavigation();
   const handleEdit = () => {

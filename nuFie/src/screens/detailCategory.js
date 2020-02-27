@@ -44,7 +44,6 @@ export default function detailCategory({ route }) {
         setLoading(false);
       })
       .catch(error => {
-        console.log(error);
       });
   };
 

@@ -20,6 +20,5 @@ export default async function ExpoRegisterPushNotification(userId) {
   })
     .then(({ data }) => {})
     .catch(err => {
-      console.log(err);
     });
 }

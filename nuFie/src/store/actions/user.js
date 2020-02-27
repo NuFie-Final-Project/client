@@ -42,7 +42,6 @@ export const Logout = () => {
       dispatch({type: 'SET_USERDATA', val:{firstName: '', lastName: '', email: '', password: ''}})
       firebase.auth().signOut();
     } catch (e) {
-      console.log("error");
     }
   };
 };
@@ -62,13 +61,11 @@ export const ReadSelf = () => {
         dispatch({ type: "SET_LOADING", val: false });
       })
       .catch(err => {
-        console.log(err);
       });
   };
 };
 
 export const UpdateProfile = props => {
-  console.log(props)
   return function(dispatch, state) {
     dispatch({ type: "SET_LOADING", val: true });
     return axios({
@@ -84,7 +81,6 @@ export const UpdateProfile = props => {
         dispatch({ type: "SET_LOADING", val: false });
       })
       .catch(err => {
-        console.log(err, "ini error update user");
       });
   };
 };
@@ -105,7 +101,6 @@ export const FindFriend = props => {
         dispatch({ type: "SET_LOADING", val: false });
       })
       .catch(err => {
-        console.log(err, "find");
       });
   };
 };
